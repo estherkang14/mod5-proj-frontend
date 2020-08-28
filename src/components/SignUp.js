@@ -1,76 +1,132 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions/auth'
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Container from '@material-ui/core/Container';
 
-const defaultState = {
-    name: "",
-    location: "",
-    username: "",
-    password: ""
-}
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
 
-class SignUp extends Component {
+const SignUp = (props) => {
 
-    state = defaultState
-    
-    handleOnChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
+    const classes = useStyles();
 
-    handleOnSubmit = (e) => {
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [location, setLocation] = useState("")
+
+    const handleOnSubmit = (e) => {
         e.preventDefault()
         let user = {
-            username: this.state.username,
-            password: this.state.password,
-            name: this.state.name,
-            location: this.state.location
+            username,
+            password,
+            name,
+            location
         }
-        this.props.signUpFxn(e, user)
-        this.props.signUp(user)
+        props.signUpFxn(e, user)
+        props.signUp(user)
 
-        this.setState(defaultState)
+        setUsername("")
+        setPassword("")
+        setName("")
+        setLocation("")
     }
 
-    render() {
-        return (
-            <div className="ui center aligned container">
-                <form className="ui small equal width form" onSubmit={(e) => this.handleOnSubmit(e)}>
-                    
-                        <div className="field">
-                            <label>NAME</label>
-                            <input placeholder="First name" name="name" 
-                            value={this.state.name} onChange={(e) => this.handleOnChange(e)}/>
-                        </div>
-                        <br/>
+    return (
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              CREATE AN ACCOUNT
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={(e) => handleOnSubmit(e)}> 
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="name"
+                    label="NAME"
+                    name="name"
+                    autoFocus
+                    onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="USERNAME"
+                    name="username"
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="password"
+                    label="PASSWORD"
+                    type="password"
+                    id="password"
+                    autoComplete="current-password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="location"
+                    label="LOCATION"
+                    name="location"
+                    onChange={(e) => setLocation(e.target.value)}
+                />
+                
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                >
+                    SIGN UP
+                </Button>
+                
+            </form>
+        </div>
+        </Container>
+      );
 
-                        <div className="field">
-                            <label>USERNAME</label>
-                            <input placeholder="Username" name="username" 
-                            value={this.state.username} onChange={(e) => this.handleOnChange(e)}/>
-                        </div>
-                        <br/>
-
-                        <div className="field">
-                            <label>PASSWORD</label>
-                            <input placeholder="Password" name="password" type="password"
-                            value={this.state.password} onChange={(e) => this.handleOnChange(e)} />
-                        </div>
-                        <br />
-
-                        <div className="field">
-                            <label>LOCATION</label>
-                            <input placeholder="e.g., 'Washington, DC'" name="location" 
-                            value={this.state.location} onChange={(e) => this.handleOnChange(e)}/>
-                        </div>
-                        <br/>
-                        <button type="submit" className="ui button">SIGN UP</button>
-                    
-                </form>
-            </div>
-        )
-    }
+    
 }
 
 const mapStateToProps = state => {
