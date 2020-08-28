@@ -15,6 +15,8 @@ const LandingPage = (props) => {
             that toggle between the log in or sign up form, respectively
             <br />
             <LogIn logInFxn={props.logIn}/>
+            <br />
+            <SignUp signUpFxn={props.signUp} />
         </div>
     )
 }

@@ -8,29 +8,24 @@ import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Today from './components/Today'
 import { connect } from 'react-redux'
+import { storeUser, logOut } from './actions/auth'
+import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
+let USERSURL = BASEURL + "users/"
 
 class App extends React.Component {
   state = {
     loggedIn: false,
-    username: '',
-    password: '', 
+    // username: '',
+    // password: '', 
+    // location: '',
+    // name: '',
+    userId: ''
     
   }
 
-  setUsername = (e) => {
-    this.setState({
-      username: e.target.value
-    })
-  }
-
-  setPassword = (e) => {
-    this.setState({
-      password: e.target.value
-    })
-  }
 
   logIn = (e, user) => {
     e.preventDefault()
@@ -49,14 +44,39 @@ class App extends React.Component {
       localStorage.setItem("token", data.token)
       localStorage.setItem("user", data.user)
       localStorage.setItem("userId",data.user.id)
-      this.setState({loggedIn: true})
+      this.setState({loggedIn: true}) 
+      this.fetchUserApi(data.user.id)
     })
+  }
+
+  signUp = (e, user) => {
+    e.preventDefault()
+
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accepts": "application/json"
+      }, 
+      body: JSON.stringify({user})
+    }
+
+    fetch(USERSURL, options)
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("token", data.token)
+      localStorage.setItem("userId", data.user.id)
+      localStorage.setItem("user", data.user)
+      this.setState({ loggedIn: true, userId: data.user.id })
+      this.fetchUserApi(data.user.id)
+    })
+    .catch(error => alert(error))
   }
 
   logOut = (e) => {
     e.preventDefault()
     this.setState({loggedIn: false}, localStorage.clear(), alert("You have been logged out"),
-    <Redirect to="/" />)
+    this.props.logOut())
   }
 
   renderTopNavBar = () => {
@@ -79,6 +99,18 @@ class App extends React.Component {
     }
   }
 
+  fetchUserApi = (userId) => {
+    fetch(USERSURL + userId)
+    .then(response => response.json())
+    .then(userData => {
+      this.props.storeUser(userData)
+      localStorage.setItem("userEventData", userData)
+      console.log("User Data Fetched")
+    })
+  }
+
+  
+
   render() {
     return (
       <BrowserRouter>
@@ -93,9 +125,7 @@ class App extends React.Component {
             <Route path="/home" render={(routeProps) => <Today {...routeProps} />} />
             
             <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
-            setUsername={this.setUsername} setPassword={this.setPassword}
-            logIn={this.logIn}
-            {...routeProps}/>} />
+            logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
           </Switch>
         </div>
       </div>
@@ -104,4 +134,6 @@ class App extends React.Component {
   }
 }
 
-export default App;
+
+
+export default connect(null, { storeUser, logOut })(App);
