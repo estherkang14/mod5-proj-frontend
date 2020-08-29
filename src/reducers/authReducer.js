@@ -31,6 +31,11 @@ export default function authReducer (state = { loggedIn: false, userData: {}, us
                 ...state, 
                 userData: action.userData
             }
+        case 'GET_WEATHER':
+            return {
+                ...state,
+                weather: action.weather
+            }
         default:
             return state 
     }

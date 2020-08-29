@@ -7,8 +7,9 @@ import TopNavBar from './containers/TopNavBar'
 import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Today from './components/Today'
+import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut } from './actions/auth'
+import { storeUser, logOut, getWeather } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
@@ -109,6 +110,10 @@ class App extends React.Component {
     })
   }
 
+  fetchWeather = () => {
+    
+  }
+
   
 
   render() {
@@ -122,7 +127,7 @@ class App extends React.Component {
           <Switch>
             Routes and components go here! 
 
-            <Route path="/home" render={(routeProps) => <Today {...routeProps} />} />
+            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} />} />
             
             <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
             logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
