@@ -1,8 +1,8 @@
 // let user = JSON.parse(localStorage.getItem('user')); 
 
-// const initialState = user ? { loggedIn: true, userLogin } : { loggedIn: false, user: null, userEventData: {}};
+const initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')) }
 
-export default function authReducer (state = { loggedIn: false, userData: {}, userAccount: {}}, action) {
+export default function userReducer (state = initialState, action) {
     
     let newState
 
@@ -27,6 +27,7 @@ export default function authReducer (state = { loggedIn: false, userData: {}, us
                 userAccount: action.user
             }
         case 'STORE_USER_DATA':
+            
             return {
                 ...state, 
                 userData: action.userData

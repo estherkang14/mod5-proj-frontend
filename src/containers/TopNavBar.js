@@ -11,10 +11,8 @@ class TopNavBar extends Component {
                 </div> */}
                 
                 <div className="right menu">
-                    {/* {this.renderLogOutButton()} */}
-                    {/* {this.props.loggedIn ? <a className="item menu-item" href="/" onClick={(e) => {this.props.logOut(e)}}>Log Out</a>
-                    : null} */}
-                    {/* <a className="item menu-item" href="/" onClick={(e) => {this.props.logOut(e)}}>Log Out</a> */}
+                    <a className="item menu-item" href="/">LOGIN/SIGN UP</a>
+              
                 </div>
             </div>
         )

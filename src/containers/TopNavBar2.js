@@ -13,18 +13,18 @@ class TopNavBar extends Component {
                 
                 <div className="right menu">
                     
-                    {/* {this.props.loggedIn ? <a className="item menu-item" href="/" onClick={(e) => {this.props.logOut(e)}}>Log Out</a>
-                    : null} */}
                     <a className="item menu-item" href="/" onClick={(e) => {this.props.logOut(e)}}>Log Out</a>
                 </div>
             </div>
         )
     }
+
+   
 }
 
 const mapStateToProps = state => {
     return {
-        loggedIn: state.loggedIn 
+        loggedIn: state.userReducer.loggedIn
     }
 }
 

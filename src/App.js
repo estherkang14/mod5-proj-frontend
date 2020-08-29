@@ -7,6 +7,7 @@ import TopNavBar from './containers/TopNavBar'
 import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Today from './components/Today'
+import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { storeUser, logOut, getWeather } from './actions/auth'
@@ -43,9 +44,10 @@ class App extends React.Component {
     .then(response => response.json())
     .then(data => {
       localStorage.setItem("token", data.token)
-      localStorage.setItem("user", data.user)
+      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("loggedIn", "true")
       localStorage.setItem("userId",data.user.id)
-      this.setState({loggedIn: true}) 
+      this.setState({loggedIn: true, userId: data.user.id}) 
       this.fetchUserApi(data.user.id)
     })
   }
@@ -67,7 +69,8 @@ class App extends React.Component {
     .then(data => {
       localStorage.setItem("token", data.token)
       localStorage.setItem("userId", data.user.id)
-      localStorage.setItem("user", data.user)
+      localStorage.setItem("user", JSON.stringify(data.user))
+      localStorage.setItem("loggedIn", "true")
       this.setState({ loggedIn: true, userId: data.user.id })
       this.fetchUserApi(data.user.id)
     })
@@ -76,12 +79,12 @@ class App extends React.Component {
 
   logOut = (e) => {
     e.preventDefault()
-    this.setState({loggedIn: false}, localStorage.clear(), alert("You have been logged out"),
+    this.setState({loggedIn: false}, localStorage.clear(),
     this.props.logOut())
   }
 
   renderTopNavBar = () => {
-    if (this.state.loggedIn) {
+    if (localStorage.getItem('loggedIn')) {
       return (
         <TopNavBar2 logOut={this.logOut}/>
       )
@@ -105,7 +108,7 @@ class App extends React.Component {
     .then(response => response.json())
     .then(userData => {
       this.props.storeUser(userData)
-      localStorage.setItem("userEventData", userData)
+      localStorage.setItem('userData', JSON.stringify(userData))
       console.log("User Data Fetched")
     })
   }
@@ -126,6 +129,7 @@ class App extends React.Component {
         <div className="container">
           <Switch>
             Routes and components go here! 
+            <Route path="/month" render={(routeProps) => <Month {...routeProps}/>} />
 
             <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} />} />
             

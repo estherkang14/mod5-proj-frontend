@@ -13,6 +13,7 @@ export const signUp = user => {
 }
 
 export const logOut = () => {
+    
     return {
         type: 'LOGOUT'
     }

@@ -6,10 +6,10 @@ import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
-import authReducer from './reducers/authReducer'
+import userReducer from './reducers/userReducer'
 import 'fontsource-roboto';
 
-let rootReducer = combineReducers({ authReducer })
+let rootReducer = combineReducers({ userReducer })
 
 const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 

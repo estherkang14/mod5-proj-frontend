@@ -14,7 +14,7 @@ const SideNavBar = () => {
                 return "Good morning!"
             } else if (hour >= 12 && hour < 18) {
                 return "Good afternoon!"
-            } else if (hour >= 18 && hour < 3) {
+            } else if (hour >= 18 || hour < 3) {
                 return "Good evening!"
             }
         }
@@ -28,13 +28,13 @@ const SideNavBar = () => {
                 <br/>
                 <h3><strong>HOME</strong></h3>
                 <div className="menu">
-                    <a className="item" id="todaynav">
+                    <a className="item" href="/home" id="todaynav">
                         Today
                     </a>
                     <a className="item" id="weeknav">
                         This Week
                     </a>
-                    <a className="item" id="monthnav">
+                    <a className="item" href="/month" id="monthnav">
                         This Month
                     </a>
                 </div>
