@@ -8,6 +8,7 @@ import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Today from './components/Today'
 import Month from './components/Month'
+import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { storeUser, logOut, getWeather } from './actions/auth'
@@ -130,6 +131,8 @@ class App extends React.Component {
           <Switch>
             Routes and components go here! 
             <Route path="/month" render={(routeProps) => <Month {...routeProps}/>} />
+
+            <Route path="/week" render={(routeProps) => <Week {...routeProps}/> } />
 
             <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} />} />
             
