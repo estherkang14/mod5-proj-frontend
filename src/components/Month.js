@@ -3,7 +3,6 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"; 
 import { connect } from 'react-redux'
-import AddEventModal from './AddEventModal'
 
 class Month extends React.Component {
   render() {
@@ -15,10 +14,7 @@ class Month extends React.Component {
         customButtons={{
             addEventButton: {
                 text: 'Add Event',
-                // click: this.addEvent
-                click: function() {
-                    return (<AddEventModal />)
-                }
+                click: this.addEvent
             }
         }}
         headerToolbar={{
@@ -37,7 +33,6 @@ class Month extends React.Component {
 
   addEvent = (e) => {
     console.log('clicked add event button. render add event modal here')
-    return ( <div>{<AddEventModal />}</div>)
   }
 
   renderEvents = (e) => {
@@ -48,10 +43,8 @@ class Month extends React.Component {
 }
 
 const mapStateToProps = state => {
-    if (state.userReducer.userData) {
-        return {
-            userEvents: state.userReducer.userData['user_events']
-        }
+    return {
+        userEvents: state.userReducer.userData['user_events']
     }
 }
 
