@@ -5,6 +5,8 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { connect } from 'react-redux'
 
 class Month extends React.Component {
+
+
   render() {
     return (
       <FullCalendar
@@ -40,6 +42,8 @@ class Month extends React.Component {
         {return {title: event.event.title, date: event.event['start_date']}} )
     } else { return null }
   }
+
+  
 }
 
 const mapStateToProps = state => {

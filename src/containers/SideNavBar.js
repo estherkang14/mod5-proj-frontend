@@ -29,13 +29,13 @@ const SideNavBar = () => {
                 <h3><strong>HOME</strong></h3>
                 <div className="menu">
                     <a className="item" href="/home" id="todaynav">
-                        Today
+                        TODAY
                     </a>
-                    <a className="item" id="weeknav">
-                        This Week
+                    <a className="item" href="/week" id="weeknav">
+                        WEEK
                     </a>
                     <a className="item" href="/month" id="monthnav">
-                        This Month
+                        MONTH
                     </a>
                 </div>
             </div>
