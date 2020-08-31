@@ -137,7 +137,6 @@ class App extends React.Component {
       //     localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       //     console.log("User Data Fetched")
       //   })
-      console.log("User Data Fetched via componentDidMount")
     }
   }
 

@@ -3,8 +3,28 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"; 
 import { connect } from 'react-redux'
+import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 
 const Month = (props) => {
+    const [openAddEvent, setOpenAddEvent] = React.useState(false)
+
+    const [newStartDate, setNewStartDate] = React.useState("")
+    const [newEndingDate, setNewEndingDate] = React.useState("")
+    const [newNotes, setNewNotes] = React.useState("")
+    const [newTitle, setNewTitle] = React.useState("")
+
+    const createNewEvent = (e) => {
+        let info = {
+            title: newTitle,
+            start_date: newStartDate,
+            end_date: newEndingDate,
+            notes: newNotes
+        }
+        console.log(info)
+        
+        // props to add new event 
+        setOpenAddEvent(false)
+    }
  
     const handleDateClick = (arg) => {
         console.log(arg.dateStr, "- render DATE modal")
@@ -22,22 +42,80 @@ const Month = (props) => {
     }
 
     return (
-      <FullCalendar
-        plugins={[ dayGridPlugin, interactionPlugin ]}
-        initialView="dayGridMonth"
-        dateClick={handleDateClick}
-        customButtons={{
-            addEventButton: {
-                text: 'Add Event',
-                click: addEvent
-            }
-        }}
-        headerToolbar={{
-            center: 'addEventButton'
-        }}
-        events={renderEvents()}
+        <div>
+            <FullCalendar
+                plugins={[ dayGridPlugin, interactionPlugin ]}
+                initialView="dayGridMonth"
+                dateClick={handleDateClick}
+                customButtons={{
+                    addEventButton: {
+                        text: 'Add Event',
+                        click: () => setOpenAddEvent(true)
+                    }
+                }}
+                headerToolbar={{
+                    center: 'addEventButton'
+                }}
+                events={renderEvents()}
 
-      />
+            />
+
+            {/* Modal for Adding an Event - form */}
+            <Modal
+                basic
+                onClose={() => setOpenAddEvent(false)}
+                onOpen={() => setOpenAddEvent(true)}
+                open={openAddEvent}
+                size='small'
+                // trigger={<Button>Basic Modal</Button>}
+                >
+                <Header icon>
+                    <Icon name='calendar' />
+                    Add a New Event To Your Calendar!
+                </Header>
+                <Modal.Content>
+                    <div>
+                        <form className="ui form">
+                            <div className="field">
+                                <p>Title</p>
+                                <input name="title" placeholder="e.g., Someone's Birthday"
+                                onChange={(e) => setNewTitle(e.target.value)}></input>
+                            </div>
+                            <br />
+
+                            <div className="field">
+                                <p>Start Date (YYYY/MM/DD)</p>
+                                <input name="start" placeholder="e.g., 2020/08/30"
+                                onChange={(e) => setNewStartDate(e.target.value)}></input>
+                            </div>
+                            <br />
+
+                            <div className="field">
+                                <p>End Date, in applicable (YYYY/MM/DD)</p>
+                                <input name="end" placeholder="e.g., 2020/08/31"
+                                onChange={(e) => setNewEndingDate(e.target.value)}></input>
+                            </div>
+                            <br />
+
+                            <div className="field">
+                                <p>Notes</p>
+                                <input name="notes" placeholder="e.g., 'Remember to pack your toiletries!'"
+                                onChange={(e) => setNewNotes(e.target.value)}></input>
+                            </div>
+                            <br />
+                        </form>
+                    </div>
+                </Modal.Content>
+                <Modal.Actions>
+                    <Button basic color='red' inverted onClick={() => setOpenAddEvent(false)}>
+                    <Icon name='remove' /> Cancel/Close
+                    </Button>
+                    <Button color='green' inverted onClick={() => createNewEvent()}>
+                    <Icon name='checkmark' /> Add Event!
+                    </Button>
+                </Modal.Actions>
+            </Modal>
+        </div>
     )
 }
 
