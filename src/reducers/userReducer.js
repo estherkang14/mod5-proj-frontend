@@ -1,7 +1,31 @@
 // let user = JSON.parse(localStorage.getItem('user')); 
+let initialState
+// let daily_posts = JSON.parse(localStorage.getItem('userData')['daily_posts'])
+// let user_events = JSON.parse(localStorage.getItem('userData')['user_events'])
+// if (daily_posts && user_events) {
+if (localStorage.userData) {
+    initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+    moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']),
+    user_events: (JSON.parse(localStorage.getItem('userData'))['user_events'])}
+} else {
+    initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+    moods: JSON.parse(localStorage.getItem('moods')) }
+}
+// } else if (daily_posts) {
+//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+//     moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']) }
+// } else if (user_events) {
+//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+//     moods: JSON.parse(localStorage.getItem('moods')), user_events: (JSON.parse(localStorage.getItem('userData'))['user_events']) }
+// } else {
+//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+//     moods: JSON.parse(localStorage.getItem('moods')) }
+// }
+// , daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']),
+// user_events: (JSON.parse(localStorage.getItem('userData'))['user_events'])
+// initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+// moods: JSON.parse(localStorage.getItem('moods')) }
 
-const initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-moods: JSON.parse(localStorage.getItem('moods')), holidays: JSON.parse(localStorage.getItem('holidays')) }
 
 export default function userReducer (state = initialState, action) {
     
@@ -15,6 +39,7 @@ export default function userReducer (state = initialState, action) {
                 userAccount: action.user
             }
         case 'LOGOUT':
+            localStorage.clear()
             return {
                 ...state,
                 loggedIn: false,

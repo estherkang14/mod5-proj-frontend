@@ -22,8 +22,9 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const Today = () => {
+const Today = (props) => {
     const classes = useStyles()
+    const moodtest = JSON.parse(localStorage.getItem('moods'))
 
     let newDateTime = new Date()
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
@@ -36,9 +37,9 @@ const Today = () => {
     const [struggle, setStruggle] = React.useState("")
     const [thankful, setThankful] = React.useState("")
     const [summary, setSummary] = React.useState("")
-    const [userId, setuserId] = React.useState(localStorage.userId)
+    const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
     
-    const createDailyPost = (props) => {
+    const createDailyPost = (e) => {
         let info = {
             date,
             mood,
@@ -48,7 +49,12 @@ const Today = () => {
             userId
         }
         console.log(info)
-        console.log(props.moodsForForm)
+        console.log(moodtest[0]['image'])
+        // props.postDailyPost(info)
+    }
+
+    const renderEvents = () => {
+        console.log(JSON.parse(localStorage.userId))
     }
 
     return (
@@ -95,9 +101,12 @@ const Today = () => {
                                                 onChange={(e) => setMood(e.target.value)}
                                                 label="Mood Colors"
                                             >
-                                            <MenuItem value={10}>Ten</MenuItem>
-                                            <MenuItem value={20}>Twenty</MenuItem>
-                                            <MenuItem value={30}>Thirty</MenuItem>
+                                            <MenuItem value={20}><img src={moodtest[0]['image']} /></MenuItem>
+                                            <MenuItem value={21}><img src={moodtest[1]['image']} /></MenuItem>
+                                            <MenuItem value={22}><img src={moodtest[2]['image']} /></MenuItem>
+                                            <MenuItem value={23}><img src={moodtest[3]['image']} /></MenuItem>
+                                            <MenuItem value={24}><img src={moodtest[4]['image']} /></MenuItem>
+                                            <MenuItem value={25}><img src={moodtest[5]['image']} /></MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
@@ -163,7 +172,7 @@ const Today = () => {
 
 const mapStateToProps = state => {
     return {
-        userData: state.userReducer.userData,
+        userEvents: state.userReducer.userEvents,
         moodsForForm: state.userReducer.moods
     }
 }

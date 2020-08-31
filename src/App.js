@@ -11,13 +11,16 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods } from './actions/auth'
+import { storeUser, logOut, getWeather, storeMoods, storeHolidays } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
 let USERSURL = BASEURL + "users/"
 let MOODSURL = BASEURL + "moods"
+let DAILYPOSTURL = BASEURL + 'daily_posts'
+let EVENTSURL = BASEURL + 'events'
+let HOLIDAYSURL = BASEURL + 'holidays'
 
 class App extends React.Component {
   state = {
@@ -46,7 +49,6 @@ class App extends React.Component {
     .then(response => response.json())
     .then(data => {
       localStorage.setItem("token", data.token)
-      localStorage.setItem("user", JSON.stringify(data.user))
       localStorage.setItem("loggedIn", "true")
       localStorage.setItem("userId",data.user.id)
       this.setState({loggedIn: true, userId: data.user.id}) 
@@ -71,7 +73,6 @@ class App extends React.Component {
     .then(data => {
       localStorage.setItem("token", data.token)
       localStorage.setItem("userId", data.user.id)
-      localStorage.setItem("user", JSON.stringify(data.user))
       localStorage.setItem("loggedIn", "true")
       this.setState({ loggedIn: true, userId: data.user.id })
       this.fetchUserApi(data.user.id)
@@ -111,6 +112,7 @@ class App extends React.Component {
     .then(userData => {
       this.props.storeUser(userData)
       localStorage.setItem('userData', JSON.stringify(userData))
+      localStorage.setItem('userEvents', JSON.stringify(userData['user_events']))
       console.log("User Data Fetched")
     })
   }
@@ -121,6 +123,7 @@ class App extends React.Component {
 
   componentDidMount = () => {
     this.fetchMoods()
+    // this.fetchHolidays()
   }
 
   fetchMoods = () => {
@@ -129,8 +132,36 @@ class App extends React.Component {
     .then(moods => {
       this.props.storeMoods(moods)
       localStorage.setItem('moods', JSON.stringify(moods))
-      console.log("Moods fetched)")
+      console.log("Moods fetched")
     })
+  }
+
+  fetchHolidays = () => {
+    fetch(HOLIDAYSURL)
+    .then(response => response.json())
+    .then(holidays =>{
+      this.props.storeHolidays(holidays)
+      localStorage.setItem('holidays', JSON.stringify(holidays))
+    })
+  }
+
+  postDailyPost = (e, postInfo) => {
+    e.preventDefault()
+    let options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: postInfo
+    }
+
+    fetch(DAILYPOSTURL, options)
+    .then(response => response.json())
+    .then(daily_post => {
+      console.log(daily_post)
+    })
+
   }
 
   
@@ -149,7 +180,7 @@ class App extends React.Component {
             
             <Route path="/week" render={(routeProps) => <Week {...routeProps } /> }/>
 
-            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} />} />
+            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.postDailyPost} />} />
             
             <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
             logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
@@ -163,4 +194,4 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut, storeMoods })(App);
+export default connect(null, { storeUser, logOut, storeMoods, storeHolidays })(App);
