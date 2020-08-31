@@ -54,3 +54,17 @@ export const postDailyPost = post => {
         post
     }
 }
+
+export const storeTasks = tasks => {
+    return {
+        type: 'STORE_TASKS',
+        tasks
+    }
+}
+
+export const postEvent = event => {
+    return {
+        type: 'POST_EVENT',
+        event
+    }
+}

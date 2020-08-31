@@ -11,7 +11,7 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost } from './actions/auth'
+import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost, storeTasks, postEvent } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
@@ -111,9 +111,16 @@ class App extends React.Component {
     .then(response => response.json())
     .then(userData => {
       this.props.storeUser(userData)
+      
       localStorage.setItem('userData', JSON.stringify(userData))
-      localStorage.setItem('userEvents', JSON.stringify(userData['user_events']))
+      
+      let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
+      let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
+      this.props.storeTasks(tasks)
+
+      localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
+      localStorage.setItem('tasks', JSON.stringify(tasks))
       console.log("User Data Fetched")
     })
   }
@@ -124,19 +131,11 @@ class App extends React.Component {
 
   componentDidMount = () => {
     this.fetchMoods()
-    // this.fetchHolidays()
+    this.fetchHolidays()
 
     if (localStorage.userId) {
       this.fetchUserApi(localStorage.userId)
-      // fetch(USERSURL + localStorage.userId)
-      //   .then(response => response.json())
-      //   .then(userData => {
-      //     this.props.storeUser(userData)
-      //     localStorage.setItem('userData', JSON.stringify(userData))
-      //     localStorage.setItem('userEvents', JSON.stringify(userData['user_events']))
-      //     localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
-      //     console.log("User Data Fetched")
-      //   })
+      
     }
   }
 
@@ -156,6 +155,7 @@ class App extends React.Component {
     .then(holidays =>{
       this.props.storeHolidays(holidays)
       localStorage.setItem('holidays', JSON.stringify(holidays))
+      console.log("Holidays fetched")
     })
   }
 
@@ -185,6 +185,30 @@ class App extends React.Component {
 
   }
 
+  addEventForUser = (e, eventInfo) => {
+    e.preventDefault()
+    const form = new FormData()
+    form.append('user_id', eventInfo['user_id'])
+    form.append('title', eventInfo.title)
+    form.append('start_date', eventInfo['start_date'])
+    form.append('end_date', eventInfo['end_date'])
+    form.append('notes', eventInfo.notes)
+
+    console.log(form)
+
+    let options = {
+      method: 'POST',
+      body: form
+    }
+
+    fetch(EVENTSURL, options)
+    .then(response => response.json())
+    .then(event => {
+      console.log(event)
+      this.props.postEvent(event)
+    })
+  }
+
   
 
   render() {
@@ -197,7 +221,7 @@ class App extends React.Component {
         <div className="container">
           <Switch>
             Routes and components go here! 
-            <Route path="/month" render={(routeProps) => <Month {...routeProps}/>} />
+            <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} {...routeProps}/>} />
             
             <Route path="/week" render={(routeProps) => <Week {...routeProps } /> }/>
 
@@ -215,4 +239,4 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost })(App);
+export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost, storeTasks, postEvent })(App);

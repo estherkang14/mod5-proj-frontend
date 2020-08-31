@@ -1,26 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"; 
 import { connect } from 'react-redux'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }));
 
 const Month = (props) => {
+    const classes = useStyles();
     const [openAddEvent, setOpenAddEvent] = React.useState(false)
 
     const [newStartDate, setNewStartDate] = React.useState("")
     const [newEndingDate, setNewEndingDate] = React.useState("")
     const [newNotes, setNewNotes] = React.useState("")
     const [newTitle, setNewTitle] = React.useState("")
+    const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
+    const [eventType, setEventType] = React.useState("")
+
+    const [renderCalendarEvents, setCalendarEvents] = React.useState([])
+
+    React.useEffect( () => {
+        if (props.holidays) {
+            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date']}]))
+        }
+        console.log(props.holidays)
+        console.log(props.user_events)
+        // if (props.user_events) {
+        //     props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
+        // }
+    }, [])
 
     const createNewEvent = (e) => {
         let info = {
             title: newTitle,
             start_date: newStartDate,
             end_date: newEndingDate,
-            notes: newNotes
+            notes: newNotes,
+            user_id: userId,
+            event_type: eventType
         }
         console.log(info)
+
+        props.addEventForUser(e, info)
         
         // props to add new event 
         setOpenAddEvent(false)
@@ -28,17 +63,39 @@ const Month = (props) => {
  
     const handleDateClick = (arg) => {
         console.log(arg.dateStr, "- render DATE modal")
-        console.log(props.userEvents)
+        console.log(props.user_events)
+        console.log(renderCalendarEvents)
     }
 
     const addEvent = (e) => {
         console.log('clicked add event button. render add event modal here')
     }
 
-    const renderEvents = (e) => {
-        if (props.userEvents) { return props.userEvents.map(event => 
-            {return {title: event.event.title, date: event.event['start_date']}} )
+    const renderHolidays = (e) => {
+        if (props.holidays) { return props.holidays.map(event => 
+            {return {title: event.title, date: event['start_date']}} )
         } else { return null }
+
+        // if (props.holidays) {
+        //     props.holidays.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
+        // }
+    }
+
+    const renderEvents = (e) => {
+        if (props.user_events) {
+            return props.user_events.map(event => {
+                return {title: event.title, date: event['start_date']}
+            })
+        } else { return null }
+
+        // if (props.user_events) {
+        //     props.user_events.map(event => setCalendarEvents(...renderCalendarEvents, {title: event.title, date: event['start_date']}))
+        // }
+    }
+
+    const renderHolidaysAndEvents = (e) => {
+        renderHolidays()
+        renderEvents()
     }
 
     return (
@@ -84,6 +141,26 @@ const Month = (props) => {
                             <br />
 
                             <div className="field">
+                                <p>What type of event is this?</p>
+                                <FormControl variant="outlined" className={classes.formControl}>
+                                    <InputLabel id="demo-simple-select-outlined-label">Choose One</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        value={eventType}
+                                        onChange={(e) => setEventType(e.target.value)}
+                                        label="Event Types"
+                                    >
+                                    <MenuItem value={"Birthday"}>Birthday</MenuItem>
+                                    <MenuItem value={"Work"}>Work</MenuItem>
+                                    <MenuItem value={"Personal"}>Personal</MenuItem>
+                                    <MenuItem value={"School"}>School</MenuItem>
+                                    <MenuItem value={"Other"}>Other</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </div>
+
+                            <div className="field">
                                 <p>Start Date (YYYY/MM/DD)</p>
                                 <input name="start" placeholder="e.g., 2020/08/30"
                                 onChange={(e) => setNewStartDate(e.target.value)}></input>
@@ -110,7 +187,7 @@ const Month = (props) => {
                     <Button basic color='red' inverted onClick={() => setOpenAddEvent(false)}>
                     <Icon name='remove' /> Cancel/Close
                     </Button>
-                    <Button color='green' inverted onClick={() => createNewEvent()}>
+                    <Button color='green' inverted onClick={(e) => createNewEvent(e)}>
                     <Icon name='checkmark' /> Add Event!
                     </Button>
                 </Modal.Actions>
@@ -121,192 +198,10 @@ const Month = (props) => {
 
 const mapStateToProps = state => {
     return {
-        userEvents: state.userReducer['user_events']
+        holidays: state.userReducer.holidays,
+        user_events: state.userReducer['user_events']
     }
 }
 
+
 export default connect(mapStateToProps)(Month)
-
-
-// import React from 'react'
-// import FullCalendar from '@fullcalendar/react'
-// import dayGridPlugin from '@fullcalendar/daygrid'
-// import interactionPlugin from "@fullcalendar/interaction"; 
-// import { connect } from 'react-redux'
-// import AddEventModal from './AddEventModal'
-// import { makeStyles } from '@material-ui/core/styles';
-// import Modal from '@material-ui/core/Modal';
-
-// function rand() {
-//   return Math.round(Math.random() * 20) - 10;
-// }
-
-// function getModalStyle() {
-//   const top = 50 + rand();
-//   const left = 50 + rand();
-
-//   return {
-//     top: `${top}%`,
-//     left: `${left}%`,
-//     transform: `translate(-${top}%, -${left}%)`,
-//   };
-// }
-
-// const useStyles = makeStyles((theme) => ({
-//   paper: {
-//     position: 'absolute',
-//     width: 400,
-//     backgroundColor: theme.palette.background.paper,
-//     border: '2px solid #000',
-//     boxShadow: theme.shadows[5],
-//     padding: theme.spacing(2, 4, 3),
-//   },
-// }));
-
-// const AddEventModal = () => {
-  
-
-//   return (
-//     <div>
-//       <button type="button" onClick={handleOpen}>
-//         Open Modal
-//       </button>
-//       <Modal
-//         open={open}
-//         onClose={handleClose}
-//         aria-labelledby="simple-modal-title"
-//         aria-describedby="simple-modal-description"
-//       >
-//         {body}
-//       </Modal>
-//     </div>
-//   );
-// }
-
-
-// const handleDateClick = (info) => {
-//     console.log(info.dateStr, "- render DATE modal")
-//     console.log(this.props.userEvents)
-// }
-
-// const addEvent = (e) => {
-//     console.log('clicked add event button. render add event modal here')
-    
-// }
-
-// const renderEvents = (e) => {
-//     if (this.props.userEvents) { return this.props.userEvents.map(event => 
-//         {return {title: event.event.title, date: event.event['start_date']}} )
-//     } else { return null }
-// }
-
-// const classes = useStyles();
-//   // getModalStyle is not a pure function, we roll the style only on the first render
-//   const [modalStyle] = React.useState(getModalStyle);
-//   const [open, setOpen] = React.useState(false);
-
-// const handleOpen = () => {
-//     setOpen(true);  
-// };
-
-// const handleClose = () => {
-//     setOpen(false);
-// };
-
-// const body = (
-//     <div style={modalStyle} className={classes.paper}>
-//         <h2 id="simple-modal-title">Text in a modal</h2>
-//         <p id="simple-modal-description">
-//         Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-//         </p>
-//         <AddEventModal />
-//     </div>
-// );
-
-// const Month = (userEvents) => {
-
-//     const classes = useStyles();
-//     getModalStyle is not a pure function, we roll the style only on the first render
-//     const [modalStyle] = React.useState(getModalStyle);
-//     const [open, setOpen] = React.useState(false);
-
-//     const handleOpen = () => {
-//         setOpen(true);  
-//     };
-
-//     const handleClose = () => {
-//         setOpen(false);
-//     };
-
-//     const body = (
-//         <div style={modalStyle} className={classes.paper}>
-//             <h2 id="simple-modal-title">Text in a modal</h2>
-//             <p id="simple-modal-description">
-//             Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-//             </p>
-//             <Modal />
-//         </div>
-//     );
-
-//     const handleDateClick = (info) => {
-//         console.log(info.dateStr, "- render DATE modal")
-//         console.log(this.props.userEvents)
-//     }
-
-//     const renderEvents = (e) => {
-//         console.log("help")
-//         if (this.props.userEvents) { return this.props.userEvents.map(event => 
-//             {return {title: event.event.title, date: event.event['start_date']}} )
-//         } else { return null }
-//     }
-    
-  
-//     return (
-//     <div>
-//         <FullCalendar
-//         plugins={[ dayGridPlugin, interactionPlugin ]}
-//         initialView="dayGridMonth"
-//         dateClick={handleDateClick}
-//         customButtons={{
-//             addEventButton: {
-//                 text: 'Add Event',
-//                 click: function() {
-//                     handleOpen()
-//                 }
-                
-//             }
-//         }}
-//         headerToolbar={{
-//             center: 'addEventButton'
-//         }}
-//         events={renderEvents()}
-
-//         />
-
-        
-//         {/* <button type="button" onClick={handleOpen}>
-//             Open Modal
-//         </button> */}
-//         <Modal
-//             open={open}
-//             onClose={handleClose()}
-//             aria-labelledby="simple-modal-title"
-//             aria-describedby="simple-modal-description"
-//         >
-//             {body}
-//         </Modal>
-        
-//     </div>
-//     )
-// }
-  
-
-// const mapStateToProps = state => {
-//     if (state.userReducer.userData) {
-//         return {
-//             userEvents: state.userReducer.userData['user_events']
-//         }
-//     }
-// }
-
-// export default connect(mapStateToProps)(Month)

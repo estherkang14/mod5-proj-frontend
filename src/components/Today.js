@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
@@ -102,12 +101,12 @@ const Today = (props) => {
                                                 onChange={(e) => setMood(e.target.value)}
                                                 label="Mood Colors"
                                             >
-                                            <MenuItem value={20}><img src={props.moodsForForm[0]['image']} /></MenuItem>
-                                            <MenuItem value={21}><img src={props.moodsForForm[1]['image']} /></MenuItem>
-                                            <MenuItem value={22}><img src={props.moodsForForm[2]['image']} /></MenuItem>
-                                            <MenuItem value={23}><img src={props.moodsForForm[3]['image']} /></MenuItem>
-                                            <MenuItem value={24}><img src={props.moodsForForm[4]['image']} /></MenuItem>
-                                            <MenuItem value={25}><img src={props.moodsForForm[5]['image']} /></MenuItem>
+                                            <MenuItem value={26}><img src={props.moodsForForm[0]['image']} /></MenuItem>
+                                            <MenuItem value={27}><img src={props.moodsForForm[1]['image']} /></MenuItem>
+                                            <MenuItem value={28}><img src={props.moodsForForm[2]['image']} /></MenuItem>
+                                            <MenuItem value={29}><img src={props.moodsForForm[3]['image']} /></MenuItem>
+                                            <MenuItem value={30}><img src={props.moodsForForm[4]['image']} /></MenuItem>
+                                            <MenuItem value={31}><img src={props.moodsForForm[5]['image']} /></MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
