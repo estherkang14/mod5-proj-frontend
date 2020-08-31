@@ -11,12 +11,13 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather } from './actions/auth'
+import { storeUser, logOut, getWeather, storeMoods } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
 let USERSURL = BASEURL + "users/"
+let MOODSURL = BASEURL + "moods"
 
 class App extends React.Component {
   state = {
@@ -118,6 +119,20 @@ class App extends React.Component {
     
   }
 
+  componentDidMount = () => {
+    this.fetchMoods()
+  }
+
+  fetchMoods = () => {
+    fetch(MOODSURL)
+    .then(response => response.json())
+    .then(moods => {
+      this.props.storeMoods(moods)
+      localStorage.setItem('moods', JSON.stringify(moods))
+      console.log("Moods fetched)")
+    })
+  }
+
   
 
   render() {
@@ -148,4 +163,4 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut })(App);
+export default connect(null, { storeUser, logOut, storeMoods })(App);

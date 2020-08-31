@@ -33,3 +33,17 @@ export const getWeather = weather => {
         weather
     }
 }
+
+export const storeMoods = moods => {
+    return {
+        type: 'STORE_MOODS',
+        moods
+    }
+}
+
+export const storeHolidays = holidays => {
+    return {
+        type: 'STORE_HOLIDAYS',
+        holidays
+    }
+}

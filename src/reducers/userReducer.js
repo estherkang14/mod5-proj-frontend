@@ -1,6 +1,7 @@
 // let user = JSON.parse(localStorage.getItem('user')); 
 
-const initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')) }
+const initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+moods: JSON.parse(localStorage.getItem('moods')), holidays: JSON.parse(localStorage.getItem('holidays')) }
 
 export default function userReducer (state = initialState, action) {
     
@@ -36,6 +37,16 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 weather: action.weather
+            }
+        case 'STORE_MOODS':
+            return {
+                ...state,
+                moods: action.moods
+            }
+        case 'STORE_HOLIDAYS':
+            return {
+                ...state,
+                holidays: action.holidays
             }
         default:
             return state 
