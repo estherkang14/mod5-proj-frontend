@@ -116,7 +116,7 @@ class App extends React.Component {
       
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
-      this.props.storeTasks(tasks)
+      // this.props.storeTasks(tasks)
 
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))

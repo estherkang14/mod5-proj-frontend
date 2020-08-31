@@ -37,11 +37,9 @@ const Week = (props) => {
         if (props.holidays) {
             props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date']}]))
         }
-        console.log(props.holidays)
-        console.log(props.user_events)
-        // if (props.user_events) {
-        //     props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
-        // }
+        if (props.user_events) {
+            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
+        }
     }, [])
 
     const createNewEvent = (e) => {
@@ -71,19 +69,6 @@ const Week = (props) => {
         console.log('clicked add event button. render add event modal here')
     }
 
-    const renderHolidays = (e) => {
-        if (props.holidays) { return props.holidays.map(event => 
-            {return {title: event.title, date: event['start_date']}} )
-        } else { return null }
-    }
-
-    const renderEvents = (e) => {
-        if (props.user_events) {
-            return props.user_events.map(event => {
-                return {title: event.title, date: event['start_date']}
-            })
-        } else { return null }
-    }
 
 
     return (
@@ -101,7 +86,7 @@ const Week = (props) => {
                 headerToolbar={{
                     center: 'addEventButton'
                 }}
-                events={renderEvents()}
+                events={renderCalendarEvents}
 
             />
 
