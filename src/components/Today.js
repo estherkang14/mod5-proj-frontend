@@ -24,13 +24,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Today = (props) => {
     const classes = useStyles()
-    const moodtest = JSON.parse(localStorage.getItem('moods'))
 
     let newDateTime = new Date()
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
-    // let date = newDateTime.toLocaleDateString()
+     let todaysDate = newDateTime.toLocaleDateString()
 
     const [open, setOpen] = React.useState(false)
+    const [secondOpen, setSecondOpen] = React.useState(false)
 
     const [date, setDate] = React.useState("")
     const [mood, setMood] = React.useState("")
@@ -42,19 +42,20 @@ const Today = (props) => {
     const createDailyPost = (e) => {
         let info = {
             date,
-            mood,
+            mood_id: mood,
             struggle,
             thankful,
             summary,
-            userId
+            user_id: userId
         }
         console.log(info)
-        console.log(moodtest[0]['image'])
-        // props.postDailyPost(info)
+        
+        props.postDailyPost(e, info)
+        setOpen(false)
     }
 
     const renderEvents = () => {
-        console.log(JSON.parse(localStorage.userId))
+        console.log(JSON.parse(localStorage.userId)) 
     }
 
     return (
@@ -101,12 +102,12 @@ const Today = (props) => {
                                                 onChange={(e) => setMood(e.target.value)}
                                                 label="Mood Colors"
                                             >
-                                            <MenuItem value={20}><img src={moodtest[0]['image']} /></MenuItem>
-                                            <MenuItem value={21}><img src={moodtest[1]['image']} /></MenuItem>
-                                            <MenuItem value={22}><img src={moodtest[2]['image']} /></MenuItem>
-                                            <MenuItem value={23}><img src={moodtest[3]['image']} /></MenuItem>
-                                            <MenuItem value={24}><img src={moodtest[4]['image']} /></MenuItem>
-                                            <MenuItem value={25}><img src={moodtest[5]['image']} /></MenuItem>
+                                            <MenuItem value={20}><img src={props.moodsForForm[0]['image']} /></MenuItem>
+                                            <MenuItem value={21}><img src={props.moodsForForm[1]['image']} /></MenuItem>
+                                            <MenuItem value={22}><img src={props.moodsForForm[2]['image']} /></MenuItem>
+                                            <MenuItem value={23}><img src={props.moodsForForm[3]['image']} /></MenuItem>
+                                            <MenuItem value={24}><img src={props.moodsForForm[4]['image']} /></MenuItem>
+                                            <MenuItem value={25}><img src={props.moodsForForm[5]['image']} /></MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
@@ -138,8 +139,32 @@ const Today = (props) => {
                                 <Button basic color='red' inverted onClick={() => setOpen(false)}>
                                 <Icon name='remove' /> Cancel
                                 </Button>
-                                <Button color='green' inverted onClick={() => createDailyPost()}>
+                                <Button color='green' inverted onClick={(e) => createDailyPost(e)}>
                                 <Icon name='checkmark' /> Add Post!
+                                </Button>
+                            </Modal.Actions>
+                        </Modal>
+
+                        <Modal
+                            basic
+                            onClose={() => setSecondOpen(false)}
+                            onOpen={() => setSecondOpen(true)}
+                            open={secondOpen}
+                            size='small'
+                            trigger={<Button>View Today's Post</Button>}
+                            >
+                            <Header icon>
+                                <Icon name='calendar' />
+                                {todaysDate}
+                            </Header>
+                            <Modal.Content>
+                                <div className="">
+                                Render Today's Post
+                                </div>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button basic color='red' inverted onClick={() => setSecondOpen(false)}>
+                                <Icon name='remove' /> Close
                                 </Button>
                             </Modal.Actions>
                         </Modal>

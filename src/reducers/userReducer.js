@@ -5,8 +5,8 @@ let initialState
 // if (daily_posts && user_events) {
 if (localStorage.userData) {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-    moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']),
-    user_events: (JSON.parse(localStorage.getItem('userData'))['user_events'])}
+    moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('daily_posts'))),
+    user_events: (JSON.parse(localStorage.getItem('userEvents')))}
 } else {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
     moods: JSON.parse(localStorage.getItem('moods')) }
@@ -72,6 +72,16 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 holidays: action.holidays
+            }
+        case 'STORE_DAILYPOSTS':
+            return {
+                ...state,
+                daily_posts: action.daily_posts
+            }
+        case 'POST_DAILY_POST':
+            return {
+                ...state,
+                daily_posts: [...state['daily_posts'], action.post]
             }
         default:
             return state 

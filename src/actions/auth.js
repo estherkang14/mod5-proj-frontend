@@ -47,3 +47,10 @@ export const storeHolidays = holidays => {
         holidays
     }
 }
+
+export const postDailyPost = post => {
+    return {
+        type: 'POST_DAILY_POST',
+        post
+    }
+}

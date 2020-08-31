@@ -11,7 +11,7 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods, storeHolidays } from './actions/auth'
+import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
@@ -113,6 +113,7 @@ class App extends React.Component {
       this.props.storeUser(userData)
       localStorage.setItem('userData', JSON.stringify(userData))
       localStorage.setItem('userEvents', JSON.stringify(userData['user_events']))
+      localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       console.log("User Data Fetched")
     })
   }
@@ -124,6 +125,20 @@ class App extends React.Component {
   componentDidMount = () => {
     this.fetchMoods()
     // this.fetchHolidays()
+
+    if (localStorage.userId) {
+      this.fetchUserApi(localStorage.userId)
+      // fetch(USERSURL + localStorage.userId)
+      //   .then(response => response.json())
+      //   .then(userData => {
+      //     this.props.storeUser(userData)
+      //     localStorage.setItem('userData', JSON.stringify(userData))
+      //     localStorage.setItem('userEvents', JSON.stringify(userData['user_events']))
+      //     localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
+      //     console.log("User Data Fetched")
+      //   })
+      console.log("User Data Fetched via componentDidMount")
+    }
   }
 
   fetchMoods = () => {
@@ -145,21 +160,28 @@ class App extends React.Component {
     })
   }
 
-  postDailyPost = (e, postInfo) => {
+  addDailyPost = (e, postInfo) => {
     e.preventDefault()
+    const form = new FormData()
+    form.append('user_id', postInfo['user_id'])
+    form.append('mood_id', postInfo['mood_id'])
+    form.append('date', postInfo.date)
+    form.append('struggle', postInfo.struggle)
+    form.append('thankful', postInfo.thankful)
+    form.append('summary', postInfo.summary)
+    
     let options = {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accepts': 'application/json'
-      },
-      body: postInfo
+      body: form
     }
+
+    
 
     fetch(DAILYPOSTURL, options)
     .then(response => response.json())
     .then(daily_post => {
       console.log(daily_post)
+      this.props.postDailyPost(daily_post)
     })
 
   }
@@ -180,7 +202,7 @@ class App extends React.Component {
             
             <Route path="/week" render={(routeProps) => <Week {...routeProps } /> }/>
 
-            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.postDailyPost} />} />
+            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost} />} />
             
             <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
             logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
@@ -194,4 +216,4 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut, storeMoods, storeHolidays })(App);
+export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost })(App);

@@ -2,12 +2,12 @@ import React from 'react'
 import Today from '../components/Today'
 import {Redirect} from 'react-router-dom'
 
-const DisplayPage = () => {
+const DisplayPage = (props) => {
 
     if (localStorage.userId) {
         return (
             <div className="main_container">
-                <Today />
+                <Today postDailyPost={props.postDailyPost} />
             </div>
         )
     } else {
