@@ -7,7 +7,8 @@ const DisplayPage = (props) => {
     if (localStorage.userId) {
         return (
             <div className="main_container">
-                <Today postDailyPost={props.postDailyPost} />
+                <Today postDailyPost={props.postDailyPost} addEventForUser={props.addEventForUser}
+                destroyTask={props.destroyTask} />
             </div>
         )
     } else {

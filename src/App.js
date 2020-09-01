@@ -11,7 +11,8 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost, storeTasks, postEvent } from './actions/auth'
+import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost, 
+  storeTasks, postEvent, postTask, deleteTask } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
 let BASEURL = "http://localhost:3000/"
@@ -19,7 +20,7 @@ let LOGINURL = BASEURL + "login"
 let USERSURL = BASEURL + "users/"
 let MOODSURL = BASEURL + "moods"
 let DAILYPOSTURL = BASEURL + 'daily_posts'
-let EVENTSURL = BASEURL + 'events'
+let EVENTSURL = BASEURL + 'events/'
 let HOLIDAYSURL = BASEURL + 'holidays'
 
 class App extends React.Component {
@@ -116,7 +117,7 @@ class App extends React.Component {
       
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
-      // this.props.storeTasks(tasks)
+      this.props.storeTasks(tasks)
 
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
@@ -190,9 +191,10 @@ class App extends React.Component {
     const form = new FormData()
     form.append('user_id', eventInfo['user_id'])
     form.append('title', eventInfo.title)
-    form.append('start_date', eventInfo['start_date'])
-    form.append('end_date', eventInfo['end_date'])
     form.append('notes', eventInfo.notes)
+    form.append('event_type', eventInfo['event_type'])
+    if (eventInfo['start_date']) {form.append('start_date', eventInfo['start_date'])}
+    if (eventInfo['end_date']) {form.append('end_date', eventInfo['end_date'])}
 
     console.log(form)
 
@@ -205,9 +207,30 @@ class App extends React.Component {
     .then(response => response.json())
     .then(event => {
       console.log(event)
-      this.props.postEvent(event)
+      if (event.event_type === "Task") {
+        this.props.postTask(event)
+      } else {
+        this.props.postEvent(event)
+      }
     })
   }
+
+  destroyTask = (e, task) => {
+    e.preventDefault()
+
+    let options = {
+      method: "DELETE"
+    }
+
+    fetch(EVENTSURL + `${task.id}`, {method: 'DELETE'})
+    .then(response => response.json())
+    .then(deletedTask => { console.log(deletedTask) 
+        this.props.deleteTask(deletedTask)
+        alert(`Task: ${deletedTask.title} has been deleted!`)
+    })
+
+  }
+  
 
   
 
@@ -225,7 +248,8 @@ class App extends React.Component {
             
             <Route path="/week" render={(routeProps) => <Week {...routeProps } /> }/>
 
-            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost} />} />
+            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
+            addEventForUser={this.addEventForUser} destroyTask={this.destroyTask} />} />
             
             <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
             logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
@@ -239,4 +263,5 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost, storeTasks, postEvent })(App);
+export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost,
+   storeTasks, postEvent, postTask, deleteTask })(App);

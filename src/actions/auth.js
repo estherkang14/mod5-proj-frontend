@@ -68,3 +68,17 @@ export const postEvent = event => {
         event
     }
 }
+
+export const postTask = task => {
+    return {
+        type: 'POST_TASK',
+        task
+    }
+}
+
+export const deleteTask = deletedTask => {
+    return {
+        type: 'DELETE_TASK',
+        deletedTask
+    }
+}

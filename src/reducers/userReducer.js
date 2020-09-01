@@ -94,6 +94,16 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 events: [...state['user_events'], action.event]
             }
+        case 'POST_TASK':
+            return {
+                ...state,
+                tasks: [...state.tasks, action.task]
+            }
+        case 'DELETE_TASK':
+            return {
+                ...state,
+                tasks: state.tasks.filter(task => task.id !== action.deletedTask.id)
+            }
         default:
             return state 
     }

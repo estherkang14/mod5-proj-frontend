@@ -65,9 +65,6 @@ const Month = (props) => {
         console.log(renderCalendarEvents)
     }
 
-    const addEvent = (e) => {
-        console.log('clicked add event button. render add event modal here')
-    }
 
 
     return (
