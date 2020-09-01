@@ -202,7 +202,7 @@ const Today = (props) => {
                             onOpen={() => setOpenAddTask(true)}
                             open={openAddTask}
                             size='small'
-                            trigger={<Button>Add a Task</Button>}
+                            // trigger={<Button>Add a Task</Button>}
                             closeOnDimmerClick={false}
                             >
                             <Header icon>
@@ -256,41 +256,64 @@ const Today = (props) => {
             <Grid container spacing={4}>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
-                        { props.tasks.length > 0 ? props.tasks[0].title : "Task: Empty" }
-                        <br />
-                        { props.tasks[0] ? 
-                            <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
-                                <Icon name='remove' /> 
-                            </Button>  
-                        :   <Button basic color='green' onClick={console.log("testing add button")}>
-                                <Icon name='plus' /> 
-                            </Button> }
+                        
+                        { props.tasks ? <div>
+                            { props.tasks[0] ? `${props.tasks[0].title} 
+                                Notes: ${(props.tasks[0].notes ? props.tasks[0].notes : "none")}
+                                Complete by: ${(props.tasks[0].end_date ? props.tasks[0].end_date : "N/A")}` : "Task: Empty" }
+                                <br />
+                                { props.tasks[0] ? 
+                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
+                                        <Icon name='remove' /> 
+                                    </Button>  
+                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }
+                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }    
+
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
-                        { props.tasks.length > 1 ? props.tasks[1].title : "Task: Empty" }
-                        <br />
-                        { props.tasks[1] ? 
-                            <Button basic color='red' onClick={console.log("testtest")}>
-                                <Icon name='remove' /> 
-                            </Button>  
-                        :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
-                                <Icon name='plus' /> 
-                            </Button>  }
+
+                        { props.tasks ? <div>
+                            { props.tasks[1] ? `${props.tasks[1].title} 
+                                Notes: ${(props.tasks[1].notes ? props.tasks[1].notes : "none")}
+                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "Task: Empty" }
+                                <br />
+                                { props.tasks[1] ? 
+                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
+                                        <Icon name='remove' /> 
+                                    </Button>  
+                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }
+                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }    
+
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
                     <Paper className={classes.paper}>
-                        { props.tasks.length > 1 ? props.tasks[1].title : "Task: Empty" }
-                            <br />
-                        { props.tasks[1] ? 
-                            <Button basic color='red' onClick={console.log("testtest")}>
-                                <Icon name='remove' /> 
-                            </Button>  
-                        :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
-                                <Icon name='plus' /> 
-                            </Button>  }
+
+                        { props.tasks ? <div>
+                            { props.tasks[2] ? `${props.tasks[2].title} 
+                                Notes: ${(props.tasks[2].notes ? props.tasks[2].notes : "none")}
+                                Complete by: ${(props.tasks[2].end_date ? props.tasks[2].end_date : "N/A")}` : "Task: Empty" }
+                                <br />
+                                { props.tasks[2] ? 
+                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
+                                        <Icon name='remove' /> 
+                                    </Button>  
+                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }
+                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                        <Icon name='plus' /> 
+                                    </Button>  }
                     </Paper>
                 </Grid>
             </Grid>
