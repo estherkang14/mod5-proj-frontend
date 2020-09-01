@@ -9,6 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import DayCalendar from './DayCalendar'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +33,8 @@ const Today = (props) => {
 
     let newDateTime = new Date()
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
-     let todaysDate = newDateTime.toLocaleDateString()
+    let todaysDate = newDateTime.toLocaleDateString()
+    let isoDate = new Date().toISOString().substring(0, 10)
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
@@ -47,6 +50,8 @@ const Today = (props) => {
     const [title, setNewTitle] = React.useState("")
     const [end_date, setNewEndingDate] = React.useState("")
     const [notes, setNewNotes] = React.useState("")
+
+    const [displayCalendar, toggleCalendar] = React.useState(false)
     
     const createDailyPost = (e) => {
         let info = {
@@ -57,8 +62,6 @@ const Today = (props) => {
             summary,
             user_id: userId
         }
-        console.log(info)
-        
         props.postDailyPost(e, info)
         setOpen(false)
     }
@@ -80,16 +83,47 @@ const Today = (props) => {
         setOpenAddTask(false)
     }
 
+    const renderDailyPost = () => {
+        let todaysPost
+        if (props.daily_posts) {
+                props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
+                if (todaysPost) {return <div> 
+                        {todaysPost.day} 
+                        <br /><br/>
+                        Today, you felt like
+                        <br /> 
+                        <img src={todaysPost.mood.image} alt="mood color"/>
+                        <br /><br/>
+                        And you feel like you're struggling with:
+                        <br /> 
+                        {todaysPost.struggle}
+                        <br /><br />
+                        But... you're thankful for this:
+                        <br />
+                        {todaysPost.thankful}
+                        <br /><br />
+                        And just a recap of today:
+                        <br />
+                        {todaysPost.summary}
+                </div>} else { return "Looks like you don't have a post for today. Go ahead and add one now!"}
+        } else {
+            return "Looks like you don't have a post for today. Go ahead and add one now!"
+        }
+    }
+
+
     return (
         <div>
             <Container fixed>
                 
             <div className={classes.root}>
+            
             <Grid container spacing={3}>
                 <Grid item sm={12}>
                     <Paper className={classes.paper}>{dateTime}</Paper>
-                    <Paper className={classes.paper}>render weather if you can</Paper>
-                    <Paper className={classes.paper}>render buttons for adding/viewing daily post and adding new task/event
+                    <Paper className={classes.paper}>*render weather icon/widget here*</Paper>
+                    <Paper className={classes.paper}>
+                        {/* Modal to Add A Daily Post */}
                         <Modal
                             basic
                             onClose={() => setOpen(false)}
@@ -126,12 +160,12 @@ const Today = (props) => {
                                                 onChange={(e) => setMood(e.target.value)}
                                                 label="Mood Colors"
                                             >
-                                            <MenuItem value={26}><img src={props.moodsForForm[0]['image']} alt="red" /></MenuItem>
-                                            <MenuItem value={27}><img src={props.moodsForForm[1]['image']} alt="orange"/></MenuItem>
-                                            <MenuItem value={28}><img src={props.moodsForForm[2]['image']} alt="green"/></MenuItem>
-                                            <MenuItem value={29}><img src={props.moodsForForm[3]['image']} alt="blue"/></MenuItem>
-                                            <MenuItem value={30}><img src={props.moodsForForm[4]['image']} alt="lavender"/></MenuItem>
-                                            <MenuItem value={31}><img src={props.moodsForForm[5]['image']} alt="pink"/></MenuItem>
+                                            <MenuItem value={32}><img src={props.moodsForForm[0]['image']} alt="red" /></MenuItem>
+                                            <MenuItem value={33}><img src={props.moodsForForm[1]['image']} alt="orange"/></MenuItem>
+                                            <MenuItem value={34}><img src={props.moodsForForm[2]['image']} alt="green"/></MenuItem>
+                                            <MenuItem value={35}><img src={props.moodsForForm[3]['image']} alt="blue"/></MenuItem>
+                                            <MenuItem value={36}><img src={props.moodsForForm[4]['image']} alt="lavender"/></MenuItem>
+                                            <MenuItem value={37}><img src={props.moodsForForm[5]['image']} alt="pink"/></MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
@@ -169,6 +203,7 @@ const Today = (props) => {
                             </Modal.Actions>
                         </Modal>
 
+                        {/* Modal to View Today's Post */}
                         <Modal
                             basic
                             onClose={() => setSecondOpen(false)}
@@ -176,7 +211,7 @@ const Today = (props) => {
                             open={secondOpen}
                             size='small'
                             trigger={<Button>View Today's Post</Button>}
-                            closeOnDimmerClick={false}
+                            centered={true}
                             >
                             <Header icon>
                                 <Icon name='calendar' />
@@ -184,7 +219,9 @@ const Today = (props) => {
                             </Header>
                             <Modal.Content>
                                 <div className="">
-                                Render Today's Post
+                                
+                                    <br />
+                                    {renderDailyPost()}
                                 </div>
                             </Modal.Content>
                             <Modal.Actions>
@@ -194,7 +231,10 @@ const Today = (props) => {
                             </Modal.Actions>
                         </Modal>
 
-                        
+                        {/* Button for Displaying Today's Calendar */}
+                        <br />
+                        <Button onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
+                         "Close Today's Calendar" : "Display Today's Calendar" }</Button>
 
                         <Modal
                             basic
@@ -318,6 +358,9 @@ const Today = (props) => {
                 </Grid>
             </Grid>
             </div>
+            <div>
+                { displayCalendar ? <DayCalendar /> : null }
+            </div>
             </Container>
         </div>
     )
@@ -328,7 +371,8 @@ const mapStateToProps = state => {
     return {
         userEvents: state.userReducer.userEvents,
         moodsForForm: state.userReducer.moods,
-        tasks: state.userReducer.tasks
+        tasks: state.userReducer.tasks,
+        daily_posts: state.userReducer.daily_posts
     }
 }
 
