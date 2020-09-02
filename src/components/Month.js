@@ -9,6 +9,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import bootstrapPlugin from '@fullcalendar/bootstrap'; //new code
+
+import 'bootstrap/dist/css/bootstrap.css'; //new code
+import '@fortawesome/fontawesome-free/css/all.css'; //new code
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -70,8 +74,9 @@ const Month = (props) => {
     return (
         <div>
             <FullCalendar
-                plugins={[ dayGridPlugin, interactionPlugin ]}
+                plugins={[ dayGridPlugin, interactionPlugin, bootstrapPlugin ]}
                 initialView="dayGridMonth"
+                //themeSystem='bootstrap'
                 dateClick={handleDateClick}
                 customButtons={{
                     addEventButton: {
@@ -80,8 +85,11 @@ const Month = (props) => {
                     }
                 }}
                 headerToolbar={{
-                    center: 'addEventButton'
+                    right: 'addEventButton',
+                    center: 'title',
+                    left: 'today listMonth prev,next'
                 }}
+                navLinks={true} // new code? 
                 events={renderCalendarEvents}
 
             />

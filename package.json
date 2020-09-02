@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
     "@fullcalendar/bootstrap": "^5.3.0",
     "@fullcalendar/core": "^5.3.0",
     "@fullcalendar/daygrid": "^5.3.0",

@@ -247,7 +247,7 @@ const Today = (props) => {
                             >
                             <Header icon>
                                 <Icon name='calendar' />
-                                Add a New Task To Your Calendar!
+                                Add a New To-Do Item!
                             </Header>
                             <Modal.Content>
                                 <div>
@@ -280,7 +280,7 @@ const Today = (props) => {
                                 <Icon name='remove' /> Cancel/Close
                                 </Button>
                                 <Button color='green' inverted onClick={(e) => createNewTask(e)}>
-                                <Icon name='checkmark' /> Add Task!
+                                <Icon name='checkmark' /> Add Item!
                                 </Button>
                             </Modal.Actions>
                         </Modal>
@@ -300,7 +300,7 @@ const Today = (props) => {
                         { props.tasks ? <div>
                             { props.tasks[0] ? `${props.tasks[0].title} 
                                 Notes: ${(props.tasks[0].notes ? props.tasks[0].notes : "none")}
-                                Complete by: ${(props.tasks[0].end_date ? props.tasks[0].end_date : "N/A")}` : "Task: Empty" }
+                                Complete by: ${(props.tasks[0].end_date ? props.tasks[0].end_date : "N/A")}` : "To-Do: Empty" }
                                 <br />
                                 { props.tasks[0] ? 
                                     <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
@@ -321,7 +321,7 @@ const Today = (props) => {
                         { props.tasks ? <div>
                             { props.tasks[1] ? `${props.tasks[1].title} 
                                 Notes: ${(props.tasks[1].notes ? props.tasks[1].notes : "none")}
-                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "Task: Empty" }
+                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "To-Do: Empty" }
                                 <br />
                                 { props.tasks[1] ? 
                                     <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
@@ -342,7 +342,7 @@ const Today = (props) => {
                         { props.tasks ? <div>
                             { props.tasks[2] ? `${props.tasks[2].title} 
                                 Notes: ${(props.tasks[2].notes ? props.tasks[2].notes : "none")}
-                                Complete by: ${(props.tasks[2].end_date ? props.tasks[2].end_date : "N/A")}` : "Task: Empty" }
+                                Complete by: ${(props.tasks[2].end_date ? props.tasks[2].end_date : "N/A")}` : "To-do: Empty" }
                                 <br />
                                 { props.tasks[2] ? 
                                     <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
