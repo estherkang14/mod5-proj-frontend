@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; 
 import { connect } from 'react-redux'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react'
@@ -74,7 +75,7 @@ const Month = (props) => {
     return (
         <div>
             <FullCalendar
-                plugins={[ dayGridPlugin, interactionPlugin, bootstrapPlugin ]}
+                plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
                 initialView="dayGridMonth"
                 // themeSystem='bootstrap'
                 dateClick={handleDateClick}
@@ -87,7 +88,7 @@ const Month = (props) => {
                 headerToolbar={{
                     right: 'addEventButton prev,next',
                     center: 'title',
-                    left: 'today,dayGridMonth,dayGridWeek'
+                    left: 'today,dayGridMonth,timeGridWeek'
                 }}
                 // navLinks={true} // new code? 
                 events={renderCalendarEvents}
