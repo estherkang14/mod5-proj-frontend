@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import bootstrapPlugin from '@fullcalendar/bootstrap'; //new code
+import { Redirect } from 'react-router-dom'
 
 import 'bootstrap/dist/css/bootstrap.css'; //new code
 import '@fortawesome/fontawesome-free/css/all.css'; //new code
@@ -32,7 +33,8 @@ const Month = (props) => {
     const [newEndingDate, setNewEndingDate] = React.useState("")
     const [newNotes, setNewNotes] = React.useState("")
     const [newTitle, setNewTitle] = React.useState("")
-    const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
+    const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId)) 
+
     const [eventType, setEventType] = React.useState("")
 
     const [renderCalendarEvents, setCalendarEvents] = React.useState([])
@@ -68,13 +70,13 @@ const Month = (props) => {
     }
 
 
-
+    if (localStorage.loggedIn) {
     return (
         <div>
             <FullCalendar
                 plugins={[ dayGridPlugin, interactionPlugin, bootstrapPlugin ]}
                 initialView="dayGridMonth"
-                //themeSystem='bootstrap'
+                // themeSystem='bootstrap'
                 dateClick={handleDateClick}
                 customButtons={{
                     addEventButton: {
@@ -83,9 +85,9 @@ const Month = (props) => {
                     }
                 }}
                 headerToolbar={{
-                    right: 'addEventButton',
+                    right: 'addEventButton prev,next',
                     center: 'title',
-                    left: 'today listMonth prev,next'
+                    left: 'today,dayGridMonth,dayGridWeek'
                 }}
                 // navLinks={true} // new code? 
                 events={renderCalendarEvents}
@@ -171,7 +173,10 @@ const Month = (props) => {
                 </Modal.Actions>
             </Modal>
         </div>
-    )
+    ) }  else {
+        alert("Sorry, you must be logged in to see your monthly calendar!")
+        return ( <Redirect to="/" /> )
+    }
 }
 
 const mapStateToProps = state => {

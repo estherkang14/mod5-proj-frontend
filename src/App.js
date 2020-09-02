@@ -11,7 +11,7 @@ import Month from './components/Month'
 import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods, storeHolidays, postDailyPost, 
+import { storeUser, logOut, getWeather, storeMoods, storeHolidays, storeDailyPosts, postDailyPost, 
   storeTasks, postEvent, postTask, deleteTask } from './actions/auth'
 import { useHistory } from 'react-router-dom'
 
@@ -19,7 +19,7 @@ let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
 let USERSURL = BASEURL + "users/"
 let MOODSURL = BASEURL + "moods"
-let DAILYPOSTURL = BASEURL + 'daily_posts'
+let DAILYPOSTURL = BASEURL + 'daily_posts/'
 let EVENTSURL = BASEURL + 'events/'
 let HOLIDAYSURL = BASEURL + 'holidays'
 
@@ -85,6 +85,7 @@ class App extends React.Component {
     e.preventDefault()
     this.setState({loggedIn: false}, localStorage.clear(),
     this.props.logOut())
+    return (<Redirect to="/" />)
   }
 
   renderTopNavBar = () => {
@@ -99,29 +100,23 @@ class App extends React.Component {
     }
   }
 
-  renderSideNavBar = () => {
-    if (this.state.loggedIn) {
-      return (
-        <SideNavBar />
-      )
-    }
-  }
 
   fetchUserApi = (userId) => {
     fetch(USERSURL + userId)
     .then(response => response.json())
     .then(userData => {
-      this.props.storeUser(userData)
-      
+    
       localStorage.setItem('userData', JSON.stringify(userData))
-      
+      this.props.storeUser(userData)
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
-      this.props.storeTasks(tasks)
-
+      let posts = userData['daily_posts']
+      
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       localStorage.setItem('tasks', JSON.stringify(tasks))
+      this.props.storeTasks(tasks)
+      this.props.storeDailyPosts(posts)
       console.log("User Data Fetched")
     })
   }
@@ -175,15 +170,35 @@ class App extends React.Component {
       body: form
     }
 
-    
-
     fetch(DAILYPOSTURL, options)
     .then(response => response.json())
     .then(daily_post => {
-      console.log(daily_post)
       this.props.postDailyPost(daily_post)
     })
+  }
 
+  updateDailyPost = (e, postInfo, postId) => {
+    e.preventDefault()
+
+    const form = new FormData()
+    form.append('user_id', postInfo['user_id'])
+    form.append('mood_id', postInfo['mood_id'])
+    form.append('date', postInfo.date)
+    form.append('struggle', postInfo.struggle)
+    form.append('thankful', postInfo.thankful)
+    form.append('summary', postInfo.summary)
+
+    let options = {
+      method: 'PUT',
+      body: form
+    }
+
+    fetch(DAILYPOSTURL + postId, options)
+    .then(response => response.json())
+    .then(daily_post => {
+      console.log(daily_post)
+      this.props.postDailyPost(daily_post)  // change to update and add to auth + userReducer
+    })
   }
 
   addEventForUser = (e, eventInfo) => {
@@ -195,8 +210,6 @@ class App extends React.Component {
     form.append('event_type', eventInfo['event_type'])
     if (eventInfo['start_date']) {form.append('start_date', eventInfo['start_date'])}
     if (eventInfo['end_date']) {form.append('end_date', eventInfo['end_date'])}
-
-    console.log(form)
 
     let options = {
       method: 'POST',
@@ -263,5 +276,5 @@ class App extends React.Component {
 
 
 
-export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, postDailyPost,
+export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, storeDailyPosts, postDailyPost,
    storeTasks, postEvent, postTask, deleteTask })(App);

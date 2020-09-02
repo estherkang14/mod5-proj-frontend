@@ -53,7 +53,7 @@ const Today = (props) => {
     const [notes, setNewNotes] = React.useState("")
 
     const [displayCalendar, toggleCalendar] = React.useState(false)
-    
+
     
     const createDailyPost = (e) => {
         let info = {
@@ -67,6 +67,24 @@ const Today = (props) => {
         props.postDailyPost(e, info)
         setOpen(false)
         toggleDailyPostCreated(true)
+    }
+
+    const updateDailyPost = (e) => {
+        let info = {
+            date,
+            mood_id: mood,
+            struggle,
+            thankful,
+            summary,
+            user_id: userId
+        }
+        // MOVE TO OUTSIDE THIS FUNCTION SO I CAN USE FOR TOGGLING THE ADD/UPDATE BUTTON
+        let todaysPost
+        if (props.daily_posts) {
+                props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
+        }
+        props.updateDailyPost(e, info, todaysPost.id)
+        setOpen(false)
     }
 
     const renderEvents = () => {
@@ -114,7 +132,7 @@ const Today = (props) => {
         }
     }
 
-
+  
     return (
         <div>
             <Container fixed>
@@ -147,7 +165,7 @@ const Today = (props) => {
                                 <form className="ui form" >
                                     <div className="field">
                                         <p>Today's Date (YYYY/MM/DD)</p>
-                                        <input name="date" placeholder="e.g., 2020/08/30"
+                                        <input name="date" placeholder="e.g., 2020/08/30" value={date}
                                         onChange={(e) => setDate(e.target.value)}></input>
                                     </div>
                                     <br />
@@ -189,21 +207,21 @@ const Today = (props) => {
                                     <div className="field">
                                         <p>What is something you are struggling with today?</p>
                                         <input name="struggle" placeholder="e.g., what's stressing you out?"
-                                        onChange={(e) => setStruggle(e.target.value)}></input>
+                                        onChange={(e) => setStruggle(e.target.value)} value={struggle}></input>
                                     </div>
                                     <br />
 
                                     <div className="field">
                                         <p>How about something you're thankful for today?</p>
                                         <input name="thankful" placeholder="e.g., what made you happy today?"
-                                        onChange={(e) => setThankful(e.target.value)}></input>
+                                        onChange={(e) => setThankful(e.target.value)} value={thankful}></input>
                                     </div>
                                     <br />
 
                                     <div className="field">
                                         <p>Give us a quick summary of your day</p>
                                         <input name="summary" placeholder="e.g., Today, I..."
-                                        onChange={(e) => setSummary(e.target.value)}></input>
+                                        onChange={(e) => setSummary(e.target.value)} value={summary}></input>
                                     </div>
                                 </form>
                                 </div>
@@ -212,7 +230,8 @@ const Today = (props) => {
                                 <Button basic color='red' inverted onClick={() => setOpen(false)}>
                                 <Icon name='remove' /> Cancel
                                 </Button>
-                                <Button color='green' inverted onClick={(e) => createDailyPost(e)}>
+                                <Button color='green' inverted onClick={(e) => {dailyPostCreated ? 
+                                    updateDailyPost(e) : createDailyPost(e)}}>
                                 <Icon name='checkmark' /> Add Post!
                                 </Button>
                             </Modal.Actions>
@@ -378,7 +397,7 @@ const Today = (props) => {
             </div>
             </Container>
         </div>
-    )
+    ) 
     
 }
 

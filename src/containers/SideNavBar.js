@@ -7,7 +7,8 @@ const SideNavBar = (props) => {
     let time = date.toLocaleTimeString([], {timeStyle: 'short'})
     let dateTime = date.toLocaleString
     let hour = date.getHours()
-    let name = props.userData.name
+    let name
+    if (localStorage.loggedIn) {name = props.userData.name}
 
     let displayWelcome = () => {
         if (localStorage.loggedIn) {

@@ -48,6 +48,13 @@ export const storeHolidays = holidays => {
     }
 }
 
+export const storeDailyPosts = posts => {
+    return { 
+        type: 'STORE_DAILY_POSTS',
+        posts
+    }
+}
+
 export const postDailyPost = post => {
     return {
         type: 'POST_DAILY_POST',

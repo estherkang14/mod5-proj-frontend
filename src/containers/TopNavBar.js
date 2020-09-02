@@ -11,7 +11,8 @@ class TopNavBar extends Component {
                 </div> */}
                 
                 <div className="right menu">
-                    <a className="item menu-item" href="/">LOGIN/SIGN UP</a>
+                    {/* <a className="item menu-item" href="/">LOGIN/SIGN UP</a> */}
+                    <p>hello</p>
               
                 </div>
             </div>

@@ -34,9 +34,11 @@ const DayCalendar = (props) => {
         //         click: () => setOpenAddEvent(true)
         //     }
         // }}
-        // headerToolbar={{
-        //     center: 'addEventButton'
-        // }}
+        headerToolbar={{
+          right: 'addEventButton',
+          center: 'title',
+          left: 'today prev,next'
+      }}
         events={renderCalendarEvents}
 
       />

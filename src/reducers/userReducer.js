@@ -74,10 +74,10 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 holidays: action.holidays
             }
-        case 'STORE_DAILYPOSTS':
+        case 'STORE_DAILY_POSTS':
             return {
                 ...state,
-                daily_posts: action.daily_posts
+                daily_posts: action.posts
             }
         case 'POST_DAILY_POST':
             return {
