@@ -65,8 +65,6 @@ const Month = (props) => {
  
     const handleDateClick = (arg) => {
         console.log(arg.dateStr, "- render DATE modal")
-        console.log(props.user_events)
-        console.log(renderCalendarEvents)
     }
 
 
@@ -89,8 +87,11 @@ const Month = (props) => {
                     center: 'title',
                     left: 'today listMonth prev,next'
                 }}
-                navLinks={true} // new code? 
+                // navLinks={true} // new code? 
                 events={renderCalendarEvents}
+                dayMaxEventRows={true}
+                dayMaxEvents={true}
+                moreLinkClick="popover"
 
             />
 

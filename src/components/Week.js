@@ -84,7 +84,9 @@ const Week = (props) => {
                     }
                 }}
                 headerToolbar={{
-                    center: 'addEventButton'
+                    right: 'addEventButton',
+                    center: 'title',
+                    left: 'today listMonth prev,next'
                 }}
                 events={renderCalendarEvents}
 

@@ -46,12 +46,14 @@ const Today = (props) => {
     const [thankful, setThankful] = React.useState("")
     const [summary, setSummary] = React.useState("")
     const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
+    const [dailyPostCreated, toggleDailyPostCreated] = React.useState(false)
 
     const [title, setNewTitle] = React.useState("")
     const [end_date, setNewEndingDate] = React.useState("")
     const [notes, setNewNotes] = React.useState("")
 
     const [displayCalendar, toggleCalendar] = React.useState(false)
+    
     
     const createDailyPost = (e) => {
         let info = {
@@ -64,6 +66,7 @@ const Today = (props) => {
         }
         props.postDailyPost(e, info)
         setOpen(false)
+        toggleDailyPostCreated(true)
     }
 
     const renderEvents = () => {
@@ -130,7 +133,7 @@ const Today = (props) => {
                             onOpen={() => setOpen(true)}
                             open={open}
                             size='small'
-                            trigger={<Button>Add a Daily Post</Button>}
+                            trigger={<Button> {dailyPostCreated ? "Update Daily Post" : "Add Daily Post" }</Button>}
                             centered={true}
                             closeOnDimmerClick={false}
                             >
@@ -160,12 +163,24 @@ const Today = (props) => {
                                                 onChange={(e) => setMood(e.target.value)}
                                                 label="Mood Colors"
                                             >
-                                            <MenuItem value={32}><img src={props.moodsForForm[0]['image']} alt="red" /></MenuItem>
-                                            <MenuItem value={33}><img src={props.moodsForForm[1]['image']} alt="orange"/></MenuItem>
-                                            <MenuItem value={34}><img src={props.moodsForForm[2]['image']} alt="green"/></MenuItem>
-                                            <MenuItem value={35}><img src={props.moodsForForm[3]['image']} alt="blue"/></MenuItem>
-                                            <MenuItem value={36}><img src={props.moodsForForm[4]['image']} alt="lavender"/></MenuItem>
-                                            <MenuItem value={37}><img src={props.moodsForForm[5]['image']} alt="pink"/></MenuItem>
+                                            <MenuItem value={props.moodsForForm[0]['id']}>
+                                                <img src={props.moodsForForm[0]['image']} alt="red" />
+                                            </MenuItem>
+                                            <MenuItem value={props.moodsForForm[1]['id']}>
+                                                <img src={props.moodsForForm[1]['image']} alt="orange"/>
+                                            </MenuItem>
+                                            <MenuItem value={props.moodsForForm[2]['id']}>
+                                                <img src={props.moodsForForm[2]['image']} alt="green"/>
+                                            </MenuItem>
+                                            <MenuItem value={props.moodsForForm[3]['id']}>
+                                                <img src={props.moodsForForm[3]['image']} alt="blue"/>
+                                            </MenuItem>
+                                            <MenuItem value={props.moodsForForm[4]['id']}>
+                                                <img src={props.moodsForForm[4]['image']} alt="lavender"/>
+                                            </MenuItem>
+                                            <MenuItem value={props.moodsForForm[5]['id']}>
+                                                <img src={props.moodsForForm[5]['image']} alt="pink"/>
+                                            </MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>
