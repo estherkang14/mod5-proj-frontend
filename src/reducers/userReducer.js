@@ -4,7 +4,7 @@ let initialState
 // let user_events = JSON.parse(localStorage.getItem('userData')['user_events'])
 // if (daily_posts && user_events) {
 
-if (localStorage.userData) {
+if (localStorage.loggedIn) {
     let dailyPost
     if (localStorage.dailyPost) {
         dailyPost = true
@@ -12,10 +12,16 @@ if (localStorage.userData) {
         dailyPost = false
     }
 
-    initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-    moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('daily_posts'))),
-    user_events: (JSON.parse(localStorage.getItem('userEvents'))), holidays: (JSON.parse(localStorage.getItem('holidays'))),
-    tasks: (JSON.parse(localStorage.getItem('tasks'))), toggle_daily_post: dailyPost }
+    initialState = { loggedIn: localStorage.getItem('loggedIn'), 
+    userData: JSON.parse(localStorage.getItem('userData')),
+    moods: JSON.parse(localStorage.getItem('moods')), 
+    daily_posts: (JSON.parse(localStorage.getItem('daily_posts'))),
+    user_events: (JSON.parse(localStorage.getItem('userEvents'))), 
+    tasks: (JSON.parse(localStorage.getItem('tasks'))), 
+    holidays: (JSON.parse(localStorage.getItem('holidays'))),
+    toggle_daily_post: dailyPost 
+    }
+
 } else {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
     moods: JSON.parse(localStorage.getItem('moods')) }
@@ -98,15 +104,19 @@ export default function userReducer (state = initialState, action) {
                 tasks: action.tasks
             }
         case 'POST_EVENT':
+            console.log("hello there")
             return {
                 ...state,
-                events: [...state['user_events'], action.event]
+                user_events: [...state['user_events'], action.event]
             }
+            // localStorage.user_events = state['user_events']
         case 'POST_TASK':
+            
             return {
                 ...state,
                 tasks: [...state.tasks, action.task]
             }
+            
         case 'DELETE_TASK':
             return {
                 ...state,
@@ -116,6 +126,16 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 toggle_daily_post: !state.toggle_daily_post
+            }
+        case 'STORE_EVENTS':
+            console.log("bye")
+            return {
+                ...state,
+                user_events: action.events
+            }
+        case 'RERENDER':
+            return {
+                rerender: !state.rerender
             }
         default:
             return state 

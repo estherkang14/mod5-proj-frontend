@@ -19,18 +19,10 @@ export const logOut = () => {
     }
 }
 
-
 export const storeUser = userData => {
     return {
         type: 'STORE_USER_DATA',
         userData
-    }
-}
-
-export const getWeather = weather => {
-    return {
-        type: 'GET_WEATHER',
-        weather
     }
 }
 
@@ -55,13 +47,6 @@ export const storeDailyPosts = posts => {
     }
 }
 
-export const postDailyPost = post => {
-    return {
-        type: 'POST_DAILY_POST',
-        post
-    }
-}
-
 export const storeTasks = tasks => {
     return {
         type: 'STORE_TASKS',
@@ -69,23 +54,44 @@ export const storeTasks = tasks => {
     }
 }
 
-export const postEvent = event => {
+export const storeEvents = events => {
     return {
-        type: 'POST_EVENT',
-        event
+        type: 'STORE_EVENTS',
+        events
     }
 }
 
-export const postTask = task => {
-    return {
-        type: 'POST_TASK',
-        task
-    }
-}
+// export const postDailyPost = post => {
+//     return {
+//         type: 'POST_DAILY_POST',
+//         post
+//     }
+// }
 
-export const deleteTask = deletedTask => {
-    return {
-        type: 'DELETE_TASK',
-        deletedTask
-    }
-}
+// export const postEvent = event => {
+//     return {
+//         type: 'POST_EVENT',
+//         event
+//     }
+// }
+
+// export const postTask = task => {
+//     return {
+//         type: 'POST_TASK',
+//         task
+//     }
+// }
+
+// export const deleteTask = deletedTask => {
+//     return {
+//         type: 'DELETE_TASK',
+//         deletedTask
+//     }
+// }
+
+// export const getWeather = weather => {
+//     return {
+//         type: 'GET_WEATHER',
+//         weather
+//     }
+// }

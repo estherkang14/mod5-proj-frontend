@@ -40,17 +40,23 @@ const Today = (props) => {
     let todaysPost
             if (props.daily_posts) {
                     props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
-            }
+            } 
+
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
     const [openAddTask, setOpenAddTask] = React.useState(false)
 
     const [date, setDate] = React.useState(isoDate)
-    const [mood, setMood] = React.useState(todaysPost.mood_id)
-    const [struggle, setStruggle] = React.useState(todaysPost.struggle)
-    const [thankful, setThankful] = React.useState(todaysPost.thankful)
-    const [summary, setSummary] = React.useState(todaysPost.summary)
+    // const [mood, setMood] = React.useState(todaysPost.mood_id)
+    // const [struggle, setStruggle] = React.useState(todaysPost.struggle)
+    // const [thankful, setThankful] = React.useState(todaysPost.thankful)
+    // const [summary, setSummary] = React.useState(todaysPost.summary)
+    const [mood, setMood] = React.useState("")
+    const [struggle, setStruggle] = React.useState("")
+    const [thankful, setThankful] = React.useState("")
+    const [summary, setSummary] = React.useState("")
+
     const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
     const [dailyPostCreated, toggleDailyPostCreated] = React.useState(false)
 

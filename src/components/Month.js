@@ -39,6 +39,7 @@ const Month = (props) => {
     const [eventType, setEventType] = React.useState("")
 
     const [renderCalendarEvents, setCalendarEvents] = React.useState([])
+    const [hello, setHello] = React.useState(false)
 
     React.useEffect( () => {
         if (props.holidays) {
@@ -47,7 +48,8 @@ const Month = (props) => {
         if (props.user_events) {
             props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
         }
-    }, [])
+        console.log("hello 2") 
+    }, props.user_events)
 
     const createNewEvent = (e) => {
         let info = {
@@ -101,6 +103,7 @@ const Month = (props) => {
                 events={renderCalendarEvents}
                 dayMaxEventRows={true}
                 dayMaxEvents={true}
+                editable={true}
                 moreLinkClick="popover"
 
             />
@@ -156,7 +159,7 @@ const Month = (props) => {
                             <br />
 
                             <div className="field">
-                                <p>End Date, in applicable (YYYY/MM/DD)</p>
+                                <p>End Date, if applicable (YYYY/MM/DD)</p>
                                 <input name="end" placeholder="e.g., 2020/08/31"
                                 onChange={(e) => setNewEndingDate(e.target.value)}></input>
                             </div>
@@ -190,7 +193,8 @@ const Month = (props) => {
 const mapStateToProps = state => {
     return {
         holidays: state.userReducer.holidays,
-        user_events: state.userReducer['user_events']
+        user_events: state.userReducer['user_events'],
+        rerender: state.userReducer.rerender
     }
 }
 
