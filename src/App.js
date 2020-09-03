@@ -23,19 +23,9 @@ let DAILYPOSTURL = BASEURL + 'daily_posts/'
 let EVENTSURL = BASEURL + 'events/'
 let HOLIDAYSURL = BASEURL + 'holidays'
 
-class App extends React.Component {
-  state = {
-    loggedIn: false,
-    // username: '',
-    // password: '', 
-    // location: '',
-    // name: '',
-    userId: ''
-    
-  }
-
-
-  logIn = (e, user) => {
+const App = (props) => {
+  
+  const logIn = (e, user) => {
     e.preventDefault()
     let options = {
       method: "POST",
@@ -49,15 +39,19 @@ class App extends React.Component {
     fetch(LOGINURL, options)
     .then(response => response.json())
     .then(data => {
+      console.log(data)
+      if (!data.error) {
+      console.log(data)
       localStorage.setItem("token", data.token)
       localStorage.setItem("loggedIn", "true")
       localStorage.setItem("userId",data.user.id)
-      this.setState({loggedIn: true, userId: data.user.id}) 
-      this.fetchUserApi(data.user.id)
+      fetchUserApi(data.user.id)
+      }
     })
+    .catch((error) => {console.log(error)})
   }
 
-  signUp = (e, user) => {
+  const signUp = (e, user) => {
     e.preventDefault()
 
     let options = {
@@ -75,23 +69,22 @@ class App extends React.Component {
       localStorage.setItem("token", data.token)
       localStorage.setItem("userId", data.user.id)
       localStorage.setItem("loggedIn", "true")
-      this.setState({ loggedIn: true, userId: data.user.id })
-      this.fetchUserApi(data.user.id)
+      fetchUserApi(data.user.id)
     })
     .catch(error => alert(error))
   }
 
-  logOut = (e) => {
+  const logOut = (e) => {
     e.preventDefault()
-    this.setState({loggedIn: false}, localStorage.clear(),
-    this.props.logOut())
+    localStorage.clear()
+    props.logOut()
     return (<Redirect to="/" />)
   }
 
-  renderTopNavBar = () => {
+  const renderTopNavBar = () => {
     if (localStorage.getItem('loggedIn')) {
       return (
-        <TopNavBar2 logOut={this.logOut}/>
+        <TopNavBar2 logOut={logOut}/>
       )
     } else {
       return ( 
@@ -101,13 +94,13 @@ class App extends React.Component {
   }
 
 
-  fetchUserApi = (userId) => {
+  const fetchUserApi = (userId) => {
     fetch(USERSURL + userId)
     .then(response => response.json())
     .then(userData => {
     
       localStorage.setItem('userData', JSON.stringify(userData))
-      this.props.storeUser(userData)
+      props.storeUser(userData)
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
       let posts = userData['daily_posts']
@@ -115,47 +108,47 @@ class App extends React.Component {
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       localStorage.setItem('tasks', JSON.stringify(tasks))
-      this.props.storeTasks(tasks)
-      this.props.storeDailyPosts(posts)
+      props.storeTasks(tasks)
+      props.storeDailyPosts(posts)
       console.log("User Data Fetched")
     })
   }
 
-  fetchWeather = () => {
+  const fetchWeather = () => {
     
   }
 
-  componentDidMount = () => {
-    this.fetchMoods()
-    this.fetchHolidays()
+  React.useEffect( () => {
+    fetchMoods()
+    fetchHolidays()
 
     if (localStorage.userId) {
-      this.fetchUserApi(localStorage.userId)
+      fetchUserApi(localStorage.userId)
       
     }
-  }
+  })
 
-  fetchMoods = () => {
+  const fetchMoods = () => {
     fetch(MOODSURL)
     .then(response => response.json())
     .then(moods => {
-      this.props.storeMoods(moods)
+      props.storeMoods(moods)
       localStorage.setItem('moods', JSON.stringify(moods))
       console.log("Moods fetched")
     })
   }
 
-  fetchHolidays = () => {
+  const fetchHolidays = () => {
     fetch(HOLIDAYSURL)
     .then(response => response.json())
     .then(holidays =>{
-      this.props.storeHolidays(holidays)
+      props.storeHolidays(holidays)
       localStorage.setItem('holidays', JSON.stringify(holidays))
       console.log("Holidays fetched")
     })
   }
 
-  addDailyPost = (e, postInfo) => {
+  const addDailyPost = (e, postInfo) => {
     e.preventDefault()
     const form = new FormData()
     form.append('user_id', postInfo['user_id'])
@@ -173,11 +166,11 @@ class App extends React.Component {
     fetch(DAILYPOSTURL, options)
     .then(response => response.json())
     .then(daily_post => {
-      this.props.postDailyPost(daily_post)
+      props.postDailyPost(daily_post)
     })
   }
 
-  updateDailyPost = (e, postInfo, postId) => {
+  const updateDailyPost = (e, postInfo, postId) => {
     e.preventDefault()
 
     const form = new FormData()
@@ -197,11 +190,11 @@ class App extends React.Component {
     .then(response => response.json())
     .then(daily_post => {
       console.log(daily_post)
-      this.props.postDailyPost(daily_post)  // change to update and add to auth + userReducer
+      props.postDailyPost(daily_post)  // change to update and add to auth + userReducer
     })
   }
 
-  addEventForUser = (e, eventInfo) => {
+  const addEventForUser = (e, eventInfo) => {
     e.preventDefault()
     const form = new FormData()
     form.append('user_id', eventInfo['user_id'])
@@ -221,14 +214,14 @@ class App extends React.Component {
     .then(event => {
       console.log(event)
       if (event.event_type === "Task") {
-        this.props.postTask(event)
+        props.postTask(event)
       } else {
-        this.props.postEvent(event)
+        props.postEvent(event)
       }
     })
   }
 
-  destroyTask = (e, task) => {
+  const destroyTask = (e, task) => {
     e.preventDefault()
 
     let options = {
@@ -238,40 +231,35 @@ class App extends React.Component {
     fetch(EVENTSURL + `${task.id}`, {method: 'DELETE'})
     .then(response => response.json())
     .then(deletedTask => { console.log(deletedTask) 
-        this.props.deleteTask(deletedTask)
+        props.deleteTask(deletedTask)
         alert(`Task: ${deletedTask.title} has been deleted!`)
     })
 
   }
   
 
-  
+  return (
+    <BrowserRouter>
+    <div className="App">
+      {renderTopNavBar()}
+      {/* {this.renderSideNavBar()} */}
+      <SideNavBar />
+      <div className="container">
+        <Switch>
+          {/* Routes and components go here!  */}
+          <Route path="/month" render={(routeProps) => <Month addEventForUser={addEventForUser} {...routeProps}/>} />
 
-  render() {
-    return (
-      <BrowserRouter>
-      <div className="App">
-        {this.renderTopNavBar()}
-        {/* {this.renderSideNavBar()} */}
-        <SideNavBar />
-        <div className="container">
-          <Switch>
-            Routes and components go here! 
-            <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} {...routeProps}/>} />
-            
-            <Route path="/week" render={(routeProps) => <Week {...routeProps } /> }/>
-
-            <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
-            addEventForUser={this.addEventForUser} destroyTask={this.destroyTask} />} />
-            
-            <Route path="/" render={(routeProps) => (this.state.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
-            logIn={this.logIn} signUp={this.signUp} {...routeProps}/>} />
-          </Switch>
-        </div>
+          <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={addDailyPost}
+          addEventForUser={addEventForUser} destroyTask={destroyTask} />} />
+          
+          <Route path="/" render={(routeProps) => (localStorage.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
+          logIn={logIn} signUp={signUp} {...routeProps}/>} />
+        </Switch>
       </div>
-      </BrowserRouter>
+    </div>
+    </BrowserRouter>
     )
-  }
+  
 }
 
 

@@ -49,7 +49,6 @@ const LogIn = (props) => {
             password
         }
         props.logInFxn(e, user)
-        props.logIn(user)
 
         setUsername("")
         setPassword("")
