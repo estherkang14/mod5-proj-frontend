@@ -14,6 +14,9 @@ import { connect } from 'react-redux'
 import { storeUser, logOut, getWeather, storeMoods, storeHolidays, storeDailyPosts, postDailyPost, 
   storeTasks, postEvent, postTask, deleteTask } from './actions/auth'
 import { useHistory } from 'react-router-dom'
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
@@ -24,6 +27,17 @@ let EVENTSURL = BASEURL + 'events/'
 let HOLIDAYSURL = BASEURL + 'holidays'
 
 const App = (props) => {
+  // snackbar for login
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+  const [loginSignupError, setLoginSignupError] = React.useState("")
+
   
   const logIn = (e, user) => {
     e.preventDefault()
@@ -39,16 +53,16 @@ const App = (props) => {
     fetch(LOGINURL, options)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (!data.error) {
-      console.log(data)
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("loggedIn", "true")
-      localStorage.setItem("userId",data.user.id)
-      fetchUserApi(data.user.id)
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("loggedIn", "true")
+        localStorage.setItem("userId",data.user.id)
+        fetchUserApi(data.user.id)
+      } else {
+        setLoginSignupError(data.error)
+        setOpenSnack(true)
       }
     })
-    .catch((error) => {console.log(error)})
   }
 
   const signUp = (e, user) => {
@@ -66,12 +80,16 @@ const App = (props) => {
     fetch(USERSURL, options)
     .then(response => response.json())
     .then(data => {
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("userId", data.user.id)
-      localStorage.setItem("loggedIn", "true")
-      fetchUserApi(data.user.id)
+      if (!data.error) {
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("loggedIn", "true")
+        localStorage.setItem("userId",data.user.id)
+        fetchUserApi(data.user.id)
+      } else {
+        setLoginSignupError(data.error)
+        setOpenSnack(true)
+      }
     })
-    .catch(error => alert(error))
   }
 
   const logOut = (e) => {
@@ -126,7 +144,7 @@ const App = (props) => {
       fetchUserApi(localStorage.userId)
       
     }
-  })
+  }, [])
 
   const fetchMoods = () => {
     fetch(MOODSURL)
@@ -253,9 +271,32 @@ const App = (props) => {
           addEventForUser={addEventForUser} destroyTask={destroyTask} />} />
           
           <Route path="/" render={(routeProps) => (localStorage.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
-          logIn={logIn} signUp={signUp} {...routeProps}/>} />
+          logIn={logIn} signUp={signUp} openSnack={openSnack} loginSignupError={loginSignupError} 
+          handleClose={handleClose} {...routeProps}/>} />
         </Switch>
+            <div> {/*div for snackbar */}
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                  open={openSnack}
+                  autoHideDuration={6000}
+                  message={loginSignupError}
+                  onClose={handleClose}
+                  action={
+                    <React.Fragment>
+                      <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    </React.Fragment>
+                  }
+                />
+              </div>
       </div>
+
+       
+
     </div>
     </BrowserRouter>
     )

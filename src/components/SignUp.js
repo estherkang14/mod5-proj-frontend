@@ -48,7 +48,6 @@ const SignUp = (props) => {
             location
         }
         props.signUpFxn(e, user)
-        props.signUp(user)
 
         setUsername("")
         setPassword("")
