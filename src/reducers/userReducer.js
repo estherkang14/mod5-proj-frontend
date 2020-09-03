@@ -3,11 +3,19 @@ let initialState
 // let daily_posts = JSON.parse(localStorage.getItem('userData')['daily_posts'])
 // let user_events = JSON.parse(localStorage.getItem('userData')['user_events'])
 // if (daily_posts && user_events) {
+
 if (localStorage.userData) {
+    let dailyPost
+    if (localStorage.dailyPost) {
+        dailyPost = true
+    } else {
+        dailyPost = false
+    }
+
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
     moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('daily_posts'))),
     user_events: (JSON.parse(localStorage.getItem('userEvents'))), holidays: (JSON.parse(localStorage.getItem('holidays'))),
-    tasks: (JSON.parse(localStorage.getItem('tasks')))}
+    tasks: (JSON.parse(localStorage.getItem('tasks'))), toggle_daily_post: dailyPost }
 } else {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
     moods: JSON.parse(localStorage.getItem('moods')) }
@@ -103,6 +111,11 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state,
                 tasks: state.tasks.filter(task => task.id !== action.deletedTask.id)
+            }
+        case 'TOGGLE_DAILY_POST_BUTTON': 
+            return {
+                ...state,
+                toggle_daily_post: !state.toggle_daily_post
             }
         default:
             return state 

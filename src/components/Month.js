@@ -70,6 +70,11 @@ const Month = (props) => {
         console.log(arg.dateStr, "- render DATE modal")
     }
 
+    const handleSelection = (arg) => {
+        console.log(arg)
+        console.log(arg.start)
+    }
+
 
     if (localStorage.loggedIn) {
     return (
@@ -78,7 +83,9 @@ const Month = (props) => {
                 plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
                 initialView="dayGridMonth"
                 // themeSystem='bootstrap'
+                selectable={true}
                 dateClick={handleDateClick}
+                select={handleSelection}
                 customButtons={{
                     addEventButton: {
                         text: 'Add Event',

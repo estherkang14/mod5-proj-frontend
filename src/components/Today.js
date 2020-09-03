@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DayCalendar from './DayCalendar'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { toggleDailyPostButton } from '../actions/calendar'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,21 +31,26 @@ const useStyles = makeStyles((theme) => ({
 
 const Today = (props) => {
     const classes = useStyles()
-
+    
     let newDateTime = new Date()
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
     let todaysDate = newDateTime.toLocaleDateString()
     let isoDate = new Date().toISOString().substring(0, 10)
 
+    let todaysPost
+            if (props.daily_posts) {
+                    props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
+            }
+
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
     const [openAddTask, setOpenAddTask] = React.useState(false)
 
-    const [date, setDate] = React.useState("")
-    const [mood, setMood] = React.useState("")
-    const [struggle, setStruggle] = React.useState("")
-    const [thankful, setThankful] = React.useState("")
-    const [summary, setSummary] = React.useState("")
+    const [date, setDate] = React.useState(isoDate)
+    const [mood, setMood] = React.useState(todaysPost.mood_id)
+    const [struggle, setStruggle] = React.useState(todaysPost.struggle)
+    const [thankful, setThankful] = React.useState(todaysPost.thankful)
+    const [summary, setSummary] = React.useState(todaysPost.summary)
     const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
     const [dailyPostCreated, toggleDailyPostCreated] = React.useState(false)
 
@@ -55,6 +61,7 @@ const Today = (props) => {
     const [displayCalendar, toggleCalendar] = React.useState(false)
 
     
+
     const createDailyPost = (e) => {
         let info = {
             date,
@@ -66,7 +73,7 @@ const Today = (props) => {
         }
         props.postDailyPost(e, info)
         setOpen(false)
-        toggleDailyPostCreated(true)
+        
     }
 
     const updateDailyPost = (e) => {
@@ -79,10 +86,7 @@ const Today = (props) => {
             user_id: userId
         }
         // MOVE TO OUTSIDE THIS FUNCTION SO I CAN USE FOR TOGGLING THE ADD/UPDATE BUTTON
-        let todaysPost
-        if (props.daily_posts) {
-                props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
-        }
+        
         props.updateDailyPost(e, info, todaysPost.id)
         setOpen(false)
     }
@@ -151,13 +155,13 @@ const Today = (props) => {
                             onOpen={() => setOpen(true)}
                             open={open}
                             size='small'
-                            trigger={<Button> {dailyPostCreated ? "Update Daily Post" : "Add Daily Post" }</Button>}
+                            trigger={<Button> {props.toggle_daily_post ? "Update Daily Post" : "Add Daily Post" }</Button>}
                             centered={true}
                             closeOnDimmerClick={false}
                             >
                             <Header icon>
                                 <Icon name='calendar' />
-                                Add a Daily Post
+                                {props.toggle_daily_post ? "Update Daily Post" : "Add Daily Post" }
                             </Header>
                             <Modal.Content>
                             
@@ -406,8 +410,9 @@ const mapStateToProps = state => {
         userEvents: state.userReducer.userEvents,
         moodsForForm: state.userReducer.moods,
         tasks: state.userReducer.tasks,
-        daily_posts: state.userReducer.daily_posts
+        daily_posts: state.userReducer.daily_posts,
+        toggle_daily_post: state.userReducer.toggle_daily_post
     }
 }
 
-export default connect(mapStateToProps)(Today)
+export default connect(mapStateToProps, toggleDailyPostButton)(Today)

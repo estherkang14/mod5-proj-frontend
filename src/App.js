@@ -8,12 +8,13 @@ import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Today from './components/Today'
 import Month from './components/Month'
-import Week from './components/Week'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { storeUser, logOut, getWeather, storeMoods, storeHolidays, storeDailyPosts, postDailyPost, 
+import { logIn, storeUser, logOut, getWeather, storeMoods, storeHolidays, storeDailyPosts, postDailyPost, 
   storeTasks, postEvent, postTask, deleteTask } from './actions/auth'
+import { toggleDailyPostButton } from './actions/calendar'
 import { useHistory } from 'react-router-dom'
+// import { createBrowserHistory } from 'history'
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -38,6 +39,9 @@ const App = (props) => {
   };
   const [loginSignupError, setLoginSignupError] = React.useState("")
 
+  const [loggedIn, setLoggedIn] = React.useState(false)
+
+// let history = createBrowserHistory()
   
   const logIn = (e, user) => {
     e.preventDefault()
@@ -57,7 +61,11 @@ const App = (props) => {
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
+        props.logIn(user)
         fetchUserApi(data.user.id)
+        setLoggedIn(true)
+        //refreshPage()
+        //history.push("/home")
       } else {
         setLoginSignupError(data.error)
         setOpenSnack(true)
@@ -85,6 +93,7 @@ const App = (props) => {
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
         fetchUserApi(data.user.id)
+        refreshPage()
       } else {
         setLoginSignupError(data.error)
         setOpenSnack(true)
@@ -96,7 +105,13 @@ const App = (props) => {
     e.preventDefault()
     localStorage.clear()
     props.logOut()
-    return (<Redirect to="/" />)
+    setLoggedIn(false)
+    refreshPage()
+    // history.push("/")
+  }
+
+  const refreshPage = () => {
+      window.location.reload(false)
   }
 
   const renderTopNavBar = () => {
@@ -110,6 +125,8 @@ const App = (props) => {
       )
     }
   }
+
+ 
 
 
   const fetchUserApi = (userId) => {
@@ -184,8 +201,17 @@ const App = (props) => {
     fetch(DAILYPOSTURL, options)
     .then(response => response.json())
     .then(daily_post => {
+      if (!daily_post.errors) {
       props.postDailyPost(daily_post)
+      console.log(daily_post) 
+      props.toggleDailyPostButton()
+      localStorage.setItem("dailyPost", true)
+      } else {
+        setLoginSignupError(daily_post.errors)
+        setOpenSnack(true)
+      }
     })
+    .catch((errors) => console.log(errors))
   }
 
   const updateDailyPost = (e, postInfo, postId) => {
@@ -217,7 +243,7 @@ const App = (props) => {
     const form = new FormData()
     form.append('user_id', eventInfo['user_id'])
     form.append('title', eventInfo.title)
-    form.append('notes', eventInfo.notes)
+    if (eventInfo.notes) {form.append('notes', eventInfo.notes)}
     form.append('event_type', eventInfo['event_type'])
     if (eventInfo['start_date']) {form.append('start_date', eventInfo['start_date'])}
     if (eventInfo['end_date']) {form.append('end_date', eventInfo['end_date'])}
@@ -231,11 +257,18 @@ const App = (props) => {
     .then(response => response.json())
     .then(event => {
       console.log(event)
-      if (event.event_type === "Task") {
-        props.postTask(event)
+
+      if (!event.errors) {
+        if (event.event_type === "Task") {
+          props.postTask(event)
+        } else {
+          props.postEvent(event)
+        }
       } else {
-        props.postEvent(event)
+          setLoginSignupError(event.errors)
+          setOpenSnack(true)
       }
+     
     })
   }
 
@@ -270,7 +303,7 @@ const App = (props) => {
           <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={addDailyPost}
           addEventForUser={addEventForUser} destroyTask={destroyTask} />} />
           
-          <Route path="/" render={(routeProps) => (localStorage.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
+          <Route path="/" render={(routeProps) => (props.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
           logIn={logIn} signUp={signUp} openSnack={openSnack} loginSignupError={loginSignupError} 
           handleClose={handleClose} {...routeProps}/>} />
         </Switch>
@@ -303,7 +336,12 @@ const App = (props) => {
   
 }
 
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.userReducer.loggedIn
+  }
+}
 
 
-export default connect(null, { storeUser, logOut, storeMoods, storeHolidays, storeDailyPosts, postDailyPost,
-   storeTasks, postEvent, postTask, deleteTask })(App);
+export default connect(null, { storeUser, logIn, logOut, storeMoods, storeHolidays, storeDailyPosts, postDailyPost,
+   storeTasks, postEvent, postTask, deleteTask, toggleDailyPostButton })(App);

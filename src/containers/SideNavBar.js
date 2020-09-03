@@ -33,9 +33,7 @@ const SideNavBar = (props) => {
                     <a className="item" href="/home" id="todaynav">
                         TODAY
                     </a>
-                    <a className="item" href="/week" id="weeknav">
-                        WEEK
-                    </a>
+                    
                     <a className="item" href="/month" id="monthnav">
                         MONTH
                     </a>
