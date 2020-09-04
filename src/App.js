@@ -11,7 +11,7 @@ import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents } from './actions/auth'
-import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost } from './actions/calendar'
+import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost, updateEvent } from './actions/calendar'
 import { useHistory } from 'react-router-dom'
 // import { createBrowserHistory } from 'history'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -312,6 +312,36 @@ componentDidMount = () => {
     // .then( )
   }
 
+  updateEvent = (e, eventInfo, updateid) => {
+    e.preventDefault()
+    const form = new FormData()
+    form.append('user_id', eventInfo['user_id'])
+    form.append('title', eventInfo.title)
+    if (eventInfo.notes) {form.append('notes', eventInfo.notes)}
+    form.append('event_type', eventInfo['event_type'])
+    form.append('start_date', eventInfo['start_date'])
+    if (eventInfo['end_date']) {form.append('end_date', eventInfo['end_date'])}
+
+    let options = {
+      method: 'PUT',
+      body: form
+    }
+
+    fetch(EVENTSURL + updateid, options)
+    .then(response => response.json())
+    .then(data => {console.log(data)
+      if (!data.errors) {
+        this.props.updateEvent(data)
+        this.fetchUserApi(localStorage.userId)
+      } else {
+        this.setState({ loginSignupError: data.errors })
+        this.setState({ openSnack: true})
+      }
+    })
+
+
+  }
+
   destroyTask = (e, task) => {
     e.preventDefault()
 
@@ -341,7 +371,8 @@ componentDidMount = () => {
             <div className="container">
                 <Switch>
                 {/* Routes and components go here!  */}
-                <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} {...routeProps}/>} />
+                <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} 
+                updateEvent={this.updateEvent} {...routeProps}/>} />
 
                 <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
                 addEventForUser={this.addEventForUser} destroyTask={this.destroyTask} />} />
@@ -401,7 +432,8 @@ const actionCreators = {
   deleteTask, 
   toggleDailyPostButton, 
   storeEvents, 
-  reRender
+  reRender,
+  updateEvent
 }
 
 

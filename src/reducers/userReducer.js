@@ -111,6 +111,12 @@ export default function userReducer (state = initialState, action) {
                 user_events: [...state['user_events'], action.event]
             }
             // localStorage.user_events = state['user_events']
+        case 'UPDATE_EVENT':
+            let newarray = state['user_events'].filter(event => event.id !== action.event.id)
+            return {
+                ...state,
+                user_events: [...newarray, action.event]
+            }
         case 'POST_TASK':
             
             return {

@@ -25,6 +25,13 @@ export const postEvent = event => {
     }
 }
 
+export const updateEvent = event => {
+    return {
+        type: 'UPDATE_EVENT',
+        event
+    }
+}
+
 export const postTask = task => {
     return {
         type: 'POST_TASK',

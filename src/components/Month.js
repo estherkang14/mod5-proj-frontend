@@ -40,13 +40,20 @@ const Month = (props) => {
 
     const [renderCalendarEvents, setCalendarEvents] = React.useState([])
     const [hello, setHello] = React.useState(false)
+    const [calenderCellColors, setCalendarCellColors] = React.useState([])
+
+    const [updatingEvent, toggleUpdatingEvent] = React.useState(false)
+    const [updateId, setUpdateId] = React.useState('')
 
     React.useEffect( () => {
         if (props.holidays) {
-            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date'], id: event.id}]))
+            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date'], id: "holiday"}]))
         }
         if (props.user_events) {
-            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, start: event['start_date'], end: event['end_date']}]))
+            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, start: event['start_date'], end: event['end_date'], id: event.id}]))
+        }
+        if (props.daily_posts) {
+            props.daily_posts.map(post => setCalendarCellColors(prevState => [...prevState]))
         }
         console.log("hello 2") 
     }, [])
@@ -67,6 +74,11 @@ const Month = (props) => {
         
         // props to add new event 
         setOpenAddEvent(false)
+        setNewTitle("")
+        setNewStartDate("")
+        setNewEndingDate("")
+        setNewNotes("")
+        setEventType("")
     }
  
     const handleDateClick = (arg) => {
@@ -88,6 +100,60 @@ const Month = (props) => {
     const handleEventClick = (arg) => {
         console.log(arg.event)
         console.log(arg.event._def.title)
+        console.log(arg.event._def.publicId) // grabs event Id
+        let eventId = parseInt(arg.event._def.publicId, 10)
+        setUpdateId(eventId)
+        let updateEventObj
+        // make these alerts into snackboxes 
+        if (arg.event._def.publicId === "holiday") {alert("Sorry! You can't update holidays")} else {
+        props.user_events.map(event => {if (event.id === eventId) {updateEventObj = event}})
+        console.log(updateEventObj)
+        
+        setNewTitle(updateEventObj.title)
+        setNewStartDate(updateEventObj.start_date)
+        if (updateEventObj.end_date) {setNewEndingDate(updateEventObj.end_date)} else {setNewEndingDate("")}
+        if (updateEventObj.notes) {setNewNotes(updateEventObj.notes)} else {setNewNotes("")}
+        setEventType(updateEventObj.event_type)
+        toggleUpdatingEvent(true)
+        setOpenAddEvent(true)
+        }
+    
+    }
+
+    const updateEvent = (e) => {
+        console.log("hello i'm going to update!")
+        let info = {
+            title: newTitle,
+            start_date: newStartDate,
+            end_date: newEndingDate,
+            notes: newNotes,
+            user_id: userId,
+            event_type: eventType
+        }
+        console.log(info)
+        props.updateEvent(e, info, updateId)
+
+        setNewTitle("")
+        setNewStartDate("")
+        setNewEndingDate("")
+        setNewNotes("")
+        setEventType("")
+        toggleUpdatingEvent(false)
+        setOpenAddEvent(false)
+    }
+
+    const toggleCloseModal = () => {
+        setOpenAddEvent(false)
+        toggleUpdatingEvent(false)
+        setNewTitle("")
+        setNewStartDate("")
+        setNewEndingDate("")
+        setNewNotes("")
+        setEventType("")
+    }
+
+    const handleEventStartChange = (info) => {
+        console.log(info)
     }
 
 
@@ -115,17 +181,21 @@ const Month = (props) => {
                 }}
                 // navLinks={true} // new code? 
                 events={renderCalendarEvents}
+                eventColor='#808080'
                 dayMaxEventRows={true}
                 dayMaxEvents={true}
-                editable={true}
+                // editable={true}
+                // eventDragStart={handleEventStartChange()}
                 moreLinkClick="popover"
+                // dayCellClassNames={(arg) => console.log(arg)}
 
             />
 
             {/* Modal for Adding an Event - form */}
             <Modal
                 basic
-                onClose={() => setOpenAddEvent(false)}
+                onClose={() => toggleCloseModal()}
+                // onClose={() => setOpenAddEvent(false)}
                 onOpen={() => setOpenAddEvent(true)}
                 open={openAddEvent}
                 size='small'
@@ -189,11 +259,12 @@ const Month = (props) => {
                     </div>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button basic color='red' inverted onClick={() => setOpenAddEvent(false)}>
+                    <Button basic color='red' inverted onClick={() => toggleCloseModal()}>
+                    {/* <Button basic color='red' inverted onClick={() => setOpenAddEvent(false)}> */}
                     <Icon name='remove' /> Cancel/Close
                     </Button>
-                    <Button color='green' inverted onClick={(e) => createNewEvent(e)}>
-                    <Icon name='checkmark' /> Add Event!
+                    <Button color='green' inverted onClick={(e) => {updatingEvent ? updateEvent(e) : createNewEvent(e)}}>
+                    <Icon name='checkmark' /> {updatingEvent ? "Update Event!" : "Add Event!"}
                     </Button>
                 </Modal.Actions>
             </Modal>
@@ -208,7 +279,8 @@ const mapStateToProps = state => {
     return {
         holidays: state.userReducer.holidays,
         user_events: state.userReducer['user_events'],
-        rerender: state.userReducer.rerender
+        rerender: state.userReducer.rerender,
+        daily_posts: state.userReducer['daily_posts']
     }
 }
 
