@@ -8,7 +8,7 @@ const DisplayPage = (props) => {
         return (
             <div className="main_container">
                 <Today postDailyPost={props.postDailyPost} addEventForUser={props.addEventForUser}
-                destroyTask={props.destroyTask} />
+                destroyTask={props.destroyTask} updateDailyPost={props.updateDailyPost}/>
             </div>
         )
     } else {

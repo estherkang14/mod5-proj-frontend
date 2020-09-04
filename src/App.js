@@ -11,7 +11,8 @@ import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents } from './actions/auth'
-import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost, updateEvent } from './actions/calendar'
+import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost, 
+  updateDailyPost, updateEvent } from './actions/calendar'
 import { useHistory } from 'react-router-dom'
 // import { createBrowserHistory } from 'history'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -60,7 +61,7 @@ fetchUserApi = (userId) => {
     .then(userData => {
     
       localStorage.setItem('userData', JSON.stringify(userData))
-      this.props.storeUser(userData)
+      
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
       let posts = userData['daily_posts']
@@ -68,9 +69,10 @@ fetchUserApi = (userId) => {
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       localStorage.setItem('tasks', JSON.stringify(tasks))
-      this.props.storeTasks(tasks)
-      this.props.storeDailyPosts(posts)
-      this.props.storeEvents(nontasks)
+      // this.props.storeUser(userData)
+      // this.props.storeTasks(tasks)
+      // this.props.storeDailyPosts(posts)
+      // this.props.storeEvents(nontasks)
       console.log("User Data Fetched")
     })
   }  
@@ -231,10 +233,8 @@ componentDidMount = () => {
     .then(daily_post => {
       if (!daily_post.errors) {
         this.props.postDailyPost(daily_post)
-        console.log(daily_post) 
-        this.props.toggleDailyPostButton()
-        localStorage.setItem("dailyPost", true)
-        this.fetchUserApi(localStorage.userId)
+        // localStorage.setItem("dailyPost", true)
+        // this.fetchUserApi(localStorage.userId)
       } else {
         this.setState({ loginSignupError: daily_post.error })
         this.setState({ openSnack: true})
@@ -266,7 +266,7 @@ componentDidMount = () => {
     .then(response => response.json())
     .then(daily_post => {
       console.log(daily_post)
-      this.props.postDailyPost(daily_post)  // change to update and add to auth + userReducer
+      this.props.updateDailyPost(daily_post)  // change to update and add to auth + userReducer
       this.fetchUserApi(localStorage.userId)
     })
   }
@@ -375,7 +375,8 @@ componentDidMount = () => {
                 updateEvent={this.updateEvent} {...routeProps}/>} />
 
                 <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
-                addEventForUser={this.addEventForUser} destroyTask={this.destroyTask} />} />
+                updateDailyPost={this.updateDailyPost} addEventForUser={this.addEventForUser} 
+                destroyTask={this.destroyTask} />} />
                 
                 <Route path="/" render={(routeProps) => (this.props.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
                 logIn={this.logIn} signUp={this.signUp} 
@@ -433,7 +434,8 @@ const actionCreators = {
   toggleDailyPostButton, 
   storeEvents, 
   reRender,
-  updateEvent
+  updateEvent,
+  updateDailyPost
 }
 
 

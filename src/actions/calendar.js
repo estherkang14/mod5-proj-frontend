@@ -18,6 +18,13 @@ export const postDailyPost = post => {
     }
 }
 
+export const updateDailyPost = post => {
+    return {
+        type: 'UPDATE_DAILY_POST',
+        post
+    }
+}
+
 export const postEvent = event => {
     return {
         type: 'POST_EVENT',

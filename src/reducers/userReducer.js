@@ -99,6 +99,12 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 daily_posts: [...state['daily_posts'], action.post]
             }
+        case 'UPDATE_DAILY_POST':
+            let newpostarray = state['daily_posts'].filter(post => post.id !== action.post.id)
+            return {
+                ...state,
+                daily_posts: [...newpostarray, action.post]
+            }
         case 'STORE_TASKS':
             return {
                 ...state,
@@ -123,7 +129,7 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 tasks: [...state.tasks, action.task]
             }
-            
+    
         case 'DELETE_TASK':
             return {
                 ...state,

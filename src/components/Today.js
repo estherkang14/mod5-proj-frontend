@@ -37,11 +37,22 @@ const Today = (props) => {
     let todaysDate = newDateTime.toLocaleDateString()
     let isoDate = new Date().toISOString().substring(0, 10)
 
-    let todaysPost
-            if (props.daily_posts) {
-                    props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
-            } 
+    const [dailyPostMade, toggleDailyPostMade] = React.useState(false)
 
+    let todaysPost
+        // if (props.daily_posts) {
+        //         props.daily_posts.map(post => {if (post.date === isoDate) {
+        //             todaysPost = post
+        //             toggleDailyPostMade(true)
+        //         }} )
+        // } 
+    React.useEffect(() => { 
+        if (props.daily_posts) {
+        props.daily_posts.map(post => {if (post.date === isoDate) {
+            todaysPost = post
+            toggleDailyPostMade(true)
+        }} )
+    }}, [])
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
@@ -79,10 +90,12 @@ const Today = (props) => {
         }
         props.postDailyPost(e, info)
         setOpen(false)
+        toggleDailyPostMade(true)
         
     }
 
     const updateDailyPost = (e) => {
+
         let info = {
             date,
             mood_id: mood,
@@ -91,7 +104,6 @@ const Today = (props) => {
             summary,
             user_id: userId
         }
-        // MOVE TO OUTSIDE THIS FUNCTION SO I CAN USE FOR TOGGLING THE ADD/UPDATE BUTTON
         
         props.updateDailyPost(e, info, todaysPost.id)
         setOpen(false)
@@ -115,7 +127,7 @@ const Today = (props) => {
     }
 
     const renderDailyPost = () => {
-        let todaysPost
+        
         if (props.daily_posts) {
                 props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
                 if (todaysPost) {return <div> 
@@ -142,6 +154,17 @@ const Today = (props) => {
         }
     }
 
+    const openPostModal = () => {
+        
+        if (dailyPostMade) {
+            setMood(todaysPost.mood_id)
+            setStruggle(todaysPost.struggle)
+            setThankful(todaysPost.thankful)
+            setSummary(todaysPost.summary)
+        } 
+        setOpen(true)
+    }
+
   
     return (
         <div>
@@ -158,16 +181,16 @@ const Today = (props) => {
                         <Modal
                             basic
                             onClose={() => setOpen(false)}
-                            onOpen={() => setOpen(true)}
+                            onOpen={() => openPostModal()}
                             open={open}
                             size='small'
-                            trigger={<Button> {props.toggle_daily_post ? "Update Daily Post" : "Add Daily Post" }</Button>}
+                            trigger={<Button> {dailyPostMade ? "Update Daily Post" : "Add Daily Post" }</Button>}
                             centered={true}
                             closeOnDimmerClick={false}
                             >
                             <Header icon>
                                 <Icon name='calendar' />
-                                {props.toggle_daily_post ? "Update Daily Post" : "Add Daily Post" }
+                                {dailyPostMade ? "Update Daily Post" : "Add Daily Post" }
                             </Header>
                             <Modal.Content>
                             
@@ -240,9 +263,9 @@ const Today = (props) => {
                                 <Button basic color='red' inverted onClick={() => setOpen(false)}>
                                 <Icon name='remove' /> Cancel
                                 </Button>
-                                <Button color='green' inverted onClick={(e) => {dailyPostCreated ? 
+                                <Button color='green' inverted onClick={(e) => {dailyPostMade ? 
                                     updateDailyPost(e) : createDailyPost(e)}}>
-                                <Icon name='checkmark' /> Add Post!
+                                <Icon name='checkmark' /> {dailyPostMade ? "Update" : "Add Post!"}
                                 </Button>
                             </Modal.Actions>
                         </Modal>
