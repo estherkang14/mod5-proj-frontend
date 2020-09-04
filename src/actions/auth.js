@@ -41,6 +41,7 @@ export const storeHolidays = holidays => {
 }
 
 export const storeDailyPosts = posts => {
+    localStorage.daily_posts = JSON.stringify(posts)
     return { 
         type: 'STORE_DAILY_POSTS',
         posts
@@ -48,6 +49,7 @@ export const storeDailyPosts = posts => {
 }
 
 export const storeTasks = tasks => {
+
     return {
         type: 'STORE_TASKS',
         tasks
@@ -55,6 +57,7 @@ export const storeTasks = tasks => {
 }
 
 export const storeEvents = events => {
+    localStorage.userEvents = JSON.stringify(events)
     return {
         type: 'STORE_EVENTS',
         events

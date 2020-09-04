@@ -43,13 +43,14 @@ const Month = (props) => {
 
     React.useEffect( () => {
         if (props.holidays) {
-            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date']}]))
+            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date'], id: event.id}]))
         }
         if (props.user_events) {
-            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, date: event['start_date']}]))
+            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, start: event['start_date'], end: event['end_date']}]))
         }
         console.log("hello 2") 
-    }, props.user_events)
+    }, [])
+    // props.user_events)
 
     const createNewEvent = (e) => {
         let info = {
@@ -70,11 +71,23 @@ const Month = (props) => {
  
     const handleDateClick = (arg) => {
         console.log(arg.dateStr, "- render DATE modal")
+        console.log(arg)
+        setNewStartDate(arg.dateStr)
+
     }
 
     const handleSelection = (arg) => {
         console.log(arg)
         console.log(arg.start)
+        setNewStartDate(arg.startStr)
+        setNewEndingDate(arg.endStr)
+
+        setOpenAddEvent(true)
+    }
+
+    const handleEventClick = (arg) => {
+        console.log(arg.event)
+        console.log(arg.event._def.title)
     }
 
 
@@ -87,6 +100,7 @@ const Month = (props) => {
                 // themeSystem='bootstrap'
                 selectable={true}
                 dateClick={handleDateClick}
+                eventClick={handleEventClick}
                 select={handleSelection}
                 customButtons={{
                     addEventButton: {
@@ -126,7 +140,7 @@ const Month = (props) => {
                         <form className="ui form">
                             <div className="field">
                                 <p>Title</p>
-                                <input name="title" placeholder="e.g., Someone's Birthday"
+                                <input name="title" placeholder="e.g., Someone's Birthday" value={newTitle}
                                 onChange={(e) => setNewTitle(e.target.value)}></input>
                             </div>
                             <br />
@@ -153,21 +167,21 @@ const Month = (props) => {
 
                             <div className="field">
                                 <p>Start Date (YYYY/MM/DD)</p>
-                                <input name="start" placeholder="e.g., 2020/08/30"
+                                <input name="start" placeholder="e.g., 2020/08/30" value={newStartDate}
                                 onChange={(e) => setNewStartDate(e.target.value)}></input>
                             </div>
                             <br />
 
                             <div className="field">
                                 <p>End Date, if applicable (YYYY/MM/DD)</p>
-                                <input name="end" placeholder="e.g., 2020/08/31"
+                                <input name="end" placeholder="e.g., 2020/08/31" value={newEndingDate}
                                 onChange={(e) => setNewEndingDate(e.target.value)}></input>
                             </div>
                             <br />
 
                             <div className="field">
                                 <p>Notes</p>
-                                <input name="notes" placeholder="e.g., 'Remember to pack your toiletries!'"
+                                <input name="notes" placeholder="e.g., 'Remember to pack your toiletries!'" value={newNotes}
                                 onChange={(e) => setNewNotes(e.target.value)}></input>
                             </div>
                             <br />

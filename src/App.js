@@ -74,14 +74,7 @@ fetchUserApi = (userId) => {
       console.log("User Data Fetched")
     })
   }  
-componentDidMount = () => {
-    this.fetchMoods()
-    this.fetchHolidays()
 
-    if (localStorage.userId) {
-      this.fetchUserApi(localStorage.userId)
-    }
-  }
   logIn = (e, user) => {
     e.preventDefault()
     let options = {
@@ -146,12 +139,21 @@ componentDidMount = () => {
   }
 
   logOut = (e) => {
-    e.preventDefault()
     localStorage.clear()
+    console.log("log out in app")
     this.props.logOut()
     this.setState({ loggedIn: false })
     // refreshPage()
     // history.push("/")
+  }
+
+componentDidMount = () => {
+    this.fetchMoods()
+    this.fetchHolidays()
+
+    if (localStorage.userId) {
+      this.fetchUserApi(localStorage.userId)
+    }
   }
 
   refreshPage = () => {
@@ -295,7 +297,7 @@ componentDidMount = () => {
           this.fetchUserApi(localStorage.userId)
           
         } else {
-         this.props.postEvent(event)
+         //this.props.postEvent(event)
          this.fetchUserApi(localStorage.userId)
          console.log("hello")
         }

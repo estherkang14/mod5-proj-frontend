@@ -55,6 +55,7 @@ export default function userReducer (state = initialState, action) {
             }
         case 'LOGOUT':
             localStorage.clear()
+            console.log("log out from reducer")
             return {
                 ...state,
                 loggedIn: false,
