@@ -25,17 +25,24 @@ export const updateDailyPost = post => {
     }
 }
 
-export const postEvent = event => {
+export const postEvent = userEvent => {
     return {
         type: 'POST_EVENT',
-        event
+        userEvent
     }
 }
 
-export const updateEvent = event => {
+export const updateEvent = userEvent => {
     return {
         type: 'UPDATE_EVENT',
-        event
+        userEvent
+    }
+}
+
+export const deleteEvent = deletedEvent => {
+    return {
+        type: 'DELETE_EVENT',
+        deletedEvent
     }
 }
 

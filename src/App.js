@@ -6,19 +6,17 @@ import LandingPage from './containers/LandingPage'
 import TopNavBar from './containers/TopNavBar'
 import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
-import Today from './components/Today'
 import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents } from './actions/auth'
 import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost, 
-  updateDailyPost, updateEvent } from './actions/calendar'
-import { useHistory } from 'react-router-dom'
+  updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
+// import { useHistory } from 'react-router-dom'
 // import { createBrowserHistory } from 'history'
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { render } from 'react-dom';
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
@@ -31,14 +29,14 @@ let HOLIDAYSURL = BASEURL + 'holidays'
 class App extends React.Component {
 
 
-   state = {
-       openSnack: false,
-       loginSignupError: "",
-       loggedIn: false
+  state = {
+      openSnack: false,
+      loginSignupError: "",
+      loggedIn: false,
+      user_events_array: []
 
-   } 
+  } 
   // snackbar for login
-//   const [openSnack, setOpenSnack] = React.useState(false);
   handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -50,11 +48,6 @@ class App extends React.Component {
     })
   };
 
-//   const [loginSignupError, setLoginSignupError] = React.useState("")
-
-//   const [loggedIn, setLoggedIn] = React.useState(false)
-
-// let history = createBrowserHistory()
 fetchUserApi = (userId) => {
     fetch(USERSURL + userId)
     .then(response => response.json())
@@ -69,11 +62,13 @@ fetchUserApi = (userId) => {
       localStorage.setItem('userEvents', JSON.stringify(nontasks))
       localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
       localStorage.setItem('tasks', JSON.stringify(tasks))
-      // this.props.storeUser(userData)
-      // this.props.storeTasks(tasks)
-      // this.props.storeDailyPosts(posts)
-      // this.props.storeEvents(nontasks)
+      this.props.storeUser(userData)
+      this.props.storeTasks(tasks)
+      this.props.storeDailyPosts(posts)
+      this.props.storeEvents(nontasks)
+      // this.setState({ user_events_array: nontasks })
       console.log("User Data Fetched")
+      console.log(userData)
     })
   }  
 
@@ -98,13 +93,10 @@ fetchUserApi = (userId) => {
         this.props.logIn(data.user)
         this.fetchUserApi(data.user.id)
         this.setState({ loggedIn: true })
-        //refreshPage()
-        //history.push("/home")
+        
       } else {
           this.setState({ loginSignupError: data.error })
           this.setState({ openSnack: true})
-        // setLoginSignupError(data.error)
-        // setOpenSnack(true)
       }
     })
   }
@@ -129,13 +121,9 @@ fetchUserApi = (userId) => {
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
-        
-        // refreshPage()
       } else {
         this.setState({ loginSignupError: data.error })
         this.setState({ openSnack: true})
-        // setLoginSignupError(data.error)
-        // setOpenSnack(true)
       }
     })
   }
@@ -145,11 +133,9 @@ fetchUserApi = (userId) => {
     console.log("log out in app")
     this.props.logOut()
     this.setState({ loggedIn: false })
-    // refreshPage()
-    // history.push("/")
   }
 
-componentDidMount = () => {
+  componentDidMount = () => {
     this.fetchMoods()
     this.fetchHolidays()
 
@@ -158,9 +144,7 @@ componentDidMount = () => {
     }
   }
 
-  refreshPage = () => {
-      window.location.reload(false)
-  }
+
 
   renderTopNavBar = () => {
     if (localStorage.getItem('loggedIn')) {
@@ -174,24 +158,9 @@ componentDidMount = () => {
     }
   }
 
- 
-
-
-  
-
   fetchWeather = () => {
     
   }
-
-//   React.useEffect( () => {
-//     fetchMoods()
-//     fetchHolidays()
-
-//     if (localStorage.userId) {
-//       fetchUserApi(localStorage.userId)
-      
-//     }
-//   }, [])
 
   fetchMoods = () => {
     fetch(MOODSURL)
@@ -266,8 +235,8 @@ componentDidMount = () => {
     .then(response => response.json())
     .then(daily_post => {
       console.log(daily_post)
-      this.props.updateDailyPost(daily_post)  // change to update and add to auth + userReducer
-      this.fetchUserApi(localStorage.userId)
+      this.props.updateDailyPost(daily_post)  
+      // this.fetchUserApi(localStorage.userId)
     })
   }
 
@@ -294,22 +263,26 @@ componentDidMount = () => {
       if (!event.errors) {
         if (event.event_type === "Task") {
           this.props.postTask(event)
-          this.fetchUserApi(localStorage.userId)
+          // this.fetchUserApi(localStorage.userId)
+          // this.props.reRender()
           
         } else {
-         //this.props.postEvent(event)
-         this.fetchUserApi(localStorage.userId)
+         this.props.postEvent(event)
+        //  this.setState({ user_events_array: [...this.state.user_events_array, event]})
+         //this.fetchUserApi(localStorage.userId)
          console.log("hello")
+        //  this.props.reRender()
         }
       } else {
         this.setState({ loginSignupError: event.errors })
         this.setState({ openSnack: true})
-        //   setLoginSignupError(event.errors)
-        //   setOpenSnack(true)
+        
       }
       // localStorage.userEvents = props.userEvents
     })
-    // .then( )
+    .then(console.log("did my event post?"))
+    .catch((errors) => console.log(errors))
+  
   }
 
   updateEvent = (e, eventInfo, updateid) => {
@@ -332,22 +305,31 @@ componentDidMount = () => {
     .then(data => {console.log(data)
       if (!data.errors) {
         this.props.updateEvent(data)
-        this.fetchUserApi(localStorage.userId)
+        // this.props.reRender()
+        //this.fetchUserApi(localStorage.userId)
       } else {
         this.setState({ loginSignupError: data.errors })
         this.setState({ openSnack: true})
       }
     })
+    .then(console.log("did my event update?"))
+    .catch((errors) => console.log(errors))
 
+  }
 
+  destroyEvent = (e, userEvent) => {
+    e.preventDefault()
+
+    fetch(EVENTSURL + `${userEvent}`, {method: 'DELETE'})
+    .then(response => response.json())
+    .then(deletedEvent => { console.log(deletedEvent)
+      this.props.deleteEvent(deletedEvent)
+      alert(`Event '${deletedEvent.title}' has been deleted!`)
+    })
   }
 
   destroyTask = (e, task) => {
     e.preventDefault()
-
-    let options = {
-      method: "DELETE"
-    }
 
     fetch(EVENTSURL + `${task.id}`, {method: 'DELETE'})
     .then(response => response.json())
@@ -372,7 +354,7 @@ componentDidMount = () => {
                 <Switch>
                 {/* Routes and components go here!  */}
                 <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} 
-                updateEvent={this.updateEvent} {...routeProps}/>} />
+                updateEvent={this.updateEvent} destroyEvent={this.destroyEvent} {...routeProps}/>} />
 
                 <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
                 updateDailyPost={this.updateDailyPost} addEventForUser={this.addEventForUser} 
@@ -435,7 +417,8 @@ const actionCreators = {
   storeEvents, 
   reRender,
   updateEvent,
-  updateDailyPost
+  updateDailyPost,
+  deleteEvent
 }
 
 

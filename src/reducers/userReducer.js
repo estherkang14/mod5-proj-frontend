@@ -26,6 +26,8 @@ if (localStorage.loggedIn) {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
     moods: JSON.parse(localStorage.getItem('moods')) }
 }
+
+
 // } else if (daily_posts) {
 //     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
 //     moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']) }
@@ -114,14 +116,14 @@ export default function userReducer (state = initialState, action) {
             console.log("hello there")
             return {
                 ...state,
-                user_events: [...state['user_events'], action.event]
+                user_events: [...state['user_events'], action.userEvent]
             }
             // localStorage.user_events = state['user_events']
         case 'UPDATE_EVENT':
-            let newarray = state['user_events'].filter(event => event.id !== action.event.id)
+            let newarray = state['user_events'].filter(userEvent => userEvent.id !== action.userEvent.id)
             return {
                 ...state,
-                user_events: [...newarray, action.event]
+                user_events: [...newarray, action.userEvent]
             }
         case 'POST_TASK':
             
@@ -146,8 +148,14 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 user_events: action.events
             }
+        case 'DELETE_EVENT':
+            return {
+                ...state,
+                user_events: state.user_events.filter(userEvent => userEvent.id !== action.deletedEvent.id)
+            }
         case 'RERENDER':
             return {
+                ...state, 
                 rerender: !state.rerender
             }
         default:
