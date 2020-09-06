@@ -202,13 +202,11 @@ fetchUserApi = (userId) => {
     .then(daily_post => {
       if (!daily_post.errors) {
         this.props.postDailyPost(daily_post)
-        // localStorage.setItem("dailyPost", true)
-        // this.fetchUserApi(localStorage.userId)
+        this.setState({ loginSignupError: `Daily Post for ${daily_post.date} has been created` })
+        this.setState({ openSnack: true})
       } else {
         this.setState({ loginSignupError: daily_post.error })
         this.setState({ openSnack: true})
-        // setLoginSignupError(daily_post.errors)
-        // setOpenSnack(true)
       }
     })
     .then(console.log("blah"))
@@ -236,7 +234,8 @@ fetchUserApi = (userId) => {
     .then(daily_post => {
       console.log(daily_post)
       this.props.updateDailyPost(daily_post)  
-      // this.fetchUserApi(localStorage.userId)
+      this.setState({ loginSignupError: `Daily Post for ${daily_post.date} has been updated` })
+      this.setState({ openSnack: true})
     })
   }
 
@@ -263,24 +262,18 @@ fetchUserApi = (userId) => {
       if (!event.errors) {
         if (event.event_type === "Task") {
           this.props.postTask(event)
-          // this.fetchUserApi(localStorage.userId)
-          // this.props.reRender()
-          
+          this.setState({ loginSignupError: `Task '${event.title}' has been has been added to your Task List` })
+          this.setState({ openSnack: true})
         } else {
-         this.props.postEvent(event)
-        //  this.setState({ user_events_array: [...this.state.user_events_array, event]})
-         //this.fetchUserApi(localStorage.userId)
-         console.log("hello")
-        //  this.props.reRender()
+          this.props.postEvent(event)
+          this.setState({ loginSignupError: `Event '${event.title}' has been added to your Calendar` })
+          this.setState({ openSnack: true})
         }
       } else {
         this.setState({ loginSignupError: event.errors })
         this.setState({ openSnack: true})
-        
       }
-      // localStorage.userEvents = props.userEvents
     })
-    .then(console.log("did my event post?"))
     .catch((errors) => console.log(errors))
   
   }
@@ -305,14 +298,13 @@ fetchUserApi = (userId) => {
     .then(data => {console.log(data)
       if (!data.errors) {
         this.props.updateEvent(data)
-        // this.props.reRender()
-        //this.fetchUserApi(localStorage.userId)
+        this.setState({ loginSignupError: `Event '${data.title}' has been updated` })
+        this.setState({ openSnack: true})
       } else {
         this.setState({ loginSignupError: data.errors })
         this.setState({ openSnack: true})
       }
     })
-    .then(console.log("did my event update?"))
     .catch((errors) => console.log(errors))
 
   }
@@ -324,7 +316,8 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(deletedEvent => { console.log(deletedEvent)
       this.props.deleteEvent(deletedEvent)
-      alert(`Event '${deletedEvent.title}' has been deleted!`)
+      this.setState({ loginSignupError: `Event '${deletedEvent.title}' has been deleted` })
+      this.setState({ openSnack: true})
     })
   }
 
@@ -335,7 +328,8 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(deletedTask => { console.log(deletedTask) 
         this.props.deleteTask(deletedTask)
-        alert(`Task: ${deletedTask.title} has been deleted!`)
+        this.setState({ loginSignupError: `Task '${deletedTask.title}' has been deleted` })
+        this.setState({ openSnack: true})
     })
 
   }

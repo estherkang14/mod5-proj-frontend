@@ -88,15 +88,7 @@ const Month = (props) => {
         
         props.addEventForUser(e, info)
     
-        // grabEvents()
-        
-        setOpenAddEvent(false)
-        // setNewTitle("")
-        // setNewStartDate("")
-        // setNewEndingDate("")
-        // setNewNotes("")
-        // setEventType("")
-        // grabEvents()
+        toggleCloseModal()
     }
  
     const handleDateClick = (arg) => {
@@ -114,6 +106,7 @@ const Month = (props) => {
         console.log(arg.start)
         setNewStartDate(arg.startStr)
         setNewEndingDate(arg.endStr)
+        toggleUpdatingEvent(false)
 
         setOpenAddEvent(true)
     }
@@ -143,7 +136,6 @@ const Month = (props) => {
 
     const updateEvent = (e) => {
         e.preventDefault()
-        console.log("hello i'm going to update!")
         let info = {
             title: newTitle,
             start_date: newStartDate,
@@ -154,34 +146,24 @@ const Month = (props) => {
         }
         console.log(info)
         props.updateEvent(e, info, updateId)
-        // grabEvents()
-
-        // setNewTitle("")
-        // setNewStartDate("")
-        // setNewEndingDate("")
-        // setNewNotes("")
-        // setEventType("")
-        toggleUpdatingEvent(false)
-        setOpenAddEvent(false)
+        toggleCloseModal()
     }
 
     const deleteEvent = (e) => {
-        console.log("deleting an event")
         console.log(updateId)
         props.destroyEvent(e, updateId)
-        setOpenAddEvent(false)
-        toggleUpdatingEvent(false)
+        toggleCloseModal()
     }
 
-    // const toggleCloseModal = () => {
-    //     setOpenAddEvent(false)
-    //     toggleUpdatingEvent(false)
-    //     setNewTitle("")
-    //     setNewStartDate("")
-    //     setNewEndingDate("")
-    //     setNewNotes("")
-    //     setEventType("")
-    // }
+    const toggleCloseModal = () => {
+        setOpenAddEvent(false)
+        toggleUpdatingEvent(false)
+        setNewTitle("")
+        setNewStartDate("")
+        setNewEndingDate("")
+        setNewNotes("")
+        setEventType("")
+    }
 
     const handleEventStartChange = (info) => {
         console.log(info)
@@ -200,13 +182,12 @@ const Month = (props) => {
         <div>
             <Modal
                 basic
-                // onSubmit={(e) => {updatingEvent ? updateEvent(e) : createNewEvent(e)}}
-                onClose={() => setOpenAddEvent(false)}
+                onClose={() => toggleCloseModal()}
                 // onClose={() => setOpenAddEvent(false)}
                 onOpen={() => setOpenAddEvent(true)}
                 open={openAddEvent}
                 size='small'
-                trigger={<Button>Basic Modal</Button>}
+                // trigger={<Button>Basic Modal</Button>}
                 >
                 <Header icon>
                     <Icon name='calendar' />
@@ -214,42 +195,8 @@ const Month = (props) => {
                 </Header>
                 
                 <Modal.Content>
-                    
-                            
-                        {/* <Form.input name="Title" placeholder="e.g., Someone's Birthday" value={newTitle}
-                        onChange={(e) => setNewTitle(e.target.value)}/>
-
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-outlined-label">Choose One</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={eventType}
-                                onChange={(e) => setEventType(e.target.value)}
-                                label="Event Types"
-                            >
-                            <MenuItem value={"Birthday"}>Birthday</MenuItem>
-                            <MenuItem value={"Work"}>Work</MenuItem>
-                            <MenuItem value={"Personal"}>Personal</MenuItem>
-                            <MenuItem value={"School"}>School</MenuItem>
-                            <MenuItem value={"Other"}>Other</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <Form.input name="Start Date (YYYY/MM/DD)" placeholder="e.g., 2020/08/30" value={newStartDate}
-                            onChange={(e) => setNewStartDate(e.target.value)} />
-
-                        <Form.input name="End Date, if applicable (YYYY/MM/DD)" placeholder="e.g., 2020/08/31" value={newEndingDate}
-                            onChange={(e) => setNewEndingDate(e.target.value)} />
-
-                        <Form.input name="Notes" placeholder="e.g., 'Remember to pack your toiletries!'" value={newNotes}
-                            onChange={(e) => setNewNotes(e.target.value)} /> */}
- 
-                   
                     <div>
-                        {/* <form className="ui form" onSubmit={(e) => {updatingEvent ? updateEvent(e) : createNewEvent(e)}}> */}
                         <form className="ui form" >
-
                             <div className="field">
                                 <p>Title</p>
                                 <input name="title" placeholder="e.g., Someone's Birthday" value={newTitle}
@@ -303,7 +250,7 @@ const Month = (props) => {
                 <Modal.Actions>
                     { updatingEvent ? renderDeleteButton() : null }
 
-                    <Button basic color='red' inverted onClick={() => setOpenAddEvent(false)}>
+                    <Button basic color='red' inverted onClick={() => toggleCloseModal()}>
                     <Icon name='remove' /> Cancel/Close
                     </Button>
     
@@ -325,12 +272,6 @@ const Month = (props) => {
                 // dateClick={handleDateClick}
                 eventClick={handleEventClick}
                 select={handleSelection}
-                // customButtons={{
-                //     addEventButton: {
-                //         text: 'Add Event',
-                //         click: () => setOpenAddEvent(true)
-                //     }
-                // }}
                 headerToolbar={{
                     right: 'prev,next',
                     center: 'title',
@@ -347,9 +288,6 @@ const Month = (props) => {
                 // dayCellClassNames={(arg) => console.log(arg)}
 
             />
-
-            {/* Modal for Adding an Event - form */}
-            
         </div>
     ) }  else {
         alert("Sorry, you must be logged in to see your monthly calendar!")
@@ -361,7 +299,6 @@ const mapStateToProps = state => {
     return {
         holidays: state.userReducer.holidays,
         user_events: state.userReducer['user_events'],
-        rerender: state.userReducer.rerender,
         daily_posts: state.userReducer['daily_posts']
     }
 }
