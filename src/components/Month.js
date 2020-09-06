@@ -50,26 +50,59 @@ const Month = (props) => {
 
 
     React.useEffect( () => {
-      
-
         grabEvents()
     }, [props.user_events])
-    // props.user_events)
 
     const grabEvents = () => {
         setCalendarEvents([])
+        if (props.daily_posts) {
+            props.daily_posts.map(post => setCalendarEvents(prevState => [...prevState, {title: 'DAILY POST', 
+            date: post.date, id: "daily post", extendedProps: post.mood, color: post.mood.hexcode, display: 'background'}]))
+        }
         if (props.holidays) {
-            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, date: event['start_date'], id: "holiday"}]))
+            props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, 
+            date: event['start_date'], id: "holiday", borderColor: "#000000"}]))
         }
         if (props.user_events) {
-            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, start: event['start_date'], 
-            end: event['end_date'], id: event.id, extendedProps: event.notes}]))
+            props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, 
+            start: event['start_date'], end: event['end_date'], id: event.id, extendedProps: event.notes,
+            borderColor: getEventBGColor(event)}]))
+
         }
-        // if (props.daily_posts) {
-        //     props.daily_posts.map(post => setCalendarCellColors(prevState => [...prevState]))
-        // // }
-        // return renderCalendarEvents
-        console.log("grabEvents")
+        // if (props.user_events) {
+        //     props.user_events.map(event => {if (event.type === "Birthday") {
+        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
+        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#aec1d1"}])
+        //     } else if (event.type === "Work") {
+        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
+        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#708090"}])
+        //     } else if (event.type === "Personal") {
+        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
+        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#b8c0c7"}])
+        //     } else if (event.type === "School") {
+        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
+        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#9ba6b1"}])
+        //     } else if (event.type === "Other") {
+        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
+        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#9d9d9d"}])
+        //     }})
+        // }
+        
+    }
+
+    const getEventBGColor = (eventForCal) => {
+        if (eventForCal.type === "Birthday") {
+            return "#aec1d1"
+        } else if (eventForCal.type === "Work") {
+            return "#708090"
+        } else if (eventForCal.type === "Personal") {
+            return "#b8c0c7"
+            
+        } else if (eventForCal.type === "School") {
+            return "#9ba6b1"
+        } else if (eventForCal.type === "Other") {
+            return "#9d9d9d"
+        }
     }
 
     
@@ -102,8 +135,8 @@ const Month = (props) => {
     }
 
     const handleSelection = (arg) => {
-        console.log(arg)
-        console.log(arg.start)
+        // console.log(arg)
+        // console.log(arg.start)
         setNewStartDate(arg.startStr)
         setNewEndingDate(arg.endStr)
         toggleUpdatingEvent(false)
@@ -119,7 +152,10 @@ const Month = (props) => {
         setUpdateId(eventId)
         let updateEventObj
         // make these alerts into snackboxes 
-        if (arg.event._def.publicId === "holiday") {alert("Sorry! You can't update holidays")} else {
+        if (arg.event._def.publicId === "holiday") {alert("Sorry! You can't update holidays")
+        } else if (arg.event.d_def.publicId === "daily post") { 
+            {alert("Sorry! You can't update daily posts from here")}
+        } else {
         props.user_events.map(event => {if (event.id === eventId) {updateEventObj = event}})
         console.log(updateEventObj)
         
@@ -277,9 +313,9 @@ const Month = (props) => {
                     center: 'title',
                     left: 'today,dayGridMonth,timeGridWeek'
                 }}
-                // navLinks={true} // new code? 
+                navLinks={true} // new code? 
                 events={renderCalendarEvents}
-                eventColor='#808080'
+                eventColor='#bdbdbd'
                 dayMaxEventRows={true}
                 dayMaxEvents={true}
                 // editable={true}
