@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import DayCalendar from './DayCalendar'
 import { toggleDailyPostButton } from '../actions/calendar'
+import { LocalDrink, AddBox, IndeterminateCheckBox } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(2),
       textAlign: 'center',
       color: theme.palette.text.secondary,
+      //change background color to light grey
     },
     container: {
         display: 'flex',
@@ -41,6 +43,7 @@ const Today = (props) => {
     const [iconTag, setIconTag] = React.useState("")
 
     const [dailyPostMade, toggleDailyPostMade] = React.useState(false)
+    const [test, toggleTest] = React.useState({})
 
     let todaysPost
         // if (props.daily_posts) {
@@ -53,6 +56,7 @@ const Today = (props) => {
         if (props.daily_posts) {
         props.daily_posts.map(post => {if (post.date === isoDate) {
             todaysPost = post
+            toggleTest(post)
             toggleDailyPostMade(true)
         }} )  
         } 
@@ -111,8 +115,9 @@ const Today = (props) => {
             summary,
             user_id: userId
         }
+        let postId = test.id
         
-        props.updateDailyPost(e, info, todaysPost.id)
+        props.updateDailyPost(e, info, postId)
         setOpen(false)
     }
 
@@ -133,6 +138,31 @@ const Today = (props) => {
         setOpenAddTask(false)
     }
 
+    const addWater = (e) => {
+        let info = {
+            water: test.water + 1
+        }
+
+        let postId = test.id
+
+        props.updatePostWater(e, info, postId)
+    }
+
+    const removeWater = (e) => {
+        if (test.water > 0) {
+            let info = {
+                water: test.water - 1
+            }
+            let postId = test.id
+
+            props.updatePostWater(e, info, postId)
+        } else {
+            alert("Sorry, you can't have less than 0 cups of water!")
+        }
+
+        
+    }
+
     const renderDailyPost = () => {
         
         if (props.daily_posts) {
@@ -141,21 +171,27 @@ const Today = (props) => {
                 if (todaysPost) {return <div> 
                         {todaysPost.day} 
                         <br /><br/>
-                        Today, you felt like
+                        <strong>Today, you felt like</strong>
                         <br /> 
                         <img src={todaysPost.mood.image} alt="mood color"/>
                         <br /><br/>
-                        And you feel like you're struggling with:
+                        <strong>And you feel like you're struggling with:</strong>
                         <br /> 
                         {todaysPost.struggle}
                         <br /><br />
-                        But... you're thankful for this:
+                        <strong>But... you're thankful for this:</strong>
                         <br />
                         {todaysPost.thankful}
                         <br /><br />
-                        And just a recap of today:
+                        <strong>And just a recap of today:</strong>
                         <br />
                         {todaysPost.summary}
+                        <br /><br />
+                        <strong>Stay hydrated!</strong>
+                        <br />
+                        {<LocalDrink fontSize="small" color="primary"/>}: {todaysPost.water}
+                        <br/>
+                        {<IndeterminateCheckBox fontSize="small" onClick={(e) => removeWater(e)}/>}{ <AddBox fontSize="small" onClick={(e) => addWater(e)} />}
                 </div>} else { return "Looks like you don't have a post for today. Go ahead and add one now!"}
         } else {
             return "Looks like you don't have a post for today. Go ahead and add one now!"
@@ -163,6 +199,9 @@ const Today = (props) => {
     }
 
     const openPostModal = () => {
+        if (props.daily_posts) {
+                props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}})
+        }
         
         if (dailyPostMade) {
             setMood(todaysPost.mood_id)
@@ -199,9 +238,10 @@ const Today = (props) => {
             <Grid container spacing={3}>
                 <Grid item sm={12}>
                     <Paper className={classes.paper}>{dateTime}</Paper>
-                    <Paper className={classes.paper}>*render weather icon/widget here*
+                    <Paper className={classes.paper}>
                         <div>
                             <div className="weathericon">
+                                change image to circle
                                 <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
                             </div>
                             <div className="weatherinfo">
@@ -212,6 +252,10 @@ const Today = (props) => {
                             </div>
                         </div>
                     </Paper>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid item sm={6}>
                     <Paper className={classes.paper}>
                         {/* Modal to Add A Daily Post */}
                         <Modal
@@ -308,7 +352,7 @@ const Today = (props) => {
                         </Modal>
 
                         {/* Modal to View Today's Post */}
-                        <Modal
+                        {/* <Modal
                             basic
                             onClose={() => setSecondOpen(false)}
                             onOpen={() => setSecondOpen(true)}
@@ -334,20 +378,18 @@ const Today = (props) => {
                                 <Icon name='remove' /> Close
                                 </Button>
                             </Modal.Actions>
-                        </Modal>
+                        </Modal> */}
+                        <br />
+                        {renderDailyPost()}
                     </Paper>
+    
+                </Grid>
+                <Grid item sm>
                     <Paper className={classes.paper}>
-                        *render today's post here*
+                        *render previous daily posts here w/ scroll and possibly by month*
                     </Paper>
-                    
-                    
                 </Grid>
-                {/* <Grid item xs={5}>
-                    <Paper className={classes.paper}>xs=6</Paper>
-                </Grid>
-                <Grid item xs={5}>
-                    <Paper className={classes.paper}>xs=6</Paper>
-                </Grid> */}
+                
             </Grid>
             <Grid container spacing={4}>
                 <Grid item xs={4}>

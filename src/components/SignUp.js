@@ -38,6 +38,7 @@ const SignUp = (props) => {
     const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [location, setLocation] = useState("")
+    const [zipcode, setZipcode] = useState("")
 
     const handleOnSubmit = (e) => {
         e.preventDefault()
@@ -45,7 +46,8 @@ const SignUp = (props) => {
             username,
             password,
             name,
-            location
+            location,
+            zipcode
         }
         props.signUpFxn(e, user)
 
@@ -53,6 +55,7 @@ const SignUp = (props) => {
         setPassword("")
         setName("")
         setLocation("")
+        setZipcode("")
     }
 
     return (
@@ -108,6 +111,16 @@ const SignUp = (props) => {
                     label="LOCATION"
                     name="location"
                     onChange={(e) => setLocation(e.target.value)}
+                />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="zipcode"
+                    label="ZIPCODE"
+                    name="zipcode"
+                    onChange={(e) => setZipcode(e.target.value)}
                 />
                 
                 <Button

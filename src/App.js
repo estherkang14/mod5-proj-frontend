@@ -247,6 +247,24 @@ fetchUserApi = (userId) => {
     })
   }
 
+  updatePostWater = (e, postInfo, postId) => {
+    e.preventDefault()
+    const form = new FormData()
+    form.append('water', postInfo.water)
+
+    let options = {
+      method: 'PATCH',
+      body: form
+    }
+
+    fetch(DAILYPOSTURL + postId, options)
+    .then(response => response.json())
+    .then(daily_post => {
+      console.log(daily_post)
+      this.props.updateDailyPost(daily_post)
+    })
+  }
+
   addEventForUser = (e, eventInfo) => {
     e.preventDefault()
     const form = new FormData()
@@ -360,7 +378,7 @@ fetchUserApi = (userId) => {
 
                 <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
                 updateDailyPost={this.updateDailyPost} addEventForUser={this.addEventForUser} 
-                destroyTask={this.destroyTask} />} />
+                destroyTask={this.destroyTask} updatePostWater={this.updatePostWater}/>} />
                 
                 <Route path="/" render={(routeProps) => (this.props.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
                 logIn={this.logIn} signUp={this.signUp} 
