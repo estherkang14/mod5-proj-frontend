@@ -221,6 +221,7 @@ const Today = (props) => {
                             trigger={<Button> {dailyPostMade ? "Update Daily Post" : "Add Daily Post" }</Button>}
                             centered={true}
                             closeOnDimmerClick={false}
+                            className="modal"
                             >
                             <Header icon>
                                 <Icon name='calendar' />
@@ -313,6 +314,7 @@ const Today = (props) => {
                             size='small'
                             trigger={<Button>View Today's Post</Button>}
                             centered={true}
+                            className="modal"
                             >
                             <Header icon>
                                 <Icon name='calendar' />
@@ -345,6 +347,7 @@ const Today = (props) => {
                             size='small'
                             // trigger={<Button>Add a Task</Button>}
                             closeOnDimmerClick={false}
+                            className="modal"
                             >
                             <Header icon>
                                 <Icon name='calendar' />

@@ -21,3 +21,7 @@ code {
   font: Arial, Helvetica, sans-serif,
     monospace !important;
 }
+
+.modal { 
+  margin-left: 350px !important;
+}

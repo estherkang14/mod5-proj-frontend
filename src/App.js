@@ -348,9 +348,9 @@ fetchUserApi = (userId) => {
             <div>
             <BrowserRouter>
             <div className="App">
-            {this.renderTopNavBar()}
+            {/* {this.renderTopNavBar()} */}
             {/* {this.renderSideNavBar()} */}
-            <SideNavBar />
+            <SideNavBar logOut={this.logOut}/>
             <div className="container">
                 <Switch>
                 {/* Routes and components go here!  */}

@@ -223,6 +223,7 @@ const Month = (props) => {
                 onOpen={() => setOpenAddEvent(true)}
                 open={openAddEvent}
                 size='small'
+                className="modal"
                 // trigger={<Button>Basic Modal</Button>}
                 >
                 <Header icon>
