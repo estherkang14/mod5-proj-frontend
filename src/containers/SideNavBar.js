@@ -34,8 +34,8 @@ const SideNavBar = (props) => {
                         TODAY
                     </a>
                     
-                    <a className="item" href="/month" id="monthnav">
-                        MONTH
+                    <a className="item" href="/calendar" id="calendarnav">
+                        CALENDAR
                     </a>
                 </div>
             </div>

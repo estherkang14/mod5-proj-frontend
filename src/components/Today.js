@@ -35,6 +35,10 @@ const Today = (props) => {
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
     let todaysDate = newDateTime.toLocaleDateString()
     let isoDate = new Date().toISOString().substring(0, 10)
+    let hour = newDateTime.getHours()
+
+    const [timeForIcon, setTimeForIcon] = React.useState("")
+    const [iconTag, setIconTag] = React.useState("")
 
     const [dailyPostMade, toggleDailyPostMade] = React.useState(false)
 
@@ -50,25 +54,29 @@ const Today = (props) => {
         props.daily_posts.map(post => {if (post.date === isoDate) {
             todaysPost = post
             toggleDailyPostMade(true)
-        }} )
-    }}, [])
+        }} )  
+        } 
+        
+        if (6 < hour < 18) {
+            setTimeForIcon("d")
+        } else if ( 24 > hour > 18 || hour < 6) {
+            setTimeForIcon("n")
+        }
+
+        // renderWeatherIcon()
+    }, [])
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
     const [openAddTask, setOpenAddTask] = React.useState(false)
 
     const [date, setDate] = React.useState(isoDate)
-    // const [mood, setMood] = React.useState(todaysPost.mood_id)
-    // const [struggle, setStruggle] = React.useState(todaysPost.struggle)
-    // const [thankful, setThankful] = React.useState(todaysPost.thankful)
-    // const [summary, setSummary] = React.useState(todaysPost.summary)
     const [mood, setMood] = React.useState("")
     const [struggle, setStruggle] = React.useState("")
     const [thankful, setThankful] = React.useState("")
     const [summary, setSummary] = React.useState("")
 
     const [userId, setuserId] = React.useState(JSON.parse(localStorage.userId))
-    const [dailyPostCreated, toggleDailyPostCreated] = React.useState(false)
 
     const [title, setNewTitle] = React.useState("")
     const [end_date, setNewEndingDate] = React.useState("")
@@ -128,6 +136,7 @@ const Today = (props) => {
     const renderDailyPost = () => {
         
         if (props.daily_posts) {
+            let todaysPost
                 props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
                 if (todaysPost) {return <div> 
                         {todaysPost.day} 
@@ -164,6 +173,22 @@ const Today = (props) => {
         setOpen(true)
     }
 
+    const renderWeatherIcon = () => {
+        if (props.weatherInfo.desc.main === "Thunderstorm") {
+            setIconTag("11")
+        } else if (props.weatherInfo.desc.main === "Drizzle") {
+            setIconTag("09")
+        } else if (props.weatherInfo.desc.main === "Rain") {
+            setIconTag("10")
+        } else if (props.weatherInfo.desc.main === "Clear") {
+            setIconTag("01")
+        } else if (props.weatherInfo.desc.main === "Clouds") {
+            setIconTag("02")
+        } else if (props.weatherInfo.desc.main === "Snow") {
+            setIconTag("13")
+        }
+    }
+
   
     return (
         <div>
@@ -174,7 +199,17 @@ const Today = (props) => {
             <Grid container spacing={3}>
                 <Grid item sm={12}>
                     <Paper className={classes.paper}>{dateTime}</Paper>
-                    <Paper className={classes.paper}>*render weather icon/widget here*</Paper>
+                    <Paper className={classes.paper}>*render weather icon/widget here*
+                        {/* <div>
+                            
+                            <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/>
+                            Current: {props.weatherInfo.temperature.main} F <br/>
+                            Feels like: {props.weatherInfo.temperature.feels_like} F <br/>
+                            Low: {props.weatherInfo.temperature.temp_min} F <br />
+                            High: {props.weatherInfo.temperature.temp_max} F <br/>
+                            
+                        </div> */}
+                    </Paper>
                     <Paper className={classes.paper}>
                         {/* Modal to Add A Daily Post */}
                         <Modal

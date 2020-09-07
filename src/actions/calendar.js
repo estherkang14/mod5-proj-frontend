@@ -59,10 +59,3 @@ export const deleteTask = deletedTask => {
         deletedTask
     }
 }
-
-export const getWeather = weather => {
-    return {
-        type: 'GET_WEATHER',
-        weather
-    }
-}

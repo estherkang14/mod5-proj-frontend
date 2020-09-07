@@ -19,8 +19,9 @@ if (localStorage.loggedIn) {
     user_events: (JSON.parse(localStorage.getItem('userEvents'))), 
     tasks: (JSON.parse(localStorage.getItem('tasks'))), 
     holidays: (JSON.parse(localStorage.getItem('holidays'))),
-    toggle_daily_post: dailyPost 
-    }
+    // weatherInfo: {temperature: localStorage.getItem('weather').main, desc: localStorage.getItem('weather').weather},
+    toggle_daily_post: dailyPost
+}
 
 } else {
     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
@@ -75,11 +76,6 @@ export default function userReducer (state = initialState, action) {
             return {
                 ...state, 
                 userData: action.userData
-            }
-        case 'GET_WEATHER':
-            return {
-                ...state,
-                weather: action.weather
             }
         case 'STORE_MOODS':
             return {
@@ -153,10 +149,10 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 user_events: state.user_events.filter(userEvent => userEvent.id !== action.deletedEvent.id)
             }
-        case 'RERENDER':
+        case 'STORE_WEATHER':
             return {
-                ...state, 
-                rerender: !state.rerender
+                ...state,
+                weatherInfo: {temperature: action.weather.main, desc: action.weather.weather}
             }
         default:
             return state 

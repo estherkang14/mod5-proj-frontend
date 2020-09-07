@@ -9,8 +9,8 @@ import SideNavBar from './containers/SideNavBar'
 import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents } from './actions/auth'
-import { toggleDailyPostButton, getWeather, reRender, postEvent, postTask, deleteTask, postDailyPost, 
+import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather } from './actions/auth'
+import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost, 
   updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
 // import { useHistory } from 'react-router-dom'
 // import { createBrowserHistory } from 'history'
@@ -141,6 +141,7 @@ fetchUserApi = (userId) => {
 
     if (localStorage.userId) {
       this.fetchUserApi(localStorage.userId)
+      // this.fetchWeather()
     }
   }
 
@@ -158,9 +159,15 @@ fetchUserApi = (userId) => {
     }
   }
 
-  fetchWeather = () => {
-    
-  }
+  // fetchWeather = () => {
+  //   fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     localStorage.setItem("weather", JSON.stringify(data))
+  //     this.props.storeWeather(data)
+  //     console.log("Weather fetched")
+  //   })
+  // }
 
   fetchMoods = () => {
     fetch(MOODSURL)
@@ -347,7 +354,7 @@ fetchUserApi = (userId) => {
             <div className="container">
                 <Switch>
                 {/* Routes and components go here!  */}
-                <Route path="/month" render={(routeProps) => <Month addEventForUser={this.addEventForUser} 
+                <Route path="/calendar" render={(routeProps) => <Month addEventForUser={this.addEventForUser} 
                 updateEvent={this.updateEvent} destroyEvent={this.destroyEvent} {...routeProps}/>} />
 
                 <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
@@ -391,7 +398,8 @@ fetchUserApi = (userId) => {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.userReducer.loggedIn,
-    user_events: state.userReducer['user_events']
+    user_events: state.userReducer['user_events'],
+    userData: state.userReducer.userData
   }
 }
 
@@ -409,10 +417,10 @@ const actionCreators = {
   deleteTask, 
   toggleDailyPostButton, 
   storeEvents, 
-  reRender,
   updateEvent,
   updateDailyPost,
-  deleteEvent
+  deleteEvent,
+  storeWeather
 }
 
 

@@ -64,6 +64,13 @@ export const storeEvents = events => {
     }
 }
 
+export const storeWeather = weather => {
+    return {
+        type: 'STORE_WEATHER',
+        weather
+    }
+}
+
 // export const postDailyPost = post => {
 //     return {
 //         type: 'POST_DAILY_POST',
