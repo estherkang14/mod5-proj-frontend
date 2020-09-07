@@ -19,7 +19,7 @@ if (localStorage.loggedIn) {
     user_events: (JSON.parse(localStorage.getItem('userEvents'))), 
     tasks: (JSON.parse(localStorage.getItem('tasks'))), 
     holidays: (JSON.parse(localStorage.getItem('holidays'))),
-    // weatherInfo: {temperature: localStorage.getItem('weather').main, desc: localStorage.getItem('weather').weather},
+    weatherInfo: {temperature: JSON.parse(localStorage.getItem('weather')).main, desc: JSON.parse(localStorage.getItem('weather')).weather[0]},
     toggle_daily_post: dailyPost
 }
 
@@ -152,7 +152,7 @@ export default function userReducer (state = initialState, action) {
         case 'STORE_WEATHER':
             return {
                 ...state,
-                weatherInfo: {temperature: action.weather.main, desc: action.weather.weather}
+                weatherInfo: {temperature: action.weather.main, desc: action.weather.weather[0]}
             }
         default:
             return state 

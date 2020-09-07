@@ -141,7 +141,7 @@ fetchUserApi = (userId) => {
 
     if (localStorage.userId) {
       this.fetchUserApi(localStorage.userId)
-      // this.fetchWeather()
+      this.fetchWeather()
     }
   }
 
@@ -159,15 +159,15 @@ fetchUserApi = (userId) => {
     }
   }
 
-  // fetchWeather = () => {
-  //   fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     localStorage.setItem("weather", JSON.stringify(data))
-  //     this.props.storeWeather(data)
-  //     console.log("Weather fetched")
-  //   })
-  // }
+  fetchWeather = () => {
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("weather", JSON.stringify(data))
+      this.props.storeWeather(data)
+      console.log("Weather fetched")
+    })
+  }
 
   fetchMoods = () => {
     fetch(MOODSURL)
@@ -198,6 +198,7 @@ fetchUserApi = (userId) => {
     form.append('struggle', postInfo.struggle)
     form.append('thankful', postInfo.thankful)
     form.append('summary', postInfo.summary)
+    form.append('water', 0)
     
     let options = {
       method: 'POST',
@@ -232,7 +233,7 @@ fetchUserApi = (userId) => {
     form.append('summary', postInfo.summary)
 
     let options = {
-      method: 'PUT',
+      method: 'PATCH',
       body: form
     }
 

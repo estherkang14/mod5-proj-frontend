@@ -63,7 +63,7 @@ const Today = (props) => {
             setTimeForIcon("n")
         }
 
-        // renderWeatherIcon()
+        renderWeatherIcon()
     }, [])
 
     const [open, setOpen] = React.useState(false)
@@ -200,15 +200,17 @@ const Today = (props) => {
                 <Grid item sm={12}>
                     <Paper className={classes.paper}>{dateTime}</Paper>
                     <Paper className={classes.paper}>*render weather icon/widget here*
-                        {/* <div>
-                            
-                            <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/>
-                            Current: {props.weatherInfo.temperature.main} F <br/>
+                        <div>
+                            <div className="weathericon">
+                                <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
+                            </div>
+                            <div className="weatherinfo">
+                            Current: {props.weatherInfo.temperature.temp} F <br/>
                             Feels like: {props.weatherInfo.temperature.feels_like} F <br/>
                             Low: {props.weatherInfo.temperature.temp_min} F <br />
                             High: {props.weatherInfo.temperature.temp_max} F <br/>
-                            
-                        </div> */}
+                            </div>
+                        </div>
                     </Paper>
                     <Paper className={classes.paper}>
                         {/* Modal to Add A Daily Post */}
@@ -333,62 +335,12 @@ const Today = (props) => {
                                 </Button>
                             </Modal.Actions>
                         </Modal>
-
-                        {/* Button for Displaying Today's Calendar */}
-                        <br />
-                        <Button onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
-                         "Close Today's Calendar" : "Display Today's Calendar" }</Button>
-
-                        <Modal
-                            basic
-                            onClose={() => setOpenAddTask(false)}
-                            onOpen={() => setOpenAddTask(true)}
-                            open={openAddTask}
-                            size='small'
-                            // trigger={<Button>Add a Task</Button>}
-                            closeOnDimmerClick={false}
-                            className="modal"
-                            >
-                            <Header icon>
-                                <Icon name='calendar' />
-                                Add a New To-Do Item!
-                            </Header>
-                            <Modal.Content>
-                                <div>
-                                    <form className="ui form">
-                                        <div className="field">
-                                            <p>Title</p>
-                                            <input name="title" placeholder="e.g., Go Grocery Shopping"
-                                            onChange={(e) => setNewTitle(e.target.value)}></input>
-                                        </div>
-                                        <br />
-
-                                        <div className="field">
-                                            <p>Due Date, if applicable (YYYY/MM/DD)</p>
-                                            <input name="end" placeholder="e.g., 2020/08/31"
-                                            onChange={(e) => setNewEndingDate(e.target.value)}></input>
-                                        </div>
-                                        <br />
-
-                                        <div className="field">
-                                            <p>Notes</p>
-                                            <input name="notes" placeholder="e.g., 'Avocados, chips, cookie dough'"
-                                            onChange={(e) => setNewNotes(e.target.value)}></input>
-                                        </div>
-                                        <br />
-                                    </form>
-                                </div>
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button basic color='red' inverted onClick={() => setOpenAddTask(false)}>
-                                <Icon name='remove' /> Cancel/Close
-                                </Button>
-                                <Button color='green' inverted onClick={(e) => createNewTask(e)}>
-                                <Icon name='checkmark' /> Add Item!
-                                </Button>
-                            </Modal.Actions>
-                        </Modal>
                     </Paper>
+                    <Paper className={classes.paper}>
+                        *render today's post here*
+                    </Paper>
+                    
+                    
                 </Grid>
                 {/* <Grid item xs={5}>
                     <Paper className={classes.paper}>xs=6</Paper>
@@ -461,6 +413,67 @@ const Today = (props) => {
                     </Paper>
                 </Grid>
             </Grid>
+            <Grid container spacing={3}>
+                <Grid item sm={12}>
+                    <Paper className={classes.paper}>
+
+                        {/* Button for Displaying Today's Calendar */}
+                        <br />
+                        <Button onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
+                         "Close Today's Calendar" : "Display Today's Calendar" }</Button>
+
+                        <Modal
+                            basic
+                            onClose={() => setOpenAddTask(false)}
+                            onOpen={() => setOpenAddTask(true)}
+                            open={openAddTask}
+                            size='small'
+                            // trigger={<Button>Add a Task</Button>}
+                            closeOnDimmerClick={false}
+                            className="modal"
+                            >
+                            <Header icon>
+                                <Icon name='calendar' />
+                                Add a New To-Do Item!
+                            </Header>
+                            <Modal.Content>
+                                <div>
+                                    <form className="ui form">
+                                        <div className="field">
+                                            <p>Title</p>
+                                            <input name="title" placeholder="e.g., Go Grocery Shopping"
+                                            onChange={(e) => setNewTitle(e.target.value)}></input>
+                                        </div>
+                                        <br />
+
+                                        <div className="field">
+                                            <p>Due Date, if applicable (YYYY/MM/DD)</p>
+                                            <input name="end" placeholder="e.g., 2020/08/31"
+                                            onChange={(e) => setNewEndingDate(e.target.value)}></input>
+                                        </div>
+                                        <br />
+
+                                        <div className="field">
+                                            <p>Notes</p>
+                                            <input name="notes" placeholder="e.g., 'Avocados, chips, cookie dough'"
+                                            onChange={(e) => setNewNotes(e.target.value)}></input>
+                                        </div>
+                                        <br />
+                                    </form>
+                                </div>
+                            </Modal.Content>
+                            <Modal.Actions>
+                                <Button basic color='red' inverted onClick={() => setOpenAddTask(false)}>
+                                <Icon name='remove' /> Cancel/Close
+                                </Button>
+                                <Button color='green' inverted onClick={(e) => createNewTask(e)}>
+                                <Icon name='checkmark' /> Add Item!
+                                </Button>
+                            </Modal.Actions>
+                        </Modal>
+                    </Paper>
+                </Grid>
+            </Grid>
             </div>
             <div>
                 { displayCalendar ? <DayCalendar /> : null }
@@ -477,7 +490,8 @@ const mapStateToProps = state => {
         moodsForForm: state.userReducer.moods,
         tasks: state.userReducer.tasks,
         daily_posts: state.userReducer.daily_posts,
-        toggle_daily_post: state.userReducer.toggle_daily_post
+        toggle_daily_post: state.userReducer.toggle_daily_post,
+        weatherInfo: state.userReducer.weatherInfo
     }
 }
 
