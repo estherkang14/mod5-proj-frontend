@@ -17,6 +17,7 @@ import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost,
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { TramRounded } from '@material-ui/icons';
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
@@ -54,6 +55,7 @@ fetchUserApi = (userId) => {
     .then(userData => {
     
       localStorage.setItem('userData', JSON.stringify(userData))
+      // this.fetchWeather()
       
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
@@ -87,12 +89,16 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(data => {
       if (!data.error) {
+        console.log(data)
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
         this.props.logIn(data.user)
         this.fetchUserApi(data.user.id)
+        // this.fetchWeather()
         this.setState({ loggedIn: true })
+        this.fetchMoods()
+        this.fetchHolidays()
         
       } else {
           this.setState({ loginSignupError: data.error })
@@ -118,6 +124,8 @@ fetchUserApi = (userId) => {
     .then(data => {
       if (!data.error) {
         this.fetchUserApi(data.user.id) 
+        // this.fetchWeather()
+        this.props.signUp(data.user)
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
@@ -129,35 +137,42 @@ fetchUserApi = (userId) => {
   }
 
   logOut = (e) => {
-    localStorage.clear()
+    this.clearLocalStorage()
     console.log("log out in app")
     this.props.logOut()
-    this.setState({ loggedIn: false })
+    this.setState({ 
+      loggedIn: false,
+      loginSignupError: "You have been logged out!",
+      openSnack: true 
+     })
+
+  }
+
+  clearLocalStorage = () => {
+    localStorage.removeItem('daily_posts')
+    localStorage.removeItem('loggedIn')
+    localStorage.removeItem('tasks')
+    localStorage.removeItem('token')
+    localStorage.removeItem('userData')
+    localStorage.removeItem('userEvents')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('weather')
   }
 
   componentDidMount = () => {
-    this.fetchMoods()
-    this.fetchHolidays()
-
+    
     if (localStorage.userId) {
       this.fetchUserApi(localStorage.userId)
       this.fetchWeather()
     }
+    
+    this.fetchMoods()
+    this.fetchHolidays()
+
   }
 
 
 
-  renderTopNavBar = () => {
-    if (localStorage.getItem('loggedIn')) {
-      return (
-        <TopNavBar2 logOut={logOut}/>
-      )
-    } else {
-      return ( 
-        <TopNavBar />
-      )
-    }
-  }
 
   fetchWeather = () => {
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
@@ -376,11 +391,11 @@ fetchUserApi = (userId) => {
                 <Route path="/calendar" render={(routeProps) => <Month addEventForUser={this.addEventForUser} 
                 updateEvent={this.updateEvent} destroyEvent={this.destroyEvent} {...routeProps}/>} />
 
-                <Route path="/home" render={(routeProps) => <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
+                <Route path="/home" render={(routeProps) => (localStorage.loggedIn) ? <DisplayPage {...routeProps} postDailyPost={this.addDailyPost}
                 updateDailyPost={this.updateDailyPost} addEventForUser={this.addEventForUser} 
-                destroyTask={this.destroyTask} updatePostWater={this.updatePostWater}/>} />
+                destroyTask={this.destroyTask} updatePostWater={this.updatePostWater}/> : <Redirect to="/" />} />
                 
-                <Route path="/" render={(routeProps) => (this.props.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
+                <Route path="/" render={(routeProps) => (localStorage.loggedIn) ? <Redirect to="/home" /> : <LandingPage 
                 logIn={this.logIn} signUp={this.signUp} 
                  {...routeProps}/>} />
                 </Switch>
@@ -416,9 +431,9 @@ fetchUserApi = (userId) => {
 
 const mapStateToProps = (state) => {
   return {
-    loggedIn: state.userReducer.loggedIn,
-    user_events: state.userReducer['user_events'],
-    userData: state.userReducer.userData
+    // loggedIn: state.userReducer.loggedIn,
+    // user_events: state.userReducer['user_events'],
+    userData: state.userData
   }
 }
 

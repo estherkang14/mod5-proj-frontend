@@ -109,26 +109,25 @@ const SideNavBar = (props) => {
                 </List>
             <Divider />
                 <List className={classes.list}>
-                    <ListItem button onClick={(e) => {this.props.logOut(e)}} className={classes.list}>
+                    <ListItem button onClick={(e) => {props.logOut(e)}} className={classes.list}>
                         <img src={LogOutLogo} className="sideNavImg" alt="log out navigation" />
                     </ListItem> 
                 </List>
             <Divider />
-                <List className={classes.credits}>
-                    <ListItem className={classes.list}>
-                        <a href="https://github.com/estherkang14">Github</a>
-                    </ListItem>
-                    <ListItem className={classes.list}>
-                        <a href="https://www.linkedin.com/in/esther-kang-117296140/">LinkedIn</a>
-                    </ListItem>
-                    <ListItem className={classes.list}>
-                        Created by: Esther Kang
-                        <br />
-                        2020
-                    </ListItem>
-                </List>
+                
           </div> : null }
-          
+              <List className={classes.credits}>
+                  <ListItem className={classes.list}>
+                      Created by: Esther Kang (2020)
+                  </ListItem>
+                  <ListItem className={classes.list}>
+                      <a href="https://github.com/estherkang14">Github</a>
+                  </ListItem>
+                  <ListItem className={classes.list}>
+                      <a href="https://www.linkedin.com/in/esther-kang-117296140/">LinkedIn</a>
+                  </ListItem>
+                  
+              </List>
         </Drawer>
       </div>
     )
@@ -159,9 +158,11 @@ const SideNavBar = (props) => {
 // export default SideNavBar
 
 const mapStateToProps = state => {
+  if (localStorage.loggedIn ) {
     return {
-        userData: state.userReducer.userData
+        userData: state.userData
     }
+  }
 }
 
 export default connect(mapStateToProps)(SideNavBar);

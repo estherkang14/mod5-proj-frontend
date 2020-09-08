@@ -24,8 +24,19 @@ if (localStorage.loggedIn) {
 }
 
 } else {
-    initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-    moods: JSON.parse(localStorage.getItem('moods')) }
+    // initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
+    // moods: JSON.parse(localStorage.getItem('moods')) }
+
+    initialState = { loggedIn: false,
+    userData: {}, 
+    moods: JSON.parse(localStorage.getItem('moods')),
+    holidays: JSON.parse(localStorage.getItem('holidays')),
+    tasks: [],
+    daily_posts: [],
+    user_events: [],
+    weatherInfo: {},
+
+    }
 }
 
 
@@ -50,26 +61,49 @@ export default function userReducer (state = initialState, action) {
     let newState
 
     switch(action.type) {
+        case 'PROCESS_LOGIN':
+            return {
+                ...state,
+                processing_login: true
+            }
         case 'LOGIN':
+            fetch(`http://api.openweathermap.org/data/2.5/weather?q=${action.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+                .then(response => response.json())
+                .then(data => {
+                localStorage.setItem("weather", JSON.stringify(data))
+                console.log("Weather fetched")
+            })
             return {
                 ...state,
                 loggedIn: true,
-                userAccount: action.user
+                userData: action.userData,
+                processing_login: false,
+                user_events: action.userData.events.filter(event => event.event_type !== "Task"),
+                tasks: action.userData.events.filter(event => event.event_type === "Task"),
+                daily_posts: action.userData.daily_posts
             }
         case 'LOGOUT':
-            localStorage.clear()
+           
             console.log("log out from reducer")
             return {
-                ...state,
                 loggedIn: false,
-                userAccount: {},
-                userData: {}
+                userData: {}, 
+                moods: JSON.parse(localStorage.getItem('moods')),
+                holidays: JSON.parse(localStorage.getItem('holidays')),
+                tasks: [],
+                daily_posts: [],
+                user_events: [],
+                weatherInfo: {}
             }
         case 'SIGNUP':
             return {
                 ...state,
                 loggedIn: true,
-                userAccount: action.user
+                userData: action.user,
+                processing_login: false,
+                user_events: action.userData.events.filter(event => event.event_type !== "Task"),
+                tasks: action.userData.events.filter(event => event.event_type === "Task"),
+                daily_posts: action.userData.daily_posts
             }
         case 'STORE_USER_DATA':
             

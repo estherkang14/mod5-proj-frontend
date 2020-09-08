@@ -1,14 +1,58 @@
+// export const processLogin = user => {
+
+// }
+
 export const logIn = user => {
-    return {
-        type: 'LOGIN',
-        user
+    return (dispatch) => {
+        dispatch( { type: 'PROCESS_LOGIN' });
+        fetch('http://localhost:3000/users/' + user.id)
+            .then(response => response.json())
+            .then(userData => {
+                localStorage.setItem('userData', JSON.stringify(userData))
+                    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+                    .then(response => response.json())
+                    .then(weather => {
+                    localStorage.setItem("weather", JSON.stringify(weather))
+                    dispatch( {type: 'STORE_WEATHER', weather})
+                    console.log("Weather fetched")
+                })
+                
+                // let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
+                // let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
+                
+                // localStorage.setItem('userEvents', JSON.stringify(nontasks))
+                // localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
+                // localStorage.setItem('tasks', JSON.stringify(tasks))
+                // console.log("User Data Fetched")
+                // console.log(userData)
+                dispatch( { type: 'LOGIN', userData})
+        })
     }
 }
 
 export const signUp = user => {
-    return {
-        type: 'SIGNUP',
-        user
+    return (dispatch) => {
+        dispatch( { type: 'PROCESS_LOGIN' });
+        fetch('http://localhost:3000/users/' + user.id)
+            .then(response => response.json())
+            .then(userData => {
+                localStorage.setItem('userData', JSON.stringify(userData))
+                    fetch(`http://api.openweathermap.org/data/2.5/weather?q=${userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+                    .then(response => response.json())
+                    .then(data => {
+                    localStorage.setItem("weather", JSON.stringify(data))
+                    console.log("Weather fetched")
+                })
+
+                // let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
+                // let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
+                // localStorage.setItem('userEvents', JSON.stringify(nontasks))
+                // localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
+                // localStorage.setItem('tasks', JSON.stringify(tasks))
+                // console.log("User Data Fetched")
+                // console.log(userData)
+                dispatch( { type: 'SIGNUP', userData})
+        })
     }
 }
 

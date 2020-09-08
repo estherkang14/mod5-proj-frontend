@@ -45,6 +45,8 @@ const Today = (props) => {
     const [dailyPostMade, toggleDailyPostMade] = React.useState(false)
     const [test, toggleTest] = React.useState({})
 
+    const [weather, setWeather] = React.useState({})
+
     let todaysPost
         // if (props.daily_posts) {
         //         props.daily_posts.map(post => {if (post.date === isoDate) {
@@ -53,6 +55,16 @@ const Today = (props) => {
         //         }} )
         // } 
     React.useEffect(() => { 
+       
+        // fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
+        // .then(response => response.json())
+        // .then(data => {
+        //     localStorage.setItem("weather", JSON.stringify(data))
+        //     this.props.storeWeather(data)
+
+        //     console.log("Weather fetched")})
+           
+        // refreshPage()
         if (props.daily_posts) {
         props.daily_posts.map(post => {if (post.date === isoDate) {
             todaysPost = post
@@ -66,9 +78,13 @@ const Today = (props) => {
         } else if ( 24 > hour > 18 || hour < 6) {
             setTimeForIcon("n")
         }
+        if (props.weatherInfo.temperature) {renderWeatherIcon() } 
+        // renderWeatherIcon()
+    }, [props.daily_posts, props.tasks, props.weatherInfo])
 
-        renderWeatherIcon()
-    }, [])
+    function refreshPage() {
+        window.location.reload(false)
+    }
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
@@ -100,6 +116,7 @@ const Today = (props) => {
             user_id: userId
         }
         props.postDailyPost(e, info)
+        toggleTest(test)
         setOpen(false)
         toggleDailyPostMade(true)
         
@@ -144,6 +161,7 @@ const Today = (props) => {
         }
 
         let postId = test.id
+        toggleTest({...test, water: test.water + 1})
 
         props.updatePostWater(e, info, postId)
     }
@@ -154,6 +172,7 @@ const Today = (props) => {
                 water: test.water - 1
             }
             let postId = test.id
+            toggleTest({...test, water: test.water - 1})
 
             props.updatePostWater(e, info, postId)
         } else {
@@ -167,7 +186,9 @@ const Today = (props) => {
         
         if (props.daily_posts) {
             let todaysPost
-                props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}} )
+                props.daily_posts.map(post => {if (post.date === isoDate) {
+                    todaysPost = post
+                }} )
                 if (todaysPost) {return <div> 
                         {todaysPost.day} 
                         <br /><br/>
@@ -189,9 +210,9 @@ const Today = (props) => {
                         <br /><br />
                         <strong>Stay hydrated!</strong>
                         <br />
-                        {<LocalDrink fontSize="small" color="primary"/>}: {todaysPost.water}
+                        {<LocalDrink fontSize="medium" color="primary"/>}: {todaysPost.water}
                         <br/>
-                        {<IndeterminateCheckBox fontSize="small" onClick={(e) => removeWater(e)}/>}{ <AddBox fontSize="small" onClick={(e) => addWater(e)} />}
+                        {<IndeterminateCheckBox fontSize="small" onClick={(e) => removeWater(e)}/>} | { <AddBox fontSize="small" onClick={(e) => addWater(e)} />}
                 </div>} else { return "Looks like you don't have a post for today. Go ahead and add one now!"}
         } else {
             return "Looks like you don't have a post for today. Go ahead and add one now!"
@@ -199,6 +220,7 @@ const Today = (props) => {
     }
 
     const openPostModal = () => {
+        let todaysPost
         if (props.daily_posts) {
                 props.daily_posts.map(post => {if (post.date === isoDate) {todaysPost = post}})
         }
@@ -208,6 +230,8 @@ const Today = (props) => {
             setStruggle(todaysPost.struggle)
             setThankful(todaysPost.thankful)
             setSummary(todaysPost.summary)
+            toggleDailyPostMade(true)
+            toggleTest(todaysPost)
         } 
         setOpen(true)
     }
@@ -222,9 +246,15 @@ const Today = (props) => {
         } else if (props.weatherInfo.desc.main === "Clear") {
             setIconTag("01")
         } else if (props.weatherInfo.desc.main === "Clouds") {
-            setIconTag("02")
+            setIconTag("04")
         } else if (props.weatherInfo.desc.main === "Snow") {
             setIconTag("13")
+        } else if (props.weatherInfo.desc.main === "Smoke") {
+            setIconTag("50")
+        } else if (props.weatherInfo.desc.main === "Mist") {
+            setIconTag("50")
+        } else if (props.weatherInfo.desc.main === "Fog") {
+            setIconTag("50")
         }
     }
 
@@ -239,17 +269,18 @@ const Today = (props) => {
                 <Grid item sm={12}>
                     <Paper className={classes.paper}>{dateTime}</Paper>
                     <Paper className={classes.paper}>
-                        <div>
+                        {props.weatherInfo.temperature ? <div>
                             <div className="weathericon">
                                 <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
                             </div>
                             <div className="weatherinfo">
-                            Current: {props.weatherInfo.temperature.temp} F <br/>
+                            Current: {props.weatherInfo.temperature.temp} F and {props.weatherInfo.desc.main} <br/>
                             Feels like: {props.weatherInfo.temperature.feels_like} F <br/>
                             Low: {props.weatherInfo.temperature.temp_min} F <br />
                             High: {props.weatherInfo.temperature.temp_max} F <br/>
                             </div>
-                        </div>
+                        </div> : "Weather loading..."}
+                        
                     </Paper>
                 </Grid>
             </Grid>
@@ -463,6 +494,10 @@ const Today = (props) => {
                         <Button onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
                          "Close Today's Calendar" : "Display Today's Calendar" }</Button>
 
+                        <div>
+                            { displayCalendar ? <DayCalendar /> : null }
+                        </div>
+
                         <Modal
                             basic
                             onClose={() => setOpenAddTask(false)}
@@ -516,9 +551,9 @@ const Today = (props) => {
                 </Grid>
             </Grid>
             </div>
-            <div>
+            {/* <div>
                 { displayCalendar ? <DayCalendar /> : null }
-            </div>
+            </div> */}
             </Container>
         </div>
     ) 
@@ -527,12 +562,12 @@ const Today = (props) => {
 
 const mapStateToProps = state => {
     return {
-        userEvents: state.userReducer.userEvents,
-        moodsForForm: state.userReducer.moods,
-        tasks: state.userReducer.tasks,
-        daily_posts: state.userReducer.daily_posts,
-        toggle_daily_post: state.userReducer.toggle_daily_post,
-        weatherInfo: state.userReducer.weatherInfo
+        userEvents: state.userEvents,
+        moodsForForm: state.moods,
+        tasks: state.tasks,
+        daily_posts: state.daily_posts,
+        toggle_daily_post: state.toggle_daily_post,
+        weatherInfo: state.weatherInfo
     }
 }
 

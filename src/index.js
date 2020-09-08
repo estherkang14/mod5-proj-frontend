@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { combineReducers } from 'redux'
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux'
 import userReducer from './reducers/userReducer'
 import 'fontsource-roboto';
+import thunk from 'redux-thunk'
 
-let rootReducer = combineReducers({ userReducer })
+// let rootReducer = combineReducers({ userReducer })
 
-const store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const store = createStore(userReducer, 
+  compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+)
 
 ReactDOM.render(
   <React.StrictMode>

@@ -13,7 +13,7 @@ const DayCalendar = (props) => {
   React.useEffect( () => {
     if (props.daily_posts) {
       props.daily_posts.map(post => setCalendarEvents(prevState => [...prevState, {title: 'DAILY POST', 
-      date: post.date, id: "daily post", extendedProps: post.mood, color: post.mood.hexcode, display: 'background'}]))
+      date: post.date, id: "daily post", extendedProps: {mood: post.mood}, color: post.mood.hexcode, display: 'background'}]))
   }
   if (props.holidays) {
       props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, 
@@ -32,13 +32,8 @@ const DayCalendar = (props) => {
       <FullCalendar
         plugins={[ dayGridPlugin, interactionPlugin ]}
         initialView="dayGridDay"
-        // customButtons={{
-        //     addEventButton: {
-        //         text: 'Add Event',
-        //         click: () => setOpenAddEvent(true)
-        //     }
-        // }}
         headerToolbar={{
+          right: "",
           center: 'title',
           left: 'today prev,next'
       }}
@@ -51,9 +46,9 @@ const DayCalendar = (props) => {
 
 const mapStateToProps = state => {
   return {
-    holidays: state.userReducer.holidays,
-    user_events: state.userReducer['user_events'],
-    daily_posts: state.userReducer['daily_posts']
+    holidays: state.holidays,
+    user_events: state['user_events'],
+    daily_posts: state['daily_posts']
   }
 }
 

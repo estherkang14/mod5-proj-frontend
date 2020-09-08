@@ -57,7 +57,7 @@ const Month = (props) => {
         setCalendarEvents([])
         if (props.daily_posts) {
             props.daily_posts.map(post => setCalendarEvents(prevState => [...prevState, {title: 'DAILY POST', 
-            date: post.date, id: "daily post", extendedProps: post.mood, color: post.mood.hexcode, display: 'background'}]))
+            date: post.date, id: "daily post", extendedProps: {post: post, mood: post.mood}, color: post.mood.hexcode, display: 'background'}]))
         }
         if (props.holidays) {
             props.holidays.map(event => setCalendarEvents(prevState => [...prevState, {title: event.title, 
@@ -65,7 +65,7 @@ const Month = (props) => {
         }
         if (props.user_events) {
             props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, 
-            start: event['start_date'], end: event['end_date'], id: event.id, extendedProps: event.notes,
+            start: event['start_date'], end: event['end_date'], id: event.event_type, extendedProps: {notes: event.notes, eventId: event.id},
             borderColor: getEventBGColor(event)}]))
 
         }
@@ -145,19 +145,17 @@ const Month = (props) => {
     }
 
     const handleEventClick = (arg) => {
-        console.log(arg.event)
-        console.log(arg.event._def.title)
-        console.log(arg.event._def.publicId) // grabs event Id
-        let eventId = parseInt(arg.event._def.publicId, 10)
+        
+        console.log(arg.event._def.extendedProps.eventId) // grabs event Id
+        let eventId = parseInt(arg.event._def.extendedProps.eventId, 10)
         setUpdateId(eventId)
         let updateEventObj
         // make these alerts into snackboxes 
         if (arg.event._def.publicId === "holiday") {alert("Sorry! You can't update holidays")
-        } else if (arg.event.d_def.publicId === "daily post") { 
+        } else if (arg.event._def.publicId === "daily post") { 
             {alert("Sorry! You can't update daily posts from here")}
         } else {
         props.user_events.map(event => {if (event.id === eventId) {updateEventObj = event}})
-        console.log(updateEventObj)
         
         setNewTitle(updateEventObj.title)
         setNewStartDate(updateEventObj.start_date)
@@ -334,9 +332,9 @@ const Month = (props) => {
 
 const mapStateToProps = state => {
     return {
-        holidays: state.userReducer.holidays,
-        user_events: state.userReducer['user_events'],
-        daily_posts: state.userReducer['daily_posts']
+        holidays: state.holidays,
+        user_events: state['user_events'],
+        daily_posts: state['daily_posts']
     }
 }
 
