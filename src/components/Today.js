@@ -149,7 +149,7 @@ const Today = (props) => {
     }
 
     const removeWater = (e) => {
-        if (test.water > 0) {
+        if (test.water >= 1) {
             let info = {
                 water: test.water - 1
             }
@@ -173,7 +173,7 @@ const Today = (props) => {
                         <br /><br/>
                         <strong>Today, you felt like</strong>
                         <br /> 
-                        <img src={todaysPost.mood.image} alt="mood color"/>
+                        <img src={todaysPost.mood.image} alt="mood color" className="moodImage"/>
                         <br /><br/>
                         <strong>And you feel like you're struggling with:</strong>
                         <br /> 
@@ -241,7 +241,6 @@ const Today = (props) => {
                     <Paper className={classes.paper}>
                         <div>
                             <div className="weathericon">
-                                change image to circle
                                 <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
                             </div>
                             <div className="weatherinfo">

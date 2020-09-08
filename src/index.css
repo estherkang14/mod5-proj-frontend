@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  margin-top: 100px !important;
+  margin-top: 50px !important;
+  margin-bottom: 50px !important;
   margin-left: 300px !important;
   margin-right: 100px !important; 
   padding: 30px;
@@ -24,4 +25,16 @@ code {
 
 .modal { 
   margin-left: 350px !important;
+}
+
+.logo-image {
+  width: 80px;
+}
+
+.mood-image {
+  border-radius: 50%;
+}
+
+.sideNavImg {
+  width: 80px; 
 }

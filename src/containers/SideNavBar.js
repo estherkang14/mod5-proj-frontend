@@ -11,6 +11,11 @@ import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 
+import Logo from '../components/logo.png'
+import TodayLogo from '../components/todaylogo.jpg'
+import CalendarLogo from '../components/calendarlogo.jpg'
+import LogOutLogo from '../components/logoutlogo.jpg'
+
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -31,6 +37,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
+  list: {
+      alignItems: 'center',
+      justifyContent: 'center'
+  },
+  credits: {
+      position: "fixed",
+      bottom: 0,
+      textAlign: 'center',
+      paddingBottom: 10,
+  }
 }));
 
 const SideNavBar = (props) => {
@@ -73,33 +89,43 @@ const SideNavBar = (props) => {
           }}
           anchor="left"
         >
-          <div className={classes.toolbar} />
-          <div>{ localStorage.loggedIn ? displayWelcome() : <div>Log in or sign up to get started!</div> }</div> 
+          <div />
+          {/* <div className={classes.toolbar} /> */} <br /> <br />
+            <div><img src={Logo} alt="your day logo" className="logo-image" /></div> <br/>
+            <div>{ localStorage.loggedIn ? displayWelcome() : <div>Log in or sign up to get started!</div> }</div> 
           <Divider />
           {localStorage.loggedIn ? <div>
-                <List>
-                {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                </ListItem>
-                ))} */}
+                <List className={classes.list}>
                 <a href="/home" id="homenav">
-                    <ListItem button>
-                        <ListItemText primary="TODAY"/>
+                    <ListItem button className={classes.list}>
+                        <img src={TodayLogo} className="sideNavImg" alt="today navigation" />
                     </ListItem>
                 </a>
                 <a href="/calendar" id="calendarnav">
-                    <ListItem button>
-                        <ListItemText primary="CALENDAR" />
+                    <ListItem button className={classes.list}>
+                        <img src={CalendarLogo} className="sideNavImg" alt="calendar navigation" />
                     </ListItem>
                 </a>
                 </List>
             <Divider />
-                <List>
-                    <ListItem button onClick={(e) => {this.props.logOut(e)}}>
-                        <ListItemText primary="LOG OUT" />
+                <List className={classes.list}>
+                    <ListItem button onClick={(e) => {this.props.logOut(e)}} className={classes.list}>
+                        <img src={LogOutLogo} className="sideNavImg" alt="log out navigation" />
                     </ListItem> 
+                </List>
+            <Divider />
+                <List className={classes.credits}>
+                    <ListItem className={classes.list}>
+                        <a href="https://github.com/estherkang14">Github</a>
+                    </ListItem>
+                    <ListItem className={classes.list}>
+                        <a href="https://www.linkedin.com/in/esther-kang-117296140/">LinkedIn</a>
+                    </ListItem>
+                    <ListItem className={classes.list}>
+                        Created by: Esther Kang
+                        <br />
+                        2020
+                    </ListItem>
                 </List>
           </div> : null }
           
