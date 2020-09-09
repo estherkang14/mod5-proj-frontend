@@ -3,8 +3,8 @@ Flatiron School - Module 5 Final Project.
 
 ![yourdaylogo](https://cdn.discordapp.com/attachments/749783037281042626/753351314666160128/Copy_of_find.jpg)
 
-Frontend: https://github.com/estherkang14/mod5-proj-frontend
-Backend: https://github.com/estherkang14/mod5-proj-backend
+- Frontend: https://github.com/estherkang14/mod5-proj-frontend
+- Backend: https://github.com/estherkang14/mod5-proj-backend
 
 ## Project Details
 
