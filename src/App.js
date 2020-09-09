@@ -3,13 +3,11 @@ import './App.css';
 import 'semantic-ui-css/semantic.min.css' 
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import LandingPage from './containers/LandingPage'
-import TopNavBar from './containers/TopNavBar'
-import TopNavBar2 from './containers/TopNavBar2'
 import SideNavBar from './containers/SideNavBar'
 import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { logIn, storeUser, logOut,  storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather } from './actions/auth'
+import { logIn, storeUser, logOut, signUp, storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather } from './actions/auth'
 import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost, 
   updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
 // import { useHistory } from 'react-router-dom'
@@ -43,7 +41,6 @@ class App extends React.Component {
       return;
     }
 
-    // setOpenSnack(false);
     this.setState({
         openSnack: false
     })
@@ -55,7 +52,6 @@ fetchUserApi = (userId) => {
     .then(userData => {
     
       localStorage.setItem('userData', JSON.stringify(userData))
-      // this.fetchWeather()
       
       let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
       let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
@@ -68,7 +64,6 @@ fetchUserApi = (userId) => {
       this.props.storeTasks(tasks)
       this.props.storeDailyPosts(posts)
       this.props.storeEvents(nontasks)
-      // this.setState({ user_events_array: nontasks })
       console.log("User Data Fetched")
       console.log(userData)
     })
@@ -93,9 +88,9 @@ fetchUserApi = (userId) => {
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
+        localStorage.setItem("name", data.user.name)
         this.props.logIn(data.user)
         this.fetchUserApi(data.user.id)
-        // this.fetchWeather()
         this.setState({ loggedIn: true })
         this.fetchMoods()
         this.fetchHolidays()
@@ -124,11 +119,11 @@ fetchUserApi = (userId) => {
     .then(data => {
       if (!data.error) {
         this.fetchUserApi(data.user.id) 
-        // this.fetchWeather()
         this.props.signUp(data.user)
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
+        localStorage.setItem("name", data.user.name)
       } else {
         this.setState({ loginSignupError: data.error })
         this.setState({ openSnack: true})
@@ -138,7 +133,6 @@ fetchUserApi = (userId) => {
 
   logOut = (e) => {
     this.clearLocalStorage()
-    console.log("log out in app")
     this.props.logOut()
     this.setState({ 
       loggedIn: false,
@@ -232,7 +226,6 @@ fetchUserApi = (userId) => {
         this.setState({ openSnack: true})
       }
     })
-    .then(console.log("blah"))
     .catch((errors) => console.log(errors))
   }
 
@@ -255,7 +248,6 @@ fetchUserApi = (userId) => {
     fetch(DAILYPOSTURL + postId, options)
     .then(response => response.json())
     .then(daily_post => {
-      console.log(daily_post)
       this.props.updateDailyPost(daily_post)  
       this.setState({ loginSignupError: `Daily Post for ${daily_post.date} has been updated` })
       this.setState({ openSnack: true})
@@ -275,7 +267,6 @@ fetchUserApi = (userId) => {
     fetch(DAILYPOSTURL + postId, options)
     .then(response => response.json())
     .then(daily_post => {
-      console.log(daily_post)
       this.props.updateDailyPost(daily_post)
     })
   }
@@ -298,8 +289,6 @@ fetchUserApi = (userId) => {
     fetch(EVENTSURL, options)
     .then(response => response.json())
     .then(event => {
-      console.log(event)
-
       if (!event.errors) {
         if (event.event_type === "Task") {
           this.props.postTask(event)
@@ -336,7 +325,7 @@ fetchUserApi = (userId) => {
 
     fetch(EVENTSURL + updateid, options)
     .then(response => response.json())
-    .then(data => {console.log(data)
+    .then(data => {
       if (!data.errors) {
         this.props.updateEvent(data)
         this.setState({ loginSignupError: `Event '${data.title}' has been updated` })
@@ -355,7 +344,7 @@ fetchUserApi = (userId) => {
 
     fetch(EVENTSURL + `${userEvent}`, {method: 'DELETE'})
     .then(response => response.json())
-    .then(deletedEvent => { console.log(deletedEvent)
+    .then(deletedEvent => { 
       this.props.deleteEvent(deletedEvent)
       this.setState({ loginSignupError: `Event '${deletedEvent.title}' has been deleted` })
       this.setState({ openSnack: true})
@@ -367,7 +356,7 @@ fetchUserApi = (userId) => {
 
     fetch(EVENTSURL + `${task.id}`, {method: 'DELETE'})
     .then(response => response.json())
-    .then(deletedTask => { console.log(deletedTask) 
+    .then(deletedTask => {  
         this.props.deleteTask(deletedTask)
         this.setState({ loginSignupError: `Task '${deletedTask.title}' has been deleted` })
         this.setState({ openSnack: true})
@@ -441,6 +430,7 @@ const actionCreators = {
   storeUser, 
   logIn, 
   logOut, 
+  signUp,
   storeMoods, 
   storeHolidays, 
   storeDailyPosts, 

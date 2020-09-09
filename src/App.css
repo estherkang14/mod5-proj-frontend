@@ -42,6 +42,8 @@ body {
   margin-top: 50px;
   margin-left: 300px;
   margin-bottom: 50px;
+  font: Arial, Helvetica, sans-serif,
+    monospace !important;
 }
 
 .moodImage {
@@ -52,4 +54,9 @@ body {
 .moodImagePopover {
   border-radius: 50%;
   width: 30px;
+}
+
+h4 {
+  font: Arial, Helvetica, sans-serif,
+    monospace !important;
 }

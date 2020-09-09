@@ -44,13 +44,6 @@ export const signUp = user => {
                     console.log("Weather fetched")
                 })
 
-                // let nontasks = userData['events'].filter(event => event['event_type'] !== "Task")
-                // let tasks = userData['events'].filter(event=> event['event_type'] === "Task")
-                // localStorage.setItem('userEvents', JSON.stringify(nontasks))
-                // localStorage.setItem('daily_posts', JSON.stringify(userData['daily_posts']))
-                // localStorage.setItem('tasks', JSON.stringify(tasks))
-                // console.log("User Data Fetched")
-                // console.log(userData)
                 dispatch( { type: 'SIGNUP', userData})
         })
     }

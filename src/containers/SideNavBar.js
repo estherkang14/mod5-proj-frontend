@@ -51,13 +51,18 @@ const useStyles = makeStyles((theme) => ({
 
 const SideNavBar = (props) => {
 
+  React.useEffect(() => {
+    console.log("hi")
+  }, [props.userData])
+
     const classes = useStyles();
     let date = new Date()
     let time = date.toLocaleTimeString([], {timeStyle: 'short'})
     let dateTime = date.toLocaleString
     let hour = date.getHours()
     let name
-    if (localStorage.loggedIn) {name = props.userData.name}
+    if (localStorage.loggedIn) {name = localStorage.getItem('name')}
+    // {name = props.userData.name}
 
     let displayWelcome = () => {
         if (localStorage.loggedIn) {
@@ -121,10 +126,10 @@ const SideNavBar = (props) => {
                       Created by: Esther Kang (2020)
                   </ListItem>
                   <ListItem className={classes.list}>
-                      <a href="https://github.com/estherkang14">Github</a>
+                      <a href="https://github.com/estherkang14" style={{color: 'black'}}>Github</a>
                   </ListItem>
                   <ListItem className={classes.list}>
-                      <a href="https://www.linkedin.com/in/esther-kang-117296140/">LinkedIn</a>
+                      <a href="https://www.linkedin.com/in/esther-kang-117296140/" style={{color: 'black'}}>LinkedIn</a>
                   </ListItem>
                   
               </List>

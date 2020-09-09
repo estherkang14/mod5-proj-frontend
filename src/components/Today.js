@@ -15,6 +15,9 @@ import { LocalDrink, AddBox, IndeterminateCheckBox } from '@material-ui/icons';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Popover from '@material-ui/core/Popover';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -64,8 +67,6 @@ const Today = (props) => {
 
     let todaysPost
     React.useEffect(() => { 
-       
-      
         if (props.daily_posts) {
         props.daily_posts.map(post => {if (post.date === isoDate) {
             todaysPost = post
@@ -139,10 +140,7 @@ const Today = (props) => {
         setOpen(false)
     }
 
-    const renderEvents = () => {
-        console.log(JSON.parse(localStorage.userId)) 
-    }
-
+ 
     const createNewTask = (e) => {
         let taskinfo = {
             title,
@@ -177,7 +175,8 @@ const Today = (props) => {
 
             props.updatePostWater(e, info, postId)
         } else {
-            alert("Sorry, you can't have less than 0 cups of water!")
+            setSnackMsg("Sorry, you can't have less than 0 cups of water!")
+            setOpenSnack(true)
         }
     }
 
@@ -270,6 +269,17 @@ const Today = (props) => {
     
     const popoverOpen = Boolean(anchorEl)
 
+    const [openSnack, setOpenSnack] = React.useState(false)
+    const [snackMsg, setSnackMsg] = React.useState("")
+
+    const handleSnackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        
+        setOpenSnack(false);
+    };
+
   
     return (
         <div>
@@ -286,6 +296,7 @@ const Today = (props) => {
                                 <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
                             </div>
                             <div className="weatherinfo">
+                            {props.userData.location ? <strong>{props.userData.location}</strong> : null}<br/>
                             <strong>Current:</strong> {props.weatherInfo.temperature.temp} F and {props.weatherInfo.desc.main} <br/>
                             <strong>Feels like:</strong> {props.weatherInfo.temperature.feels_like} F <br/>
                             <strong>Low:</strong> {props.weatherInfo.temperature.temp_min} F <br />
@@ -320,11 +331,12 @@ const Today = (props) => {
                             
                                 <div className="">
                                 <form className="ui form" >
-                                    <div className="field">
+                                    {dailyPostMade? null : <div className="field">
                                         <p>Today's Date (YYYY/MM/DD)</p>
                                         <input name="date" placeholder="e.g., 2020/08/30" value={date}
                                         onChange={(e) => setDate(e.target.value)}></input>
-                                    </div>
+                                    </div>}
+                                    
                                     <br />
                                    
                                     <div className="field">
@@ -572,6 +584,26 @@ const Today = (props) => {
             </Grid>
             </div>
             </Container>
+
+            <div> {/*div for snackbar */}
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                open={openSnack}
+                autoHideDuration={4000}
+                message={snackMsg}
+                onClose={handleSnackClose}
+                action={
+                    <React.Fragment>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={() => handleSnackClose()}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                    </React.Fragment>
+                }
+            />
+            </div>
         </div>
     ) 
     
@@ -583,8 +615,8 @@ const mapStateToProps = state => {
         moodsForForm: state.moods,
         tasks: state.tasks,
         daily_posts: state.daily_posts,
-        toggle_daily_post: state.toggle_daily_post,
-        weatherInfo: state.weatherInfo
+        weatherInfo: state.weatherInfo,
+        userData: state.userData
     }
 }
 

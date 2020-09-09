@@ -110,7 +110,7 @@ const SignUp = (props) => {
                     id="zipcode"
                     label="ZIPCODE"
                     name="zipcode"
-                    onChange={(e) => setZipcode(e.target.value)}
+                    onChange={(e) => setZipcode(Number(e.target.value))}
                 />
                 <TextField
                     variant="outlined"

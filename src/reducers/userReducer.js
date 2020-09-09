@@ -5,12 +5,12 @@ let initialState
 // if (daily_posts && user_events) {
 
 if (localStorage.loggedIn) {
-    let dailyPost
-    if (localStorage.dailyPost) {
-        dailyPost = true
-    } else {
-        dailyPost = false
-    }
+    // let dailyPost
+    // if (localStorage.dailyPost) {
+    //     dailyPost = true
+    // } else {
+    //     dailyPost = false
+    // }
 
     initialState = { loggedIn: localStorage.getItem('loggedIn'), 
     userData: JSON.parse(localStorage.getItem('userData')),
@@ -20,7 +20,7 @@ if (localStorage.loggedIn) {
     tasks: (JSON.parse(localStorage.getItem('tasks'))), 
     holidays: (JSON.parse(localStorage.getItem('holidays'))),
     weatherInfo: {temperature: JSON.parse(localStorage.getItem('weather')).main, desc: JSON.parse(localStorage.getItem('weather')).weather[0]},
-    toggle_daily_post: dailyPost
+    // toggle_daily_post: dailyPost
 }
 
 } else {
@@ -167,11 +167,11 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 tasks: state.tasks.filter(task => task.id !== action.deletedTask.id)
             }
-        case 'TOGGLE_DAILY_POST_BUTTON': 
-            return {
-                ...state,
-                toggle_daily_post: !state.toggle_daily_post
-            }
+        // case 'TOGGLE_DAILY_POST_BUTTON': 
+        //     return {
+        //         ...state,
+        //         toggle_daily_post: !state.toggle_daily_post
+        //     }
         case 'STORE_EVENTS':
             console.log("bye")
             return {

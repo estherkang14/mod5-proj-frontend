@@ -15,6 +15,9 @@ import Popover from '@material-ui/core/Popover';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -134,8 +137,6 @@ const Month = (props) => {
     }
 
     const handleSelection = (arg) => {
-        // console.log(arg)
-        // console.log(arg.start)
         setNewStartDate(arg.startStr)
         setNewEndingDate(arg.endStr)
         toggleUpdatingEvent(false)
@@ -150,9 +151,12 @@ const Month = (props) => {
         setUpdateId(eventId)
         let updateEventObj
         // make these alerts into snackboxes 
-        if (arg.event._def.publicId === "holiday") {alert("Sorry! You can't update holidays")
+        if (arg.event._def.publicId === "holiday") {
+            setSnackMsg("Sorry! You can't update holidays")
+            setOpenSnack(true)
         } else if (arg.event._def.publicId === "daily post") { 
-            {alert("Sorry! You can't update daily posts from here")}
+            setSnackMsg("Sorry! You can't update daily posts from here")
+            setOpenSnack(true)
         } else {
         props.user_events.map(event => {if (event.id === eventId) {updateEventObj = event}})
         
@@ -237,6 +241,20 @@ const Month = (props) => {
     }
     
     const popoverOpen = Boolean(anchorEl)
+
+    const [openSnack, setOpenSnack] = React.useState(false)
+    const [snackMsg, setSnackMsg] = React.useState("")
+
+    const handleSnackClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        
+        setOpenSnack(false);
+        // this.setState({
+        //     openSnack: false
+        // })
+    };
 
 
     if (localStorage.loggedIn) {
@@ -376,6 +394,26 @@ const Month = (props) => {
                                 </div>)}
                                 <Button onClick={() => handlePopoverClose()} basic size="tiny" > Close </Button>
                             </Popover> </div> : null }
+
+            <div> {/*div for snackbar */}
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                open={openSnack}
+                autoHideDuration={4000}
+                message={snackMsg}
+                onClose={handleSnackClose}
+                action={
+                    <React.Fragment>
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={() => handleSnackClose()}>
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                    </React.Fragment>
+                }
+            />
+            </div>
         </div>
     ) }  else {
         alert("Sorry, you must be logged in to see your monthly calendar!")
