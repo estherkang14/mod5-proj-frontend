@@ -107,21 +107,21 @@ const SignUp = (props) => {
                     margin="normal"
                     required
                     fullWidth
-                    id="location"
-                    label="LOCATION"
-                    name="location"
-                    onChange={(e) => setLocation(e.target.value)}
-                />
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
                     id="zipcode"
                     label="ZIPCODE"
                     name="zipcode"
                     onChange={(e) => setZipcode(e.target.value)}
                 />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
+                    id="location"
+                    label="LOCATION"
+                    name="location"
+                    onChange={(e) => setLocation(e.target.value)}
+                />
+                
                 
                 <Button
                     type="submit"

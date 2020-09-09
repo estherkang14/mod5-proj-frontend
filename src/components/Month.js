@@ -10,15 +10,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-// import bootstrapPlugin from '@fullcalendar/bootstrap'; //new code
 import { Redirect } from 'react-router-dom'
 import Popover from '@material-ui/core/Popover';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 import "semantic-ui-css/semantic.min.css";
 
 
-import 'bootstrap/dist/css/bootstrap.css'; //new code
-import '@fortawesome/fontawesome-free/css/all.css'; //new code
 
 const useStyles = makeStyles((theme) => ({
     // formControl: {
@@ -36,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
         //change background color to light grey
+      },
+      root: {
+        flexGrow: 1,
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        overflow: 'auto'
       },
   }));
 
@@ -318,35 +325,45 @@ const Month = (props) => {
                     
             </Modal>
 
-            <FullCalendar
-                plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
-                initialView="dayGridMonth"
-                // themeSystem='bootstrap'
-                selectable={true}
-                timeZone="UTC"
-                forceEventDuration={true}
-                // dateClick={handleDateClick}
-                eventClick={handleEventClick}
-                select={handleSelection}
-                headerToolbar={{
-                    right: 'prev,next',
-                    center: 'title',
-                    left: 'today,dayGridMonth,timeGridWeek'
-                }}
-                navLinks={true} // new code? 
-                navLinkDayClick={handleNavLinkClick}
-                events={renderCalendarEvents}
-                // textColor='#000000'
-                eventColor='#909090'
-                dayMaxEventRows={true}
-                dayMaxEvents={true}
-                // editable={true}
-                // eventDragStart={handleEventStartChange()}
-                moreLinkClick="popover"
-                // dayCellClassNames={(arg) => console.log(arg)}
+        <Container fixed>
+        <div className={classes.root.flexGrow}>
+        <Grid container spacing={3}>
+            <Grid item sm={12}>
+                <Paper className={classes.paper}>
+                    <FullCalendar
+                        plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
+                        initialView="dayGridMonth"
+                        // themeSystem='bootstrap'
+                        selectable={true}
+                        timeZone="UTC"
+                        forceEventDuration={true}
+                        // dateClick={handleDateClick}
+                        eventClick={handleEventClick}
+                        select={handleSelection}
+                        headerToolbar={{
+                            right: 'prev,next',
+                            center: 'title',
+                            left: 'today,dayGridMonth,timeGridWeek'
+                        }}
+                        navLinks={true} // new code? 
+                        navLinkDayClick={handleNavLinkClick}
+                        events={renderCalendarEvents}
+                        // textColor='#000000'
+                        eventColor='#909090'
+                        dayMaxEventRows={true}
+                        dayMaxEvents={true}
+                        // editable={true}
+                        // eventDragStart={handleEventStartChange()}
+                        moreLinkClick="popover"
+                        // dayCellClassNames={(arg) => console.log(arg)}
 
-            />
-
+                    />
+                </Paper>
+            </Grid>
+        </Grid>
+        </div>
+        </Container>
+        {/* POPOVER FOR EVENT DISPLAY */}
             {anchorEl ? <div><Popover id='mouse-over-popover' className={classes.popover}
                             classes={{paper: classes.paper}} open={popoverOpen} anchorEl={anchorEl}
                             anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}

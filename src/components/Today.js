@@ -253,6 +253,8 @@ const Today = (props) => {
             setIconTag("50")
         } else if (props.weatherInfo.desc.main === "Fog") {
             setIconTag("50")
+        } else if (props.weatherInfo.desc.main === "Haze") {
+            setIconTag("50")
         }
     }
 
@@ -438,9 +440,10 @@ const Today = (props) => {
                     <Paper className={classes.paper}>
                         
                         { props.tasks ? <div>
-                            { props.tasks[0] ? `${props.tasks[0].title} 
-                                Notes: ${(props.tasks[0].notes ? props.tasks[0].notes : "none")}
-                                Complete by: ${(props.tasks[0].end_date ? props.tasks[0].end_date : "N/A")}` : "To-Do: Empty" }
+                            { props.tasks[0] ? <div><strong>{props.tasks[0].title}</strong>
+                                <br/><strong>Complete by:</strong> {props.tasks[0].end_date ? props.tasks[0].end_date : "N/A"} 
+                                <br/><strong>Notes:</strong> {props.tasks[0].notes ? props.tasks[0].notes : "none"}
+                                </div> : "To-do: Empty"}
                                 <br />
                                 { props.tasks[0] ? 
                                     <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
@@ -459,9 +462,13 @@ const Today = (props) => {
                     <Paper className={classes.paper}>
 
                         { props.tasks ? <div>
-                            { props.tasks[1] ? `${props.tasks[1].title} 
+                            {/* { props.tasks[1] ? `${props.tasks[1].title} 
                                 Notes: ${(props.tasks[1].notes ? props.tasks[1].notes : "none")}
-                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "To-Do: Empty" }
+                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "To-Do: Empty" } */}
+                            { props.tasks[1] ? <div><strong>{props.tasks[1].title}</strong>
+                                <br/><strong>Complete by:</strong> {props.tasks[1].end_date ? props.tasks[1].end_date : "N/A"} 
+                                <br/><strong>Notes:</strong> {props.tasks[1].notes ? props.tasks[1].notes : "none"}
+                                </div> : "To-do: Empty"}
                                 <br />
                                 { props.tasks[1] ? 
                                     <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
@@ -480,9 +487,10 @@ const Today = (props) => {
                     <Paper className={classes.paper}>
 
                         { props.tasks ? <div>
-                            { props.tasks[2] ? `${props.tasks[2].title} 
-                                Notes: ${(props.tasks[2].notes ? props.tasks[2].notes : "none")}
-                                Complete by: ${(props.tasks[2].end_date ? props.tasks[2].end_date : "N/A")}` : "To-do: Empty" }
+                            { props.tasks[2] ? <div><strong>{props.tasks[2].title}</strong>
+                                <br/><strong>Complete by:</strong> {props.tasks[2].end_date ? props.tasks[2].end_date : "N/A"} 
+                                <br/><strong>Notes:</strong> {props.tasks[2].notes ? props.tasks[2].notes : "none"}
+                                </div> : "To-do: Empty"}
                                 <br />
                                 { props.tasks[2] ? 
                                     <Button basic size="tiny" color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
