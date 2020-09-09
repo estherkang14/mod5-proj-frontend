@@ -12,11 +12,19 @@ import Select from '@material-ui/core/Select';
 import DayCalendar from './DayCalendar'
 import { toggleDailyPostButton } from '../actions/calendar'
 import { LocalDrink, AddBox, IndeterminateCheckBox } from '@material-ui/icons';
-
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Popover from '@material-ui/core/Popover';
 
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      width: '100%',
+      maxWidth: 330,
+      maxHeight: 360,
+      backgroundColor: theme.palette.background.paper,
+      position: 'relative',
+      overflow: 'auto'
     },
     paper: {
       padding: theme.spacing(2),
@@ -28,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
     },
+    gridList: {
+        width: 350,
+        height: 500
+    },
+    popover: {
+        pointerEvents: 'none',
+    }
   }));
 
 const Today = (props) => {
@@ -35,7 +50,7 @@ const Today = (props) => {
     
     let newDateTime = new Date()
     let dateTime = newDateTime.toLocaleTimeString([], {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'})
-    let todaysDate = newDateTime.toLocaleDateString()
+
     let isoDate = new Date().toISOString().substring(0, 10)
     let hour = newDateTime.getHours()
 
@@ -48,23 +63,9 @@ const Today = (props) => {
     const [weather, setWeather] = React.useState({})
 
     let todaysPost
-        // if (props.daily_posts) {
-        //         props.daily_posts.map(post => {if (post.date === isoDate) {
-        //             todaysPost = post
-        //             toggleDailyPostMade(true)
-        //         }} )
-        // } 
     React.useEffect(() => { 
        
-        // fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
-        // .then(response => response.json())
-        // .then(data => {
-        //     localStorage.setItem("weather", JSON.stringify(data))
-        //     this.props.storeWeather(data)
-
-        //     console.log("Weather fetched")})
-           
-        // refreshPage()
+      
         if (props.daily_posts) {
         props.daily_posts.map(post => {if (post.date === isoDate) {
             todaysPost = post
@@ -79,12 +80,10 @@ const Today = (props) => {
             setTimeForIcon("n")
         }
         if (props.weatherInfo.temperature) {renderWeatherIcon() } 
-        // renderWeatherIcon()
-    }, [props.daily_posts, props.tasks, props.weatherInfo])
 
-    function refreshPage() {
-        window.location.reload(false)
-    }
+        let sorted = props.daily_posts.sort((a,b) => (b.id - a.id))
+
+    }, [props.daily_posts, props.tasks, props.weatherInfo])
 
     const [open, setOpen] = React.useState(false)
     const [secondOpen, setSecondOpen] = React.useState(false)
@@ -104,6 +103,8 @@ const Today = (props) => {
 
     const [displayCalendar, toggleCalendar] = React.useState(false)
 
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [popoverDisplay, setPopoverDisplay] = React.useState(null)
     
 
     const createDailyPost = (e) => {
@@ -178,8 +179,6 @@ const Today = (props) => {
         } else {
             alert("Sorry, you can't have less than 0 cups of water!")
         }
-
-        
     }
 
     const renderDailyPost = () => {
@@ -191,7 +190,7 @@ const Today = (props) => {
                 }} )
                 if (todaysPost) {return <div> 
                         {todaysPost.day} 
-                        <br /><br/>
+                        <br />
                         <strong>Today, you felt like</strong>
                         <br /> 
                         <img src={todaysPost.mood.image} alt="mood color" className="moodImage"/>
@@ -207,17 +206,16 @@ const Today = (props) => {
                         <strong>And just a recap of today:</strong>
                         <br />
                         {todaysPost.summary}
-                        <br /><br />
-                        <strong>Stay hydrated!</strong>
-                        <br />
+                        <br /><br/>
                         {<LocalDrink fontSize="medium" color="primary"/>}: {todaysPost.water}
                         <br/>
                         {<IndeterminateCheckBox fontSize="small" onClick={(e) => removeWater(e)}/>} | { <AddBox fontSize="small" onClick={(e) => addWater(e)} />}
-                </div>} else { return "Looks like you don't have a post for today. Go ahead and add one now!"}
+                </div>} else { return "Looks like you don't have a post for today. Go ahead and add one now !!"}
         } else {
             return "Looks like you don't have a post for today. Go ahead and add one now!"
         }
     }
+
 
     const openPostModal = () => {
         let todaysPost
@@ -258,12 +256,24 @@ const Today = (props) => {
         }
     }
 
+    const handlePopoverOpen = (e) => {
+        props.daily_posts.map(post => {if (post.date === e.target.innerText) { setPopoverDisplay(post) }})
+
+        setAnchorEl(e.currentTarget)
+    }
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null)
+    }
+    
+    const popoverOpen = Boolean(anchorEl)
+
   
     return (
         <div>
             <Container fixed>
                 
-            <div className={classes.root}>
+            <div className={classes.root.flexGrow}>
             
             <Grid container spacing={3}>
                 <Grid item sm={12}>
@@ -274,10 +284,10 @@ const Today = (props) => {
                                 <img src={`http://openweathermap.org/img/wn/${iconTag}${timeForIcon}@2x.png`} alt="weather icon"/> <br/>
                             </div>
                             <div className="weatherinfo">
-                            Current: {props.weatherInfo.temperature.temp} F and {props.weatherInfo.desc.main} <br/>
-                            Feels like: {props.weatherInfo.temperature.feels_like} F <br/>
-                            Low: {props.weatherInfo.temperature.temp_min} F <br />
-                            High: {props.weatherInfo.temperature.temp_max} F <br/>
+                            <strong>Current:</strong> {props.weatherInfo.temperature.temp} F and {props.weatherInfo.desc.main} <br/>
+                            <strong>Feels like:</strong> {props.weatherInfo.temperature.feels_like} F <br/>
+                            <strong>Low:</strong> {props.weatherInfo.temperature.temp_min} F <br />
+                            <strong>High:</strong> {props.weatherInfo.temperature.temp_max} F <br/>
                             </div>
                         </div> : "Weather loading..."}
                         
@@ -286,15 +296,16 @@ const Today = (props) => {
             </Grid>
             <Grid container spacing={2}>
                 <Grid item sm={6}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto'}}>
                         {/* Modal to Add A Daily Post */}
+                        {renderDailyPost()}<br/>
                         <Modal
                             basic
                             onClose={() => setOpen(false)}
                             onOpen={() => openPostModal()}
                             open={open}
                             size='small'
-                            trigger={<Button> {dailyPostMade ? "Update Daily Post" : "Add Daily Post" }</Button>}
+                            trigger={<Button basic size="tiny"> {dailyPostMade ? "Update Daily Post" : "Add Daily Post" }</Button>}
                             centered={true}
                             closeOnDimmerClick={false}
                             className="modal"
@@ -380,43 +391,44 @@ const Today = (props) => {
                                 </Button>
                             </Modal.Actions>
                         </Modal>
-
-                        {/* Modal to View Today's Post */}
-                        {/* <Modal
-                            basic
-                            onClose={() => setSecondOpen(false)}
-                            onOpen={() => setSecondOpen(true)}
-                            open={secondOpen}
-                            size='small'
-                            trigger={<Button>View Today's Post</Button>}
-                            centered={true}
-                            className="modal"
-                            >
-                            <Header icon>
-                                <Icon name='calendar' />
-                                {todaysDate}
-                            </Header>
-                            <Modal.Content>
-                                <div className="">
-                                
-                                    <br />
-                                    {renderDailyPost()}
-                                </div>
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button basic color='red' inverted onClick={() => setSecondOpen(false)}>
-                                <Icon name='remove' /> Close
-                                </Button>
-                            </Modal.Actions>
-                        </Modal> */}
-                        <br />
-                        {renderDailyPost()}
+                        
                     </Paper>
     
                 </Grid>
+                {/* RENDER ALL DAILY POSTS HERE */}
                 <Grid item sm>
-                    <Paper className={classes.paper}>
-                        *render previous daily posts here w/ scroll and possibly by month*
+                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto'}}>
+                        <List className={classes.root.width, classes.root.maxWidth, classes.root.backgroundColor,
+                        classes.root.position, classes.root.overflow, classes.root.maxHeight} >
+                            <h4>Your previous daily posts:</h4>
+                            {props.daily_posts ? <div> {props.daily_posts.map(post => <div>
+                            <ListItem aria-owns={open ? 'mouse-over-popover' : undefined} aria-haspopup="true"
+                             >
+                                <Button size="mini" basic color={post.mood.hexcode} onClick={handlePopoverOpen} 
+                                onMouseLeave={handlePopoverClose}>{post.date}</Button>
+                            </ListItem>
+                            
+                            </div>
+                                )} </div> : "Looks like you don't have any previous daily posts. Get started now!"}
+                            
+                        </List>
+                        {anchorEl ? <div><Popover id='mouse-over-popover' className={classes.popover}
+                            classes={{paper: classes.paper}} open={popoverOpen} anchorEl={anchorEl}
+                            anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                            transformOrigin={{vertical: 'top', horizontal:'left'}} 
+                            onClose={handlePopoverClose} disableRestoreFocus> 
+                                <strong>Your mood was:</strong>
+                                <img src={popoverDisplay.mood.image} alt="mood color" className="moodImagePopover"/>
+                                <br />
+                                <strong>And you were struggling with:</strong> {popoverDisplay.struggle}
+                                <br />
+                                <strong>But... you were thankful for:</strong> {popoverDisplay.thankful}
+                                <br />
+                                <strong>Quick recap:</strong> {popoverDisplay.summary}
+                                <br />
+                                {<LocalDrink fontSize="small" color="primary"/>}: {popoverDisplay.water}
+                            </Popover> </div> : null }
+                        
                     </Paper>
                 </Grid>
                 
@@ -431,13 +443,13 @@ const Today = (props) => {
                                 Complete by: ${(props.tasks[0].end_date ? props.tasks[0].end_date : "N/A")}` : "To-Do: Empty" }
                                 <br />
                                 { props.tasks[0] ? 
-                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
+                                    <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
                                         <Icon name='remove' /> 
                                     </Button>  
-                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                :   <Button size="tiny" basic color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }
-                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                            </div> : <Button size="tiny" basic color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }    
 
@@ -452,13 +464,13 @@ const Today = (props) => {
                                 Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "To-Do: Empty" }
                                 <br />
                                 { props.tasks[1] ? 
-                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
+                                    <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
                                         <Icon name='remove' /> 
                                     </Button>  
-                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                :   <Button size="tiny" basic color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }
-                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                            </div> : <Button size="tiny" basic color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }    
 
@@ -473,13 +485,13 @@ const Today = (props) => {
                                 Complete by: ${(props.tasks[2].end_date ? props.tasks[2].end_date : "N/A")}` : "To-do: Empty" }
                                 <br />
                                 { props.tasks[2] ? 
-                                    <Button basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
+                                    <Button basic size="tiny" color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
                                         <Icon name='remove' /> 
                                     </Button>  
-                                :   <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                                :   <Button basic size="tiny" color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }
-                            </div> : <Button basic color='green' onClick={() => setOpenAddTask(true)}>
+                            </div> : <Button basic size="tiny" color='green' onClick={() => setOpenAddTask(true)}>
                                         <Icon name='plus' /> 
                                     </Button>  }
                     </Paper>
@@ -491,7 +503,7 @@ const Today = (props) => {
 
                         {/* Button for Displaying Today's Calendar */}
                         <br />
-                        <Button onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
+                        <Button basic onClick={() => toggleCalendar(!displayCalendar)}> { displayCalendar ? 
                          "Close Today's Calendar" : "Display Today's Calendar" }</Button>
 
                         <div>
@@ -551,9 +563,6 @@ const Today = (props) => {
                 </Grid>
             </Grid>
             </div>
-            {/* <div>
-                { displayCalendar ? <DayCalendar /> : null }
-            </div> */}
             </Container>
         </div>
     ) 

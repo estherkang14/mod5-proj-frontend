@@ -43,3 +43,13 @@ body {
   margin-left: 300px;
   margin-bottom: 50px;
 }
+
+.moodImage {
+  border-radius: 50%;
+  width: 40px;
+}
+
+.moodImagePopover {
+  border-radius: 50%;
+  width: 30px;
+}
