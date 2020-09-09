@@ -1,5 +1,5 @@
 # yourday. - a Javascript/React and Ruby/Rails web application
-Flatiron School - Module 5 Final Project.
+Flatiron School - Module 5 Final Project - created by Esther Kang
 
 ![yourdaylogo](https://cdn.discordapp.com/attachments/749783037281042626/753351314666160128/Copy_of_find.jpg)
 
