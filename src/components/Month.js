@@ -12,6 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 // import bootstrapPlugin from '@fullcalendar/bootstrap'; //new code
 import { Redirect } from 'react-router-dom'
+import Popover from '@material-ui/core/Popover';
 
 import "semantic-ui-css/semantic.min.css";
 
@@ -27,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
+    popover: {
+        pointerEvents: 'none',
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+        //change background color to light grey
+      },
   }));
 
 const Month = (props) => {
@@ -43,10 +53,12 @@ const Month = (props) => {
 
     const [renderCalendarEvents, setCalendarEvents] = React.useState([])
 
-    const [calenderCellColors, setCalendarCellColors] = React.useState([])
-
     const [updatingEvent, toggleUpdatingEvent] = React.useState(false)
     const [updateId, setUpdateId] = React.useState('')
+
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [popoverDisplay, setPopoverDisplay] = React.useState([])
 
 
     React.useEffect( () => {
@@ -66,42 +78,22 @@ const Month = (props) => {
         if (props.user_events) {
             props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, 
             start: event['start_date'], end: event['end_date'], id: event.event_type, extendedProps: {notes: event.notes, eventId: event.id},
-            borderColor: getEventBGColor(event)}]))
-
+            // borderColor: getEventBGColor(event)}]))
+            backgroundColor: getEventBGColor(event)}]))
         }
-        // if (props.user_events) {
-        //     props.user_events.map(event => {if (event.type === "Birthday") {
-        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
-        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#aec1d1"}])
-        //     } else if (event.type === "Work") {
-        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
-        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#708090"}])
-        //     } else if (event.type === "Personal") {
-        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
-        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#b8c0c7"}])
-        //     } else if (event.type === "School") {
-        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
-        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#9ba6b1"}])
-        //     } else if (event.type === "Other") {
-        //         setCalendarEvents(prevState => [...prevState, {title: event.title, start: event['start_date'],
-        //         end: event['end_date'], id: event.id, extendedProps: event.notes, backgroundColor: "#9d9d9d"}])
-        //     }})
-        // }
-        
     }
 
     const getEventBGColor = (eventForCal) => {
-        if (eventForCal.type === "Birthday") {
-            return "#aec1d1"
-        } else if (eventForCal.type === "Work") {
-            return "#708090"
-        } else if (eventForCal.type === "Personal") {
-            return "#b8c0c7"
-            
-        } else if (eventForCal.type === "School") {
-            return "#9ba6b1"
-        } else if (eventForCal.type === "Other") {
-            return "#9d9d9d"
+        if (eventForCal.event_type === "Birthday") {
+            return "#8075bb"
+        } else if (eventForCal.event_type === "Work") {
+            return "#66984b"
+        } else if (eventForCal.event_type === "Personal") {
+            return "#f08c2f"
+        } else if (eventForCal.event_type === "School") {
+            return "#2290da"
+        } else if (eventForCal.event_type === "Other") {
+            return "#da2290"
         }
     }
 
@@ -199,9 +191,6 @@ const Month = (props) => {
         setEventType("")
     }
 
-    const handleEventStartChange = (info) => {
-        console.log(info)
-    }
 
     const renderDeleteButton = () => {
             {return <div> 
@@ -209,6 +198,38 @@ const Month = (props) => {
             <Icon name='remove' /> DELETE </Button>
             </div>}
     }
+
+    const handleNavLinkClick = (e) => {
+        // console.log(e.toISOString().substring(0, 10))
+        // console.log(e.currentTarget)
+        // renderCalendarEvents.map( event => {if (event.date === e.toISOString().substring(0, 10)) {
+        //     setPopoverDisplay(prevState => [...prevState, event])
+        // }})
+        setPopoverDisplay([])
+
+        renderCalendarEvents.map( event => {
+            if (event.id !== "daily post") { 
+                if (event.date === e.toISOString().substring(0, 10) || event.start === e.toISOString().substring(0, 10)) {
+                    setPopoverDisplay(prevState => [...prevState, event])
+                }
+            }
+        })
+
+        if (popoverDisplay) {setAnchorEl(true)}
+    }
+
+    // const handlePopoverOpen = (e) => {
+    //     props.daily_posts.map(post => {if (post.date === e.target.innerText) { setPopoverDisplay(post) }})
+
+    //     setAnchorEl(e.currentTarget)
+    // }
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null)
+        setPopoverDisplay([])
+    }
+    
+    const popoverOpen = Boolean(anchorEl)
 
 
     if (localStorage.loggedIn) {
@@ -313,8 +334,10 @@ const Month = (props) => {
                     left: 'today,dayGridMonth,timeGridWeek'
                 }}
                 navLinks={true} // new code? 
+                navLinkDayClick={handleNavLinkClick}
                 events={renderCalendarEvents}
-                eventColor='#bdbdbd'
+                // textColor='#000000'
+                eventColor='#909090'
                 dayMaxEventRows={true}
                 dayMaxEvents={true}
                 // editable={true}
@@ -323,6 +346,19 @@ const Month = (props) => {
                 // dayCellClassNames={(arg) => console.log(arg)}
 
             />
+
+            {anchorEl ? <div><Popover id='mouse-over-popover' className={classes.popover}
+                            classes={{paper: classes.paper}} open={popoverOpen} anchorEl={anchorEl}
+                            anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                            transformOrigin={{vertical: 'top', horizontal:'left'}} 
+                            onClose={handlePopoverClose} disableRestoreFocus> 
+                               
+                                {popoverDisplay.map(event => <div>
+                                    Title: {event.title} <br/>
+
+                                </div>)}
+                                <Button onClick={() => handlePopoverClose()} basic size="tiny" > Close </Button>
+                            </Popover> </div> : null }
         </div>
     ) }  else {
         alert("Sorry, you must be logged in to see your monthly calendar!")
