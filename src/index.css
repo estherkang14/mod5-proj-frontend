@@ -24,11 +24,15 @@ code {
 }
 
 .modal { 
-  margin-left: 350px !important;
+  margin-left: 100px !important;
+  margin-top: 80px !important; 
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .logo-image {
-  width: 80px;
+  width: 90px;
 }
 
 .mood-image {
@@ -36,5 +40,5 @@ code {
 }
 
 .sideNavImg {
-  width: 80px; 
+  width: 90px; 
 }

@@ -16,7 +16,9 @@ import TodayLogo from '../components/todaylogo.jpg'
 import CalendarLogo from '../components/calendarlogo.jpg'
 import LogOutLogo from '../components/logoutlogo.jpg'
 
-const drawerWidth = 200;
+import { Icon } from 'semantic-ui-react'
+
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,7 +97,7 @@ const SideNavBar = (props) => {
           anchor="left"
         >
           <div />
-          {/* <div className={classes.toolbar} /> */} <br /> <br />
+          {/* <div className={classes.toolbar} /> */} <br /> <br /> <br /> <br /> 
             <div><img src={Logo} alt="your day logo" className="logo-image" /></div> <br/>
             <div>{ localStorage.loggedIn ? displayWelcome() : <div>Log in or sign up to get started!</div> }</div> 
           <Divider />
@@ -126,10 +128,10 @@ const SideNavBar = (props) => {
                       Created by: Esther Kang (2020)
                   </ListItem>
                   <ListItem className={classes.list}>
-                      <a href="https://github.com/estherkang14" style={{color: 'black'}}>Github</a>
+                      <a href="https://github.com/estherkang14" style={{color: 'black'}}><Icon size="large" name='github'/></a>
                   </ListItem>
                   <ListItem className={classes.list}>
-                      <a href="https://www.linkedin.com/in/esther-kang-117296140/" style={{color: 'black'}}>LinkedIn</a>
+                      <a href="https://www.linkedin.com/in/esther-kang-117296140/" style={{color: 'black'}}><Icon size="large" name='linkedin'/></a>
                   </ListItem>
                   
               </List>
