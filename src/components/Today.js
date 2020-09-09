@@ -331,14 +331,14 @@ const Today = (props) => {
                             
                                 <div className="">
                                 <form className="ui form" >
-                                    {dailyPostMade? null : <div className="field">
+                                    {/* {dailyPostMade? null : <div className="field">
                                         <p>Today's Date (YYYY/MM/DD)</p>
                                         <input name="date" placeholder="e.g., 2020/08/30" value={date}
                                         onChange={(e) => setDate(e.target.value)}></input>
                                     </div>}
                                     
                                     <br />
-                                   
+                                    */}
                                     <div className="field">
                                         <p>What color best describes your mood today?</p>
                                         <FormControl variant="outlined" className={classes.formControl}>
