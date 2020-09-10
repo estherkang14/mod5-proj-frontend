@@ -204,7 +204,7 @@ const Month = (props) => {
 
 
     const renderDeleteButton = () => {
-            {return <div> 
+            {return <div>
             <Button basic color="red" inverted onClick={(e) => deleteEvent(e)}>
             <Icon name='remove' /> DELETE </Button>
             </div>}
@@ -329,12 +329,15 @@ const Month = (props) => {
                     </div>
                 </Modal.Content>
                 <Modal.Actions>
-                    { updatingEvent ? renderDeleteButton() : null }
+                    
 
-                    <Button basic color='red' inverted onClick={() => toggleCloseModal()}>
+                    <Button basic color='yellow' inverted onClick={() => toggleCloseModal()}>
                     <Icon name='remove' /> Cancel/Close
                     </Button>
-    
+
+                    { updatingEvent ? <Button color="red" inverted onClick={(e) => deleteEvent(e)}>
+                            <Icon name='remove' /> DELETE </Button> : null }
+
                     <Button color='green' inverted type="submit" value="submit"
                     onClick={(e) => {updatingEvent ? updateEvent(e) : createNewEvent(e)}}>
                             <Icon name='checkmark' /> {updatingEvent ? "Update Event!" : "Add Event!"}

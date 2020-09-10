@@ -396,7 +396,7 @@ const Today = (props) => {
                                 </div>
                             </Modal.Content>
                             <Modal.Actions>
-                                <Button basic color='red' inverted onClick={() => setOpen(false)}>
+                                <Button color='red' inverted onClick={() => setOpen(false)}>
                                 <Icon name='remove' /> Cancel
                                 </Button>
                                 <Button color='green' inverted onClick={(e) => {dailyPostMade ? 
