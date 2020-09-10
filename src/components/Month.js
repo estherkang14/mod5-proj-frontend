@@ -279,14 +279,14 @@ const Month = (props) => {
                     <div>
                         <form className="ui form" >
                             <div className="field">
-                                <p>Title</p>
+                                <p>Title*</p>
                                 <input name="title" placeholder="e.g., Someone's Birthday" value={newTitle}
                                 onChange={(e) => setNewTitle(e.target.value)}></input>
                             </div>
                             <br />
 
                             <div className="field">
-                                <p>What type of event is this?</p>
+                                <p>What type of event is this?*</p>
                                 <FormControl variant="outlined" className={classes.formControl}>
                                     <InputLabel id="demo-simple-select-outlined-label">Choose One</InputLabel>
                                     <Select
@@ -306,14 +306,14 @@ const Month = (props) => {
                             </div>
 
                             <div className="field">
-                                <p>Start Date (YYYY/MM/DD)</p>
+                                <p>Start Date (YYYY/MM/DD)*</p>
                                 <input name="start" placeholder="e.g., 2020/08/30" value={newStartDate}
                                 onChange={(e) => setNewStartDate(e.target.value)}></input>
                             </div>
                             <br />
 
                             <div className="field">
-                                <p>End Date, if applicable (YYYY/MM/DD)</p>
+                                <p>End Date, if applicable (YYYY/MM/DD)*</p>
                                 <input name="end" placeholder="e.g., 2020/08/31" value={newEndingDate}
                                 onChange={(e) => setNewEndingDate(e.target.value)}></input>
                             </div>

@@ -14,6 +14,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
+import HomepageLogo from '../components/homepagefinal.jpg'
+
 
 
 function TabPanel(props) {
@@ -96,6 +98,9 @@ const LandingPage = (props) => {
       
       <Grid container spacing={3}>
           <Grid item sm={12}>
+          <Paper className={classes.paper}>
+            <img src={HomepageLogo} alt="homepage logo" className="homepagelogo"/>
+          </Paper>
           <Paper className={classes.paper}>
           <div className={firstclasses}>
             <AppBar position="static" color="default">

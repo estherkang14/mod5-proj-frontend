@@ -309,7 +309,7 @@ const Today = (props) => {
             </Grid>
             <Grid container spacing={2}>
                 <Grid item sm={6}>
-                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto'}}>
+                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto', minHeight: 340}}>
                         {/* Modal to Add A Daily Post */}
                         {renderDailyPost()}<br/>
                         <Modal
@@ -340,7 +340,7 @@ const Today = (props) => {
                                     <br />
                                     */}
                                     <div className="field">
-                                        <p>What color best describes your mood today?</p>
+                                        <p>What color best describes your mood today?*</p>
                                         <FormControl variant="outlined" className={classes.formControl}>
                                             <InputLabel id="demo-simple-select-outlined-label">Choose One</InputLabel>
                                             <Select
@@ -374,21 +374,21 @@ const Today = (props) => {
                                     <br />
 
                                     <div className="field">
-                                        <p>What is something you are struggling with today?</p>
+                                        <p>What is something you are struggling with today?*</p>
                                         <input name="struggle" placeholder="e.g., what's stressing you out?"
                                         onChange={(e) => setStruggle(e.target.value)} value={struggle}></input>
                                     </div>
                                     <br />
 
                                     <div className="field">
-                                        <p>How about something you're thankful for today?</p>
+                                        <p>How about something you're thankful for today?*</p>
                                         <input name="thankful" placeholder="e.g., what made you happy today?"
                                         onChange={(e) => setThankful(e.target.value)} value={thankful}></input>
                                     </div>
                                     <br />
 
                                     <div className="field">
-                                        <p>Give us a quick summary of your day</p>
+                                        <p>Give us a quick summary of your day*</p>
                                         <input name="summary" placeholder="e.g., Today, I..."
                                         onChange={(e) => setSummary(e.target.value)} value={summary}></input>
                                     </div>
@@ -411,7 +411,7 @@ const Today = (props) => {
                 </Grid>
                 {/* RENDER ALL DAILY POSTS HERE */}
                 <Grid item sm>
-                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto'}}>
+                    <Paper className={classes.paper} style={{maxHeight: 340, overflow: 'auto', minHeight: 340}}>
                         <List className={classes.root.width, classes.root.maxWidth, classes.root.backgroundColor,
                         classes.root.position, classes.root.overflow, classes.root.maxHeight} >
                             <h4>Your previous daily posts:</h4>
@@ -449,13 +449,13 @@ const Today = (props) => {
             </Grid>
             <Grid container spacing={4}>
                 <Grid item xs={4}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} style={{maxHeight: 150, overflow: 'auto', minHeight: 150}}>
                         
                         { props.tasks ? <div>
                             { props.tasks[0] ? <div><strong>{props.tasks[0].title}</strong>
                                 <br/><strong>Complete by:</strong> {props.tasks[0].end_date ? props.tasks[0].end_date : "N/A"} 
                                 <br/><strong>Notes:</strong> {props.tasks[0].notes ? props.tasks[0].notes : "none"}
-                                </div> : "To-do: Empty"}
+                                </div> : <div>To-do: Empty</div>}
                                 <br />
                                 { props.tasks[0] ? 
                                     <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[0])}>
@@ -471,7 +471,7 @@ const Today = (props) => {
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} style={{maxHeight: 150, overflow: 'auto', minHeight: 150}}>
 
                         { props.tasks ? <div>
                             {/* { props.tasks[1] ? `${props.tasks[1].title} 
@@ -480,7 +480,7 @@ const Today = (props) => {
                             { props.tasks[1] ? <div><strong>{props.tasks[1].title}</strong>
                                 <br/><strong>Complete by:</strong> {props.tasks[1].end_date ? props.tasks[1].end_date : "N/A"} 
                                 <br/><strong>Notes:</strong> {props.tasks[1].notes ? props.tasks[1].notes : "none"}
-                                </div> : "To-do: Empty"}
+                                </div> : <div>To-do: Empty</div>}
                                 <br />
                                 { props.tasks[1] ? 
                                     <Button size="tiny" basic color='red' onClick={(e) => props.destroyTask(e, props.tasks[1])}>
@@ -496,13 +496,13 @@ const Today = (props) => {
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} style={{maxHeight: 150, overflow: 'auto', minHeight: 150}}>
 
                         { props.tasks ? <div>
                             { props.tasks[2] ? <div><strong>{props.tasks[2].title}</strong>
                                 <br/><strong>Complete by:</strong> {props.tasks[2].end_date ? props.tasks[2].end_date : "N/A"} 
                                 <br/><strong>Notes:</strong> {props.tasks[2].notes ? props.tasks[2].notes : "none"}
-                                </div> : "To-do: Empty"}
+                                </div> : <div>To-do: Empty</div>}
                                 <br />
                                 { props.tasks[2] ? 
                                     <Button basic size="tiny" color='red' onClick={(e) => props.destroyTask(e, props.tasks[2])}>
@@ -548,7 +548,7 @@ const Today = (props) => {
                                 <div>
                                     <form className="ui form">
                                         <div className="field">
-                                            <p>Title</p>
+                                            <p>Title*</p>
                                             <input name="title" placeholder="e.g., Go Grocery Shopping"
                                             onChange={(e) => setNewTitle(e.target.value)}></input>
                                         </div>

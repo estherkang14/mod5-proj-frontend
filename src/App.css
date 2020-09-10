@@ -44,6 +44,7 @@ body {
   margin-bottom: 50px;
   font: Arial, Helvetica, sans-serif,
     monospace !important;
+  background-color: #e0e0e0 !important;
 }
 
 .moodImage {
@@ -54,6 +55,10 @@ body {
 .moodImagePopover {
   border-radius: 50%;
   width: 30px;
+}
+
+.homepagelogo {
+  width: 300px;
 }
 
 h4 {
