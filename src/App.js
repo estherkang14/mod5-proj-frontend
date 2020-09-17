@@ -10,8 +10,6 @@ import { connect } from 'react-redux'
 import { logIn, storeUser, logOut, signUp, storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather } from './actions/auth'
 import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost, 
   updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
-// import { useHistory } from 'react-router-dom'
-// import { createBrowserHistory } from 'history'
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -371,8 +369,6 @@ fetchUserApi = (userId) => {
             <div>
             <BrowserRouter>
             <div className="App">
-            {/* {this.renderTopNavBar()} */}
-            {/* {this.renderSideNavBar()} */}
             <SideNavBar logOut={this.logOut}/>
             <div className="container">
                 <Switch>
@@ -420,8 +416,6 @@ fetchUserApi = (userId) => {
 
 const mapStateToProps = (state) => {
   return {
-    // loggedIn: state.userReducer.loggedIn,
-    // user_events: state.userReducer['user_events'],
     userData: state.userData
   }
 }

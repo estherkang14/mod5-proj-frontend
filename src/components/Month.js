@@ -129,10 +129,6 @@ const Month = (props) => {
     const handleDateClick = (arg) => {
         console.log(arg.dateStr, "- render DATE modal")
         console.log(arg)
-        // let eventDate
-        // if (arg.allDay === true) {
-        //     eventDate = arg.dateStr + "00"
-        // }
         setNewStartDate(arg.dateStr)
     }
 
@@ -213,9 +209,6 @@ const Month = (props) => {
     const handleNavLinkClick = (e) => {
         // console.log(e.toISOString().substring(0, 10))
         // console.log(e.currentTarget)
-        // renderCalendarEvents.map( event => {if (event.date === e.toISOString().substring(0, 10)) {
-        //     setPopoverDisplay(prevState => [...prevState, event])
-        // }})
         setPopoverDisplay([])
 
         renderCalendarEvents.map( event => {
@@ -228,12 +221,6 @@ const Month = (props) => {
 
         if (popoverDisplay) {setAnchorEl(true)}
     }
-
-    // const handlePopoverOpen = (e) => {
-    //     props.daily_posts.map(post => {if (post.date === e.target.innerText) { setPopoverDisplay(post) }})
-
-    //     setAnchorEl(e.currentTarget)
-    // }
 
     const handlePopoverClose = () => {
         setAnchorEl(null)
@@ -251,9 +238,6 @@ const Month = (props) => {
         }
         
         setOpenSnack(false);
-        // this.setState({
-        //     openSnack: false
-        // })
     };
 
 
@@ -354,7 +338,6 @@ const Month = (props) => {
                     <FullCalendar
                         plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
                         initialView="dayGridMonth"
-                        // themeSystem='bootstrap'
                         selectable={true}
                         timeZone="UTC"
                         forceEventDuration={true}
@@ -373,8 +356,6 @@ const Month = (props) => {
                         eventColor='#909090'
                         dayMaxEventRows={true}
                         dayMaxEvents={true}
-                        // editable={true}
-                        // eventDragStart={handleEventStartChange()}
                         moreLinkClick="popover"
                         // dayCellClassNames={(arg) => console.log(arg)}
 

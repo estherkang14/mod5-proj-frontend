@@ -81,13 +81,6 @@ const SideNavBar = (props) => {
     return (
         <div className={classes.root}>
         <CssBaseline />
-        {/* <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" noWrap>
-              Permanent drawer
-            </Typography>
-          </Toolbar>
-        </AppBar> */}
         <Drawer
           className={classes.drawer}
           variant="permanent"
@@ -138,31 +131,7 @@ const SideNavBar = (props) => {
         </Drawer>
       </div>
     )
-
-    // return (
-    //     <div className="ui left fixed vertical menu">
-    //         <div className="item"> 
-    //             <div className="menu">{ localStorage.loggedIn ? displayWelcome() : dateTime }</div>
-    //             <br/>
-    //             <br/>
-    //             {/* <h3><strong>HOME</strong></h3> */}
-    //             <div className="menu">
-    //                 <a className="item" href="/home" id="todaynav">
-    //                     TODAY
-    //                 </a>
-                    
-    //                 <a className="item" href="/calendar" id="calendarnav">
-    //                     CALENDAR
-    //                 </a>
-    //             </div>
-    //         </div>
-                
-
-    //     </div>
-    // )
 }
-
-// export default SideNavBar
 
 const mapStateToProps = state => {
   if (localStorage.loggedIn ) {

@@ -331,14 +331,6 @@ const Today = (props) => {
                             
                                 <div className="">
                                 <form className="ui form" >
-                                    {/* {dailyPostMade? null : <div className="field">
-                                        <p>Today's Date (YYYY/MM/DD)</p>
-                                        <input name="date" placeholder="e.g., 2020/08/30" value={date}
-                                        onChange={(e) => setDate(e.target.value)}></input>
-                                    </div>}
-                                    
-                                    <br />
-                                    */}
                                     <div className="field">
                                         <p>What color best describes your mood today?*</p>
                                         <FormControl variant="outlined" className={classes.formControl}>
@@ -474,9 +466,6 @@ const Today = (props) => {
                     <Paper className={classes.paper} style={{maxHeight: 150, overflow: 'auto', minHeight: 150}}>
 
                         { props.tasks ? <div>
-                            {/* { props.tasks[1] ? `${props.tasks[1].title} 
-                                Notes: ${(props.tasks[1].notes ? props.tasks[1].notes : "none")}
-                                Complete by: ${(props.tasks[1].end_date ? props.tasks[1].end_date : "N/A")}` : "To-Do: Empty" } */}
                             { props.tasks[1] ? <div><strong>{props.tasks[1].title}</strong>
                                 <br/><strong>Complete by:</strong> {props.tasks[1].end_date ? props.tasks[1].end_date : "N/A"} 
                                 <br/><strong>Notes:</strong> {props.tasks[1].notes ? props.tasks[1].notes : "none"}
