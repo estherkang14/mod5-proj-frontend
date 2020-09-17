@@ -131,7 +131,7 @@ const SideNavBar = (props) => {
                       <a href="https://github.com/estherkang14" style={{color: 'black'}}><Icon size="large" name='github'/></a>
                   </ListItem>
                   <ListItem className={classes.list}>
-                      <a href="https://www.linkedin.com/in/esther-kang-117296140/" style={{color: 'black'}}><Icon size="large" name='linkedin'/></a>
+                      <a href="https://www.linkedin.com/in/esther-kang/" style={{color: 'black'}}><Icon size="large" name='linkedin'/></a>
                   </ListItem>
                   
               </List>

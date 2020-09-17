@@ -65,7 +65,7 @@ fetchUserApi = (userId) => {
       this.props.storeDailyPosts(posts)
       this.props.storeEvents(nontasks)
       console.log("User Data Fetched")
-      console.log(userData)
+      // console.log(userData)
     })
   }  
 
@@ -84,7 +84,7 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(data => {
       if (!data.error) {
-        console.log(data)
+        // console.log(data)
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
