@@ -5,6 +5,7 @@ Flatiron School - Module 5 Final Project - created by Esther Kang
 
 - Frontend: https://github.com/estherkang14/mod5-proj-frontend
 - Backend: https://github.com/estherkang14/mod5-proj-backend
+- Demo Video: https://vimeo.com/460177737 
 
 ## Project Details
 
