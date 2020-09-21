@@ -114,6 +114,14 @@ const SideNavBar = (props) => {
                     </ListItem> 
                 </List>
             <Divider />
+            {/* add delete account button */}
+                {/* <List className={classes.list}>
+                  <ListItem button className={classes.list}>
+                      <img src={LogOutLogo} className="sideNavImg" alt="delete account navigation" />
+                  </ListItem> 
+                </List>
+            <Divider /> */}
+
                 
           </div> : null }
               <List className={classes.credits}>
