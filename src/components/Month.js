@@ -24,10 +24,7 @@ import "semantic-ui-css/semantic.min.css";
 
 
 const useStyles = makeStyles((theme) => ({
-    // formControl: {
-    //   margin: theme.spacing(1),
-    //   minWidth: 120,
-    // },
+
     selectEmpty: {
       marginTop: theme.spacing(2),
     },
@@ -38,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        //change background color to light grey
       },
       root: {
         flexGrow: 1,
@@ -88,7 +84,7 @@ const Month = (props) => {
         if (props.user_events) {
             props.user_events.map(event => setCalendarEvents(original => [...original, {title: event.title, 
             start: event['start_date'], end: event['end_date'], id: event.event_type, extendedProps: {notes: event.notes, eventId: event.id},
-            // borderColor: getEventBGColor(event)}]))
+
             backgroundColor: getEventBGColor(event)}]))
         }
     }
@@ -146,7 +142,6 @@ const Month = (props) => {
         let eventId = parseInt(arg.event._def.extendedProps.eventId, 10)
         setUpdateId(eventId)
         let updateEventObj
-        // make these alerts into snackboxes 
         if (arg.event._def.publicId === "holiday") {
             setSnackMsg("Sorry! You can't update holidays")
             setOpenSnack(true)
@@ -207,8 +202,6 @@ const Month = (props) => {
     }
 
     const handleNavLinkClick = (e) => {
-        // console.log(e.toISOString().substring(0, 10))
-        // console.log(e.currentTarget)
         setPopoverDisplay([])
 
         renderCalendarEvents.map( event => {
@@ -357,7 +350,6 @@ const Month = (props) => {
                         dayMaxEventRows={true}
                         dayMaxEvents={true}
                         moreLinkClick="popover"
-                        // dayCellClassNames={(arg) => console.log(arg)}
 
                     />
                 </Paper>

@@ -13,7 +13,6 @@ import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost,
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { TramRounded } from '@material-ui/icons';
 
 let BASEURL = "http://localhost:3000/"
 let LOGINURL = BASEURL + "login"
@@ -63,7 +62,6 @@ fetchUserApi = (userId) => {
       this.props.storeDailyPosts(posts)
       this.props.storeEvents(nontasks)
       console.log("User Data Fetched")
-      // console.log(userData)
     })
   }  
 
@@ -82,7 +80,6 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(data => {
       if (!data.error) {
-        // console.log(data)
         localStorage.setItem("token", data.token)
         localStorage.setItem("loggedIn", "true")
         localStorage.setItem("userId",data.user.id)
