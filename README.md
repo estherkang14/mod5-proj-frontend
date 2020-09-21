@@ -38,6 +38,7 @@ Libraries and gems used:
 4. Run `rails s` to start the backend server
 5. Run `npm install` on the frontend repository (this one) to install the required libraries
 6. Run `npm start` to start the frontend server
-7. Open `http://localhost:3001` to view your server
+7. Open `http://localhost:3001` to view your server 
+8. To end, `cmd + C` in the terminal that is running your server (for both your frontend and backend) to stop running the server.
 
 
