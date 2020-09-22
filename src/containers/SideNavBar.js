@@ -114,13 +114,23 @@ const SideNavBar = (props) => {
                     </ListItem> 
                 </List>
             <Divider />
+            {/* add update account button
+              <List className={classes.list}>
+                <ListItem button className={classes.list}>
+                  <img src={UpdateAccountLogo} className="sideNavImg" alt="update account navigation" />
+                </ListItem>
+              </List>
+            <Divider />
+            */}
+
             {/* add delete account button */}
                 {/* <List className={classes.list}>
                   <ListItem button className={classes.list}>
-                      <img src={LogOutLogo} className="sideNavImg" alt="delete account navigation" />
+                      <img src={DeleteAccountLogo} className="sideNavImg" alt="delete account navigation" />
                   </ListItem> 
                 </List>
             <Divider /> */}
+
 
                 
           </div> : null }
@@ -137,6 +147,10 @@ const SideNavBar = (props) => {
                   
               </List>
         </Drawer>
+        {/* DIV FOR MODAL TO UPDATE PROFILE */}
+        {/* <div>
+            PUT MODAL HERE TO UPDATE PROFILE INFO - MAINLY TO CHANGE ZIPCODE 
+        </div> */}
       </div>
     )
 }
