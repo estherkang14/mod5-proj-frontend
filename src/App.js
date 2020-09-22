@@ -359,6 +359,20 @@ fetchUserApi = (userId) => {
 
   }
 
+  updateProfile = (e, user, userInfo) => {
+    e.preventDefault()
+
+    const form = new FormData()
+    // form.append()
+
+    let options = {
+      method: 'PUT',
+      body: { form }
+    }
+
+    fetch(USERSURL + user.id, options)
+  }
+
   
   
   render() {
