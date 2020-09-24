@@ -374,16 +374,16 @@ fetchUserApi = (userId) => {
     fetch(USERSURL + user.id, options)
   }
 
-  // deleteAccount = (e, user) => {
-  //   e.preventDefault()
+  deleteAccount = (e) => {
+    e.preventDefault()
 
-  //   fetch(USERSURL + `${user.id}`, {method: 'DELETE'})
-  //   .then(response => response.json())
-  //   .then(deletedUser => {  
-  //       this.props.deleteUser(deletedUser)
-  //       this.logOut()
-  //   })
-  // }
+    fetch(USERSURL + localStorage.userId, {method: 'DELETE'})
+    .then(response => response.json())
+    .then(deletedUser => {  
+        this.props.deleteUser(deletedUser)
+        this.logOut()
+    })
+  }
 
   
   
@@ -392,7 +392,7 @@ fetchUserApi = (userId) => {
             <div>
             <BrowserRouter>
             <div className="App">
-            <SideNavBar logOut={this.logOut}/>
+            <SideNavBar logOut={this.logOut} deleteAccount={this.deleteAccount} />
             <div className="container">
                 <Switch>
                 {/* Routes and components go here!  */}
