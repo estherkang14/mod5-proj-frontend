@@ -1,16 +1,7 @@
-// let user = JSON.parse(localStorage.getItem('user')); 
+
 let initialState
-// let daily_posts = JSON.parse(localStorage.getItem('userData')['daily_posts'])
-// let user_events = JSON.parse(localStorage.getItem('userData')['user_events'])
-// if (daily_posts && user_events) {
 
 if (localStorage.loggedIn) {
-    // let dailyPost
-    // if (localStorage.dailyPost) {
-    //     dailyPost = true
-    // } else {
-    //     dailyPost = false
-    // }
 
     initialState = { loggedIn: localStorage.getItem('loggedIn'), 
     userData: JSON.parse(localStorage.getItem('userData')),
@@ -20,12 +11,10 @@ if (localStorage.loggedIn) {
     tasks: (JSON.parse(localStorage.getItem('tasks'))), 
     holidays: (JSON.parse(localStorage.getItem('holidays'))),
     weatherInfo: {temperature: JSON.parse(localStorage.getItem('weather')).main, desc: JSON.parse(localStorage.getItem('weather')).weather[0]},
-    // toggle_daily_post: dailyPost
+
 }
 
 } else {
-    // initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-    // moods: JSON.parse(localStorage.getItem('moods')) }
 
     initialState = { loggedIn: false,
     userData: {}, 
@@ -35,30 +24,13 @@ if (localStorage.loggedIn) {
     daily_posts: [],
     user_events: [],
     weatherInfo: {},
-
     }
 }
 
 
-// } else if (daily_posts) {
-//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-//     moods: JSON.parse(localStorage.getItem('moods')), daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']) }
-// } else if (user_events) {
-//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-//     moods: JSON.parse(localStorage.getItem('moods')), user_events: (JSON.parse(localStorage.getItem('userData'))['user_events']) }
-// } else {
-//     initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-//     moods: JSON.parse(localStorage.getItem('moods')) }
-// }
-// , daily_posts: (JSON.parse(localStorage.getItem('userData'))['daily_posts']),
-// user_events: (JSON.parse(localStorage.getItem('userData'))['user_events'])
-// initialState = { loggedIn: localStorage.getItem('loggedIn'), userData: JSON.parse(localStorage.getItem('userData')),
-// moods: JSON.parse(localStorage.getItem('moods')) }
-
 
 export default function userReducer (state = initialState, action) {
     
-    let newState
 
     switch(action.type) {
         case 'PROCESS_LOGIN':
@@ -160,7 +132,6 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 user_events: [...state['user_events'], action.userEvent]
             }
-            // localStorage.user_events = state['user_events']
         case 'UPDATE_EVENT':
             let newarray = state['user_events'].filter(userEvent => userEvent.id !== action.userEvent.id)
             return {
