@@ -15,6 +15,7 @@ import Logo from '../components/logo.png'
 import TodayLogo from '../components/todaylogo.jpg'
 import CalendarLogo from '../components/calendarlogo.jpg'
 import LogOutLogo from '../components/logoutlogo.jpg'
+import DeleteLogo from '../components/deletelogo.png'
 
 import { Icon } from 'semantic-ui-react'
 
@@ -123,13 +124,13 @@ const SideNavBar = (props) => {
             <Divider />
             */}
 
-            {/* add delete account button */}
-                {/* <List className={classes.list}>
+            {/* delete account button */}
+                <List className={classes.list}>
                   <ListItem button className={classes.list}>
-                      <img src={DeleteAccountLogo} className="sideNavImg" alt="delete account navigation" />
+                      <img src={DeleteLogo} className="sideNavImg" alt="delete account navigation" />
                   </ListItem> 
                 </List>
-            <Divider /> */}
+            <Divider />
 
 
                 
