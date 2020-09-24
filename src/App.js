@@ -7,7 +7,8 @@ import SideNavBar from './containers/SideNavBar'
 import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
-import { logIn, storeUser, logOut, signUp, storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather } from './actions/auth'
+import { logIn, storeUser, logOut, signUp, storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather,
+deleteUser } from './actions/auth'
 import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost, 
   updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -460,7 +461,8 @@ const actionCreators = {
   updateEvent,
   updateDailyPost,
   deleteEvent,
-  storeWeather
+  storeWeather,
+  deleteUser
 }
 
 

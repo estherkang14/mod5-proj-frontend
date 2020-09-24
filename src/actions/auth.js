@@ -108,3 +108,9 @@ export const storeWeather = weather => {
     }
 }
 
+export const deleteUser = user => {
+    return {
+        type: 'DELETE_USER',
+        user
+    }
+}

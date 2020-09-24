@@ -105,6 +105,18 @@ export default function userReducer (state = initialState, action) {
                 tasks: action.userData.events.filter(event => event.event_type === "Task"),
                 daily_posts: action.userData.daily_posts
             }
+        case 'DELETE_USER':
+            return {
+                ...state,
+                loggedIn: false,
+                userData: {}, 
+                moods: JSON.parse(localStorage.getItem('moods')),
+                holidays: JSON.parse(localStorage.getItem('holidays')),
+                tasks: [],
+                daily_posts: [],
+                user_events: [],
+                weatherInfo: {}
+            }
         case 'STORE_USER_DATA':
             
             return {
@@ -167,11 +179,6 @@ export default function userReducer (state = initialState, action) {
                 ...state,
                 tasks: state.tasks.filter(task => task.id !== action.deletedTask.id)
             }
-        // case 'TOGGLE_DAILY_POST_BUTTON': 
-        //     return {
-        //         ...state,
-        //         toggle_daily_post: !state.toggle_daily_post
-        //     }
         case 'STORE_EVENTS':
             console.log("bye")
             return {
