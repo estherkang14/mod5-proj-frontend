@@ -373,6 +373,17 @@ fetchUserApi = (userId) => {
     fetch(USERSURL + user.id, options)
   }
 
+  // deleteAccount = (e, user) => {
+  //   e.preventDefault()
+
+  //   fetch(USERSURL + `${user.id}`, {method: 'DELETE'})
+  //   .then(response => response.json())
+  //   .then(deletedUser => {  
+  //       this.props.deleteUser(deletedUser)
+  //       this.logOut()
+  //   })
+  // }
+
   
   
   render() {
