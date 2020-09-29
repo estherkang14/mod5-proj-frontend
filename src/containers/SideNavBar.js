@@ -18,7 +18,7 @@ import LogOutLogo from '../components/logoutlogo.jpg'
 import DeleteLogo from '../components/deletelogo.png'
 import UpdateAccountLogo from '../components/update.png'
 
-import { Icon } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 
 const drawerWidth = 250;
 
@@ -54,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SideNavBar = (props) => {
+
+  const [openUpdateProfile, setOpenUpdateProfile] = React.useState(false)
 
   React.useEffect(() => {
     console.log("hi")
@@ -156,9 +158,9 @@ const SideNavBar = (props) => {
 
             <Modal
               basic
-              onClose={() => setOpenAddTask(false)}
-              onOpen={() => setOpenAddTask(true)}
-              open={openAddTask}
+              onClose={() => setOpenUpdateProfile(false)}
+              onOpen={() => setOpenUpdateProfile(true)}
+              open={openUpdateProfile}
               size='small'
               closeOnDimmerClick={false}
               className="modal"
