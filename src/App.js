@@ -365,6 +365,8 @@ fetchUserApi = (userId) => {
 
     const form = new FormData()
     // form.append()
+    // figure out how to update one OR multiple sections on profile at once ? 
+    // send ALL data at once even if things aren't being changed? 
 
     let options = {
       method: 'PUT',
@@ -376,8 +378,6 @@ fetchUserApi = (userId) => {
 
   deleteAccount = (e) => {
     e.preventDefault()
-    // let status = confirm("Are you sure you want to delete your account?")
-    // if (status) {
       fetch(USERSURL + localStorage.userId, {method: 'DELETE'})
       .then(response => response.json())
       .then(deletedUser => {  
@@ -389,9 +389,6 @@ fetchUserApi = (userId) => {
             openSnack: true 
           })
       })
-    // } else {
-
-    // }
   }
 
   
