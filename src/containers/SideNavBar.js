@@ -16,6 +16,7 @@ import TodayLogo from '../components/todaylogo.jpg'
 import CalendarLogo from '../components/calendarlogo.jpg'
 import LogOutLogo from '../components/logoutlogo.jpg'
 import DeleteLogo from '../components/deletelogo.png'
+import UpdateAccountLogo from '../components/update.png'
 
 import { Icon } from 'semantic-ui-react'
 
@@ -115,18 +116,19 @@ const SideNavBar = (props) => {
                     </ListItem> 
                 </List>
             <Divider />
-            {/* add update account button
+            {/* add update account button. NEED TO HAVE ON CLICK FUNCTION*/}
               <List className={classes.list}>
                 <ListItem button className={classes.list}>
-                  <img src={UpdateAccountLogo} className="sideNavImg" alt="update account navigation" />
+                  <img src={UpdateAccountLogo} className="sideNavImgDel" alt="update account navigation" />
                 </ListItem>
               </List>
             <Divider />
-            */}
+            
 
             {/* delete account button */}
                 <List className={classes.list}>
-                  <ListItem button className={classes.list} onClick={(e) => {if(window.confirm("Are you sure want to delete your account?")){props.deleteAccount(e)}}}>
+                  <ListItem button className={classes.list} 
+                  onClick={(e) => {if(window.confirm("Are you sure want to delete your account?")){props.deleteAccount(e)}}}>
                       <img src={DeleteLogo} className="sideNavImgDel" alt="delete account navigation" />
                   </ListItem> 
                 </List>
