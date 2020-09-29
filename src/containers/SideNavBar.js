@@ -126,7 +126,7 @@ const SideNavBar = (props) => {
 
             {/* delete account button */}
                 <List className={classes.list}>
-                  <ListItem button className={classes.list} onClick={(e) => {props.deleteAccount(e)}}>
+                  <ListItem button className={classes.list} onClick={(e) => {if(window.confirm("Are you sure want to delete your account?")){props.deleteAccount(e)}}}>
                       <img src={DeleteLogo} className="sideNavImgDel" alt="delete account navigation" />
                   </ListItem> 
                 </List>

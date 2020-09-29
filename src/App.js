@@ -376,18 +376,22 @@ fetchUserApi = (userId) => {
 
   deleteAccount = (e) => {
     e.preventDefault()
+    // let status = confirm("Are you sure you want to delete your account?")
+    // if (status) {
+      fetch(USERSURL + localStorage.userId, {method: 'DELETE'})
+      .then(response => response.json())
+      .then(deletedUser => {  
+          this.props.deleteUser(deletedUser)
+          this.clearLocalStorage()
+          this.setState({ 
+            loggedIn: false,
+            loginSignupError: `Account '${deletedUser.username}' has been deleted!`,
+            openSnack: true 
+          })
+      })
+    // } else {
 
-    fetch(USERSURL + localStorage.userId, {method: 'DELETE'})
-    .then(response => response.json())
-    .then(deletedUser => {  
-        this.props.deleteUser(deletedUser)
-        this.clearLocalStorage()
-        this.setState({ 
-          loggedIn: false,
-          loginSignupError: `Account '${deletedUser.username}' has been deleted!`,
-          openSnack: true 
-        })
-    })
+    // }
   }
 
   
