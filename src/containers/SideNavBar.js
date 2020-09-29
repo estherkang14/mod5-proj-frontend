@@ -153,6 +153,55 @@ const SideNavBar = (props) => {
         {/* DIV FOR MODAL TO UPDATE PROFILE */}
         {/* <div>
             PUT MODAL HERE TO UPDATE PROFILE INFO - MAINLY TO CHANGE ZIPCODE 
+
+            <Modal
+              basic
+              onClose={() => setOpenAddTask(false)}
+              onOpen={() => setOpenAddTask(true)}
+              open={openAddTask}
+              size='small'
+              closeOnDimmerClick={false}
+              className="modal"
+              >
+              <Header icon>
+                  <Icon name='calendar' />
+                  Update your profile!
+              </Header>
+              <Modal.Content>
+                  <div>
+                      <form className="ui form">
+                          <div className="field">
+                              <p>Name*</p>
+                              <input name="name" placeholder="e.g., Go Grocery Shopping"
+                              onChange={(e) => setNewName(e.target.value)}></input>
+                          </div>
+                          <br />
+
+                          <div className="field">
+                              <p>Due Date, if applicable (YYYY/MM/DD)</p>
+                              <input name="end" placeholder="e.g., 2020/08/31"
+                              onChange={(e) => setNewEndingDate(e.target.value)}></input>
+                          </div>
+                          <br />
+
+                          <div className="field">
+                              <p>Notes</p>
+                              <input name="notes" placeholder="e.g., 'Avocados, chips, cookie dough'"
+                              onChange={(e) => setNewNotes(e.target.value)}></input>
+                          </div>
+                          <br />
+                      </form>
+                  </div>
+              </Modal.Content>
+              <Modal.Actions>
+                  <Button basic color='red' inverted onClick={() => setOpenAddTask(false)}>
+                  <Icon name='remove' /> Cancel/Close
+                  </Button>
+                  <Button color='green' inverted onClick={(e) => createNewTask(e)}>
+                  <Icon name='checkmark' /> Add Item!
+                  </Button>
+              </Modal.Actions>
+            </Modal>
         </div> */}
       </div>
     )
