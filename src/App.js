@@ -381,7 +381,12 @@ fetchUserApi = (userId) => {
     .then(response => response.json())
     .then(deletedUser => {  
         this.props.deleteUser(deletedUser)
-        this.logOut()
+        this.clearLocalStorage()
+        this.setState({ 
+          loggedIn: false,
+          loginSignupError: `Account '${deletedUser.username}' has been deleted!`,
+          openSnack: true 
+        })
     })
   }
 
