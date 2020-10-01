@@ -174,33 +174,33 @@ const SideNavBar = (props) => {
                       <form className="ui form">
                           <div className="field">
                               <p>Name*</p>
-                              <input name="name" placeholder="name placeholder"
+                              <input name="name" placeholder="name placeholder" value={name}
                               onChange={(e) => setNewName(e.target.value)}></input>
                           </div>
                           <br />
 
                           <div className="field">
                               <p>Username*</p>
-                              <input name="username" placeholder="username placeholder"
+                              <input name="username" placeholder="username placeholder" value={username}
                               onChange={(e) => setNewUsername(e.target.value)}></input>
                           </div>
                           <br />
                           // maybe don't include password change?
                           <div className="field">
                               <p>Password</p>
-                              <input name="password" placeholder="password placeholder"
+                              <input name="password" placeholder="password placeholder" value={password}
                               onChange={(e) => setNewPassword(e.target.value)}></input>
                           </div>
                           <br />
                           <div className="field">
                               <p>Zipcode</p>
-                              <input name="zipcode" placeholder="zipcode placeholder"
+                              <input name="zipcode" placeholder="zipcode placeholder" value={zipcode}
                               onChange={(e) => setNewZipcode(e.target.value)}></input>
                           </div>
                           <br />
                           <div className="field">
                               <p>Location</p>
-                              <input name="location" placeholder="location placeholder"
+                              <input name="location" placeholder="location placeholder" value={location}
                               onChange={(e) => setNewLocation(e.target.value)}></input>
                           </div>
                           <br />
