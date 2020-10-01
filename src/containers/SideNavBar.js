@@ -89,6 +89,19 @@ const SideNavBar = (props) => {
         }
     }
 
+    // let updateProfile = (e) => {
+    //   let info = {
+    //     accountName,
+    //     username,
+    //     password,
+    //     zipcode,
+    //     location
+    //   }
+
+    //   props.updateProfile(e, info)
+    //   setOpenUpdateProfile(false)
+    // }
+
     return (
         <div className={classes.root}>
         <CssBaseline />
@@ -181,7 +194,7 @@ const SideNavBar = (props) => {
                       <form className="ui form">
                           <div className="field">
                               <p>Name*</p>
-                              <input name="name" placeholder="name placeholder" value={name}
+                              <input name="name" placeholder="name placeholder" value={accountName}
                               onChange={(e) => setNewName(e.target.value)}></input>
                           </div>
                           <br />
@@ -215,10 +228,10 @@ const SideNavBar = (props) => {
                   </div>
               </Modal.Content>
               <Modal.Actions>
-                  <Button basic color='red' inverted onClick={() => setOpenAddTask(false)}>
+                  <Button basic color='red' inverted onClick={() => setOpenUpdateProfile(false)}>
                   <Icon name='remove' /> Cancel/Close
                   </Button>
-                  <Button color='green' inverted onClick={(e) => createNewTask(e)}>
+                  <Button color='green' inverted onClick={(e) => updateProfile(e)}>
                   <Icon name='checkmark' /> Add Item!
                   </Button>
               </Modal.Actions>

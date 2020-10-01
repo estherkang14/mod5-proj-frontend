@@ -398,7 +398,7 @@ fetchUserApi = (userId) => {
             <div>
             <BrowserRouter>
             <div className="App">
-            <SideNavBar logOut={this.logOut} deleteAccount={this.deleteAccount} />
+            <SideNavBar logOut={this.logOut} deleteAccount={this.deleteAccount} updateProfile={this.updateProfile}/>
             <div className="container">
                 <Switch>
                 {/* Routes and components go here!  */}
