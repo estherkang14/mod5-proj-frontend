@@ -58,11 +58,17 @@ const SideNavBar = (props) => {
   const [openUpdateProfile, setOpenUpdateProfile] = React.useState(false)
 
 
-  const [accountName, setNewName] = React.useState("")
-  const [username, setNewUsername] = React.useState("")
-  const [password, setNewPassword] = React.useState("")
-  const [zipcode, setNewZipcode] = React.useState("")
-  const [location, setNewLocation] = React.useState("")
+  // const [accountName, setNewName] = React.useState(props.userData.name)
+  // const [username, setNewUsername] = React.useState(props.userData.username)
+  // const [password, setNewPassword] = React.useState(props.userData.password)
+  // const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
+  // const [location, setNewLocation] = React.useState(props.userData.location)
+
+  const [accountName, setNewName] = React.useState(props.userData.name)
+  const [username, setNewUsername] = React.useState(props.userData.username)
+  const [password, setNewPassword] = React.useState(props.userData.password)
+  const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
+  const [location, setNewLocation] = React.useState(props.userData.location)
 
   React.useEffect(() => {
     console.log("hi")
