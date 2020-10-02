@@ -89,6 +89,11 @@ export default function userReducer (state = initialState, action) {
                 user_events: [],
                 weatherInfo: {}
             }
+        // case 'UPDATE_USER': 
+        //     return {
+        //         ...state,
+        //         userData: action.userData,
+        //     }
         case 'STORE_USER_DATA':
             
             return {

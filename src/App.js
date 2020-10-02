@@ -8,7 +8,7 @@ import Month from './components/Month'
 import DisplayPage from './containers/DisplayPage'
 import { connect } from 'react-redux'
 import { logIn, storeUser, logOut, signUp, storeMoods, storeHolidays, storeDailyPosts, storeTasks, storeEvents, storeWeather,
-deleteUser } from './actions/auth'
+deleteUser, updateUser } from './actions/auth'
 import { toggleDailyPostButton, postEvent, postTask, deleteTask, postDailyPost, 
   updateDailyPost, updateEvent, deleteEvent } from './actions/calendar'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -473,7 +473,8 @@ const actionCreators = {
   updateDailyPost,
   deleteEvent,
   storeWeather,
-  deleteUser
+  deleteUser,
+  updateUser
 }
 
 
