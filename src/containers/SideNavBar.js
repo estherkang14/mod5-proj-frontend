@@ -64,11 +64,11 @@ const SideNavBar = (props) => {
   // const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
   // const [location, setNewLocation] = React.useState(props.userData.location)
 
-  const [accountName, setNewName] = React.useState(props.userData.name)
-  const [username, setNewUsername] = React.useState(props.userData.username)
-  const [password, setNewPassword] = React.useState(props.userData.password)
-  const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
-  const [location, setNewLocation] = React.useState(props.userData.location)
+  const [accountName, setNewName] = React.useState("")
+  const [username, setNewUsername] = React.useState("")
+  const [password, setNewPassword] = React.useState("")
+  const [zipcode, setNewZipcode] = React.useState("")
+  const [location, setNewLocation] = React.useState("")
 
   React.useEffect(() => {
     console.log("hi")
@@ -81,7 +81,6 @@ const SideNavBar = (props) => {
     let hour = date.getHours()
     let name
     if (localStorage.loggedIn) {name = localStorage.getItem('name')}
-    // {name = props.userData.name}
 
     let displayWelcome = () => {
         if (localStorage.loggedIn) {
