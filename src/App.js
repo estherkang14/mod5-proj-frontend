@@ -373,7 +373,12 @@ fetchUserApi = (userId) => {
       body: { form }
     }
 
-    fetch(USERSURL + user.id, options)
+    // fetch(USERSURL + user.id, options)
+    // .then(response => response.json())
+    // .then(updatedUser => {
+    //   localStorage.userData = updatedUser 
+    //   this.props.updateUser(updatedUser)
+    // })
   }
 
   deleteAccount = (e) => {
