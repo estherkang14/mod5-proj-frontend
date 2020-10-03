@@ -102,8 +102,8 @@ const SideNavBar = (props) => {
         zipcode,
         location
       }
-      console.log("update profile clicked")
-      // props.updateProfile(e, info)
+      // console.log("update profile clicked")
+      props.updateProfile(e, info)
       setOpenUpdateProfile(false)
     }
 

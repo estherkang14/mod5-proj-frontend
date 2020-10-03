@@ -360,8 +360,9 @@ fetchUserApi = (userId) => {
 
   }
 
-  updateProfile = (e, user, userInfo) => {
+  updateProfile = (e, userInfo) => {
     e.preventDefault()
+    console.log(userInfo)
 
     const form = new FormData()
     // form.append()
