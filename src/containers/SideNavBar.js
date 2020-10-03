@@ -58,17 +58,17 @@ const SideNavBar = (props) => {
   const [openUpdateProfile, setOpenUpdateProfile] = React.useState(false)
 
 
-  // const [accountName, setNewName] = React.useState(props.userData.name)
-  // const [username, setNewUsername] = React.useState(props.userData.username)
+  const [accountName, setNewName] = React.useState(props.userData.name)
+  const [username, setNewUsername] = React.useState(props.userData.username)
   // const [password, setNewPassword] = React.useState(props.userData.password)
-  // const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
-  // const [location, setNewLocation] = React.useState(props.userData.location)
+  const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
+  const [location, setNewLocation] = React.useState(props.userData.location)
 
-  const [accountName, setNewName] = React.useState("")
-  const [username, setNewUsername] = React.useState("")
-  const [password, setNewPassword] = React.useState("")
-  const [zipcode, setNewZipcode] = React.useState("")
-  const [location, setNewLocation] = React.useState("")
+  // const [accountName, setNewName] = React.useState("")
+  // const [username, setNewUsername] = React.useState("")
+  // const [password, setNewPassword] = React.useState("")
+  // const [zipcode, setNewZipcode] = React.useState("")
+  // const [location, setNewLocation] = React.useState("")
 
   React.useEffect(() => {
     console.log("hi")
@@ -98,7 +98,7 @@ const SideNavBar = (props) => {
       let info = {
         accountName,
         username,
-        password,
+        // password,
         zipcode,
         location
       }
@@ -108,11 +108,11 @@ const SideNavBar = (props) => {
     }
 
     let cancelUpdate = (e) => {
-      setNewName("")
-      setNewUsername("")
-      setNewPassword("")
-      setNewZipcode("")
-      setNewLocation("")
+      setNewName(props.userData.name)
+      setNewUsername(props.userData.username)
+      // setNewPassword("")
+      setNewZipcode(props.userData.zipcode)
+      setNewLocation(props.userData.location)
       setOpenUpdateProfile(false)
 
     }
@@ -223,12 +223,12 @@ const SideNavBar = (props) => {
                           </div>
                           <br />
                           {/* // maybe don't include password change? */}
-                          <div className="field">
+                          {/* <div className="field">
                               <p>Password</p>
                               <input name="password" placeholder="password placeholder" value={password}
                               onChange={(e) => setNewPassword(e.target.value)}></input>
                           </div>
-                          <br />
+                          <br /> */}
                           <div className="field">
                               <p>Zipcode</p>
                               <input name="zipcode" placeholder="zipcode placeholder" value={zipcode}
