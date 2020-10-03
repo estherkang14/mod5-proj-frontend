@@ -204,7 +204,7 @@ const SideNavBar = (props) => {
               >
               <Header icon>
                   <Icon name='calendar' />
-                  Update your profile!
+                  Update Your Profile!
               </Header>
               <Modal.Content>
                   <div>
@@ -230,14 +230,14 @@ const SideNavBar = (props) => {
                           </div>
                           <br /> */}
                           <div className="field">
-                              <p>Zipcode</p>
+                              <p>Zipcode*</p>
                               <input name="zipcode" placeholder="zipcode placeholder" value={zipcode}
                               onChange={(e) => setNewZipcode(e.target.value)}></input>
                           </div>
                           <br />
                           <div className="field">
                               <p>Location</p>
-                              <input name="location" placeholder="location placeholder" value={location}
+                              <input name="location" placeholder="City, State (e.g., 'Washington, D.C.')" value={location}
                               onChange={(e) => setNewLocation(e.target.value)}></input>
                           </div>
                           <br />
