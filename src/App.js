@@ -362,12 +362,18 @@ fetchUserApi = (userId) => {
 
   updateProfile = (e, userInfo) => {
     e.preventDefault()
-    console.log(userInfo)
+    // console.log(userInfo)
 
     const form = new FormData()
     // form.append()
     // figure out how to update one OR multiple sections on profile at once ? 
     // send ALL data at once even if things aren't being changed? 
+    form.append('name', userInfo.accountName)
+    form.append('username', userInfo.username)
+    form.append('zipcode', userInfo.zipcode)
+    form.append('location', userInfo.location)
+
+    console.log(form)
 
     let options = {
       method: 'PUT',
