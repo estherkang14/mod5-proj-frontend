@@ -94,18 +94,28 @@ const SideNavBar = (props) => {
         }
     }
 
-    // let updateProfile = (e) => {
-    //   let info = {
-    //     accountName,
-    //     username,
-    //     password,
-    //     zipcode,
-    //     location
-    //   }
+    let updateProfile = (e) => {
+      let info = {
+        accountName,
+        username,
+        password,
+        zipcode,
+        location
+      }
+      console.log("update profile clicked")
+      // props.updateProfile(e, info)
+      setOpenUpdateProfile(false)
+    }
 
-    //   props.updateProfile(e, info)
-    //   setOpenUpdateProfile(false)
-    // }
+    let cancelUpdate = (e) => {
+      setNewName("")
+      setNewUsername("")
+      setNewPassword("")
+      setNewZipcode("")
+      setNewLocation("")
+      setOpenUpdateProfile(false)
+
+    }
 
     return (
         <div className={classes.root}>
@@ -145,7 +155,9 @@ const SideNavBar = (props) => {
             <Divider />
             {/* add update account button. NEED TO HAVE ON CLICK FUNCTION*/}
               <List className={classes.list}>
-                <ListItem button className={classes.list}>
+                <ListItem button className={classes.list}
+                onClick={(e) => setOpenUpdateProfile(true)}
+                >
                   <img src={UpdateAccountLogo} className="sideNavImgDel" alt="update account navigation" />
                 </ListItem>
               </List>
@@ -178,8 +190,8 @@ const SideNavBar = (props) => {
               </List>
         </Drawer>
         {/* DIV FOR MODAL TO UPDATE PROFILE */}
-        {/* <div>
-            PUT MODAL HERE TO UPDATE PROFILE INFO - MAINLY TO CHANGE ZIPCODE 
+        <div>
+            {/* PUT MODAL HERE TO UPDATE PROFILE INFO - MAINLY TO CHANGE ZIPCODE  */}
 
             <Modal
               basic
@@ -210,7 +222,7 @@ const SideNavBar = (props) => {
                               onChange={(e) => setNewUsername(e.target.value)}></input>
                           </div>
                           <br />
-                          // maybe don't include password change?
+                          {/* // maybe don't include password change? */}
                           <div className="field">
                               <p>Password</p>
                               <input name="password" placeholder="password placeholder" value={password}
@@ -233,15 +245,15 @@ const SideNavBar = (props) => {
                   </div>
               </Modal.Content>
               <Modal.Actions>
-                  <Button basic color='red' inverted onClick={() => setOpenUpdateProfile(false)}>
+                  <Button basic color='red' inverted onClick={() => cancelUpdate()}>
                   <Icon name='remove' /> Cancel/Close
                   </Button>
                   <Button color='green' inverted onClick={(e) => updateProfile(e)}>
-                  <Icon name='checkmark' /> Add Item!
+                  <Icon name='checkmark' /> Update Profile!
                   </Button>
               </Modal.Actions>
             </Modal>
-        </div> */}
+        </div>
       </div>
     )
 }
