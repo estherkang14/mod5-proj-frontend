@@ -380,6 +380,22 @@ fetchUserApi = (userId) => {
       body: { form }
     }
 
+
+    // fetch(USERSURL + localStorage.userId, options)
+    // .then(response => response.json())
+    // .then(updatedUser => {
+    //   if (!updatedUser.errors) {
+    //     localStorage.userData = updatedUser 
+    //     this.props.updateUser(updatedUser)
+    //     this.setState({ loginSignupError: `User '${updatedUser.username}' has been updated` })
+    //     this.setState({ openSnack: true})
+    //   } else {
+    //     this.setState({ loginSignupError: updatedUser.errors })
+    //     this.setState({ openSnack: true})
+    //   }
+    // })
+    // .catch((errors) => console.log(errors))
+
     // fetch(USERSURL + user.id, options)
     // .then(response => response.json())
     // .then(updatedUser => {
