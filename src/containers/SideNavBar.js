@@ -94,6 +94,8 @@ const SideNavBar = (props) => {
         }
     }
 
+    // get update profile working
+
     let updateProfile = (e) => {
       let info = {
         accountName,
@@ -103,8 +105,8 @@ const SideNavBar = (props) => {
         location
       }
       // console.log("update profile clicked")
-      props.updateProfile(e, info)
-      setOpenUpdateProfile(false)
+      // props.updateProfile(e, info)
+      // setOpenUpdateProfile(false)
     }
 
     let cancelUpdate = (e) => {
