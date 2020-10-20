@@ -60,18 +60,18 @@ const SideNavBar = (props) => {
 
   const [accountName, setNewName] = React.useState(props.userData.name)
   const [username, setNewUsername] = React.useState(props.userData.username)
-  // const [password, setNewPassword] = React.useState(props.userData.password)
   const [zipcode, setNewZipcode] = React.useState(props.userData.zipcode)
   const [location, setNewLocation] = React.useState(props.userData.location)
 
   // const [accountName, setNewName] = React.useState("")
   // const [username, setNewUsername] = React.useState("")
-  // const [password, setNewPassword] = React.useState("")
   // const [zipcode, setNewZipcode] = React.useState("")
   // const [location, setNewLocation] = React.useState("")
 
   React.useEffect(() => {
     console.log("hi")
+    // put setNewName, setNewUsername, setNewZipcode, setNewLocation stuff here to 
+    // grab current name, username, zipcode, location
   }, [props.userData])
 
     const classes = useStyles();
