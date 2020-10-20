@@ -116,7 +116,6 @@ const SideNavBar = (props) => {
       setNewZipcode(props.userData.zipcode)
       setNewLocation(props.userData.location)
       setOpenUpdateProfile(false)
-
     }
 
     return (
@@ -131,7 +130,7 @@ const SideNavBar = (props) => {
           anchor="left"
         >
           <div />
-          {/* <div className={classes.toolbar} /> */} <br /> <br /> <br /> <br /> 
+            <br /> <br /> <br /> <br /> 
             <div><img src={Logo} alt="your day logo" className="logo-image" /></div> <br/>
             <div>{ localStorage.loggedIn ? displayWelcome() : <div>Log in or sign up to get started!</div> }</div> 
           <Divider />
@@ -193,8 +192,6 @@ const SideNavBar = (props) => {
         </Drawer>
         {/* DIV FOR MODAL TO UPDATE PROFILE */}
         <div>
-            {/* PUT MODAL HERE TO UPDATE PROFILE INFO - MAINLY TO CHANGE ZIPCODE  */}
-
             <Modal
               basic
               onClose={() => setOpenUpdateProfile(false)}
@@ -217,20 +214,12 @@ const SideNavBar = (props) => {
                               onChange={(e) => setNewName(e.target.value)}></input>
                           </div>
                           <br />
-
                           <div className="field">
                               <p>Username*</p>
                               <input name="username" placeholder="username placeholder" value={username}
                               onChange={(e) => setNewUsername(e.target.value)}></input>
                           </div>
                           <br />
-                          {/* // maybe don't include password change? */}
-                          {/* <div className="field">
-                              <p>Password</p>
-                              <input name="password" placeholder="password placeholder" value={password}
-                              onChange={(e) => setNewPassword(e.target.value)}></input>
-                          </div>
-                          <br /> */}
                           <div className="field">
                               <p>Zipcode*</p>
                               <input name="zipcode" placeholder="zipcode placeholder" value={zipcode}
