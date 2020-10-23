@@ -97,6 +97,8 @@ const SideNavBar = (props) => {
     // get update profile working
 
     let updateProfile = (e) => {
+      // should update user's account info 
+      // + will send everything over to update except pw 
       let info = {
         accountName,
         username,
