@@ -15,6 +15,7 @@ yourday. is an electronic planner-type web app that allows a user to:
 3. View previous 'daily posts'
 4. Add and remove up to three tasks at a time
 5. Add, view, update, and remove events off the user's calendar (color-labeled by: 'Birthday', 'Work', 'Personal', 'School', and 'Other')
+6. Delete your account which will delete/remove all data associated with the account
 
 This application gathers API data from: 
 - openweathermap.org
