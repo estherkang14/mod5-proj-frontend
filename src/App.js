@@ -201,6 +201,7 @@ fetchUserApi = (userId) => {
     })
   }
 
+// posts to backend daily post model using user id from local storage
   addDailyPost = (e, postInfo) => {
     e.preventDefault()
     const form = new FormData()
@@ -232,6 +233,7 @@ fetchUserApi = (userId) => {
     .catch((errors) => console.log(errors))
   }
 
+// updates daily post - only updatable for THAT day. cannot update other days
   updateDailyPost = (e, postInfo, postId) => {
     e.preventDefault()
 
@@ -257,6 +259,7 @@ fetchUserApi = (userId) => {
     })
   }
 
+// updates daily post's water cup number 
   updatePostWater = (e, postInfo, postId) => {
     e.preventDefault()
     const form = new FormData()
@@ -274,6 +277,8 @@ fetchUserApi = (userId) => {
     })
   }
 
+// adds event to backend for specific user (from local storage - user id)
+// this is for EITHER event OR task
   addEventForUser = (e, eventInfo) => {
     e.preventDefault()
     const form = new FormData()
@@ -311,6 +316,7 @@ fetchUserApi = (userId) => {
   
   }
 
+// this is to update events
   updateEvent = (e, eventInfo, updateid) => {
     e.preventDefault()
     const form = new FormData()
@@ -342,6 +348,8 @@ fetchUserApi = (userId) => {
 
   }
 
+// deletes event from backend - permanent removal for user
+// cannot destroy holidays 
   destroyEvent = (e, userEvent) => {
     e.preventDefault()
 
@@ -354,6 +362,8 @@ fetchUserApi = (userId) => {
     })
   }
 
+// deletes task from backend - "completed task"
+// also permanent removal
   destroyTask = (e, task) => {
     e.preventDefault()
 
@@ -367,6 +377,9 @@ fetchUserApi = (userId) => {
 
   }
 
+// to update user's profile - mainly to change zipcode so weather data/info can change
+// can update username too - need to figure out how verification plays a role in this
+// make sure you check to see if the error snack bar pops up if you try to update to an existing username
   updateProfile = (e, userInfo) => {
     e.preventDefault()
     // console.log(userInfo)
@@ -411,6 +424,7 @@ fetchUserApi = (userId) => {
     // })
   }
 
+// permanently deletes a user's account and logs you out
   deleteAccount = (e) => {
     e.preventDefault()
       fetch(USERSURL + localStorage.userId, {method: 'DELETE'})
