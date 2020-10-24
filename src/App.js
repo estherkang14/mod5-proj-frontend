@@ -101,6 +101,8 @@ fetchUserApi = (userId) => {
     })
   }
 
+  // signing up for new account - goes thru backend for authentication process bc pw
+  // then does everything the same as logging in
   signUp = (e, user) => {
     e.preventDefault()
 
@@ -130,6 +132,7 @@ fetchUserApi = (userId) => {
     })
   }
 
+  // log out fxn, clears local storage of user info/data
   logOut = (e) => {
     this.clearLocalStorage()
     this.props.logOut()
@@ -141,6 +144,7 @@ fetchUserApi = (userId) => {
 
   }
 
+  // clears local storage for everything but holidays + moods bc those are consistent for all users
   clearLocalStorage = () => {
     localStorage.removeItem('daily_posts')
     localStorage.removeItem('loggedIn')
@@ -164,9 +168,7 @@ fetchUserApi = (userId) => {
 
   }
 
-
-
-
+// this fetches weather based off user's location set from creating an account
   fetchWeather = () => {
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${this.props.userData.zipcode},us&appid=444f4eae28a53130e131718e48f3fd80&units=imperial`)
     .then(response => response.json())
