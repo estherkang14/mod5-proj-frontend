@@ -179,6 +179,7 @@ fetchUserApi = (userId) => {
     })
   }
 
+// this fetches moods + their colors for daily posts (when signed in)
   fetchMoods = () => {
     fetch(MOODSURL)
     .then(response => response.json())
@@ -189,6 +190,7 @@ fetchUserApi = (userId) => {
     })
   }
 
+// this fetches holidays (via seeds in backend) that will be consistent for ALL users - displayed on calendar
   fetchHolidays = () => {
     fetch(HOLIDAYSURL)
     .then(response => response.json())
