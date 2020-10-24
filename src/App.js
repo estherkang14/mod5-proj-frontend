@@ -44,6 +44,7 @@ class App extends React.Component {
     })
   };
 
+// fetch user's account info + data
 fetchUserApi = (userId) => {
     fetch(USERSURL + userId)
     .then(response => response.json())
@@ -66,6 +67,8 @@ fetchUserApi = (userId) => {
     })
   }  
 
+// login - goes thru backend for authentication and then sets local storage items necessary for other fxns
+// then calls fetchUserApi (above), fetch moods and holidays
   logIn = (e, user) => {
     e.preventDefault()
     let options = {
