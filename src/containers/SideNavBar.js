@@ -1,3 +1,5 @@
+// NEED TO REFACTOR ALL THE CODE HERE!! TOO MESSY AND HARD TO READ/DISORGANIZED
+
 import React from 'react';
 import { connect } from 'react-redux'
 
